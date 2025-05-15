@@ -1,0 +1,105 @@
+package de.c4vxl.app.lib.component;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
+
+@SuppressWarnings("deprecation")
+public class Window extends JFrame {
+    public Window(String title, int width, int height) {
+        this.setTitle(title);
+        this.setSize(width, height);
+        this.setPreferredSize(this.getPreferredSize());
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(null); // open in center of screen
+    }
+
+    /**
+     * Set the background color of the window
+     * @param color The color
+     */
+    public Window background(Color color) {
+        this.setBackground(color);
+        this.getContentPane().setBackground(color);
+        return this;
+    }
+
+    /**
+     * Set the layout of the window
+     */
+    public Window layout(LayoutManager layout) {
+        this.setLayout(layout);
+        return this;
+    }
+
+    /**
+     * Set the border radius of the window
+     * @param arcw Radius width
+     * @param arch Radius height
+     */
+    public Window borderRadius(double arcw, double arch) {
+        this.undecorated().setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), arcw, arch));
+        return this;
+    }
+
+    /**
+     * Set the border radius of the window
+     * @param radius The radius
+     */
+    public Window borderRadius(double radius) { return this.borderRadius(radius, radius); }
+
+    /**
+     * Remove the title bar from the window
+     */
+    public Window undecorated() {
+        this.setUndecorated(true);
+
+        // custom movement handler
+        final int[] x = new int[1], y = new int[1];
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                x[0] = e.getX();
+                y[0] = e.getY();
+
+                setCursor(Cursor.HAND_CURSOR);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                setCursor(Cursor.DEFAULT_CURSOR);
+            }
+        });
+
+        this.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                setLocation(
+                        getLocation().x + e.getX() - x[0],
+                        getLocation().y + e.getY() - y[0]
+                );
+            }
+        });
+
+        return this;
+    }
+
+    /**
+     * Open the window
+     */
+    public Window open() {
+        this.setVisible(true);
+        return this;
+    }
+
+    /**
+     * Close the window
+     */
+    public Window close() {
+        this.setVisible(false);
+        this.dispose();
+        return this;
+    }
+}
