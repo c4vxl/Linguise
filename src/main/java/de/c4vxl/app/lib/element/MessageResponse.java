@@ -11,24 +11,27 @@ import java.awt.event.MouseEvent;
 
 public class MessageResponse extends JPanel {
     private final JLabel text;
-    private final int width = 860;
+    private final int width;
 
-    public MessageResponse() {
-        this.setLayout(new GridLayout(1, 1));
+    public MessageResponse() { this(500); }
+    public MessageResponse(int width) {
+        this.width = width - 20;
+
+        this.setLayout(new BorderLayout());
         this.setBackground(Theme.current.accent_1);
         this.setForeground(Theme.current.text);
         this.setBorder(BorderFactory.createEmptyBorder(3, 10, 10, 10));
 
         text = new JLabel();
         text.setForeground(Theme.current.text);
-        this.add(text);
+        this.add(text, BorderLayout.CENTER);
 
         updateMessage("");
     }
 
     public MessageResponse updateMessage(String message) {
         this.text.setText("<html>" +
-                "<div style='width: " + width + "px; font-family: Inter; font-weight: 100; font-size: 11px;'>" +
+                "<div style='width: " + (width - 200) + "px; font-family: Inter; font-weight: 100; font-size: 11px;'>" +
                 message +
                 "</div></html>"
         );
@@ -37,8 +40,7 @@ public class MessageResponse extends JPanel {
     }
 
     public MessageResponse complete(String info) {
-        this.setLayout(new GridLayout(2, 1));
-        this.add(createBottomPanel(info));
+        this.add(createBottomPanel(info), BorderLayout.SOUTH);
         update();
         return this;
     }
@@ -72,29 +74,21 @@ public class MessageResponse extends JPanel {
         bottomPanel.setOpaque(false);
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        bottomPanel.setSize(getWidth(), 20);
+
 
         // Left-aligned info label
         JLabel infoText = new JLabel("<html><body style='font-family: Inter; font-weight: 100'>" + info + "</body></html>");
         infoText.setForeground(Theme.standard.text_1);
-        infoText.setVerticalAlignment(SwingConstants.CENTER); // vertical centering in case fonts vary
+        bottomPanel.add(infoText, BorderLayout.LINE_START);
 
         // Right-aligned button panel
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 0));
         buttonPanel.setOpaque(false);
-        buttonPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-
         buttonPanel.add(createButton("copy.png", 22, "Copy message", () -> System.out.println("Copy")));
         buttonPanel.add(createButton("change.png", 18, "Regenerate with a different model", () -> System.out.println("Change")));
         buttonPanel.add(createButton("sound.png", 25, "Speak out loud", () -> System.out.println("Speak")));
-
-        JPanel inner = new JPanel();
-        inner.setOpaque(false);
-        inner.setLayout(new BoxLayout(inner, BoxLayout.X_AXIS));
-        inner.add(infoText);
-        inner.add(Box.createHorizontalGlue()); // push button panel to the right
-        inner.add(buttonPanel);
-
-        bottomPanel.add(inner, BorderLayout.CENTER);
+        bottomPanel.add(buttonPanel, BorderLayout.EAST);
 
         return bottomPanel;
     }

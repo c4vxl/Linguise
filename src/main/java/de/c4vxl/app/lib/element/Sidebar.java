@@ -1,6 +1,5 @@
 package de.c4vxl.app.lib.element;
 
-import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.HR;
 import de.c4vxl.app.util.Resource;

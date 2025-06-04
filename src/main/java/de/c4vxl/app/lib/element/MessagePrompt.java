@@ -10,9 +10,13 @@ import java.time.format.DateTimeFormatter;
 public class MessagePrompt extends JPanel {
     private final JLabel infoText;
     private final JLabel text;
-    private final int width = 860;
+    private final int width;
 
-    public MessagePrompt(String prompt) {
+    public MessagePrompt(String prompt) { this(prompt, 500); }
+    public MessagePrompt(String prompt, int width) {
+        width = width - 20;
+        this.width = width;
+
         this.setLayout(new GridLayout(2, 1));
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current.background_1),
@@ -21,7 +25,7 @@ public class MessagePrompt extends JPanel {
 
         this.setBackground(Theme.current.background_3);
 
-        infoText = new JLabel("<html><body style='width:" + width + "px; font-family: Inter; font-weight: 100; font-size: 11px;'>" +
+        infoText = new JLabel("<html><body style='width:" + (width - 200) + "px; font-family: Inter; font-weight: 100; font-size: 11px;'>" +
                 "You - <b>" + DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm").format(LocalDateTime.now()) + "</b>" +
                 "</body></html>");
         infoText.setForeground(Theme.current.text_1);

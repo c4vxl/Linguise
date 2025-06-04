@@ -7,11 +7,11 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://mvn.c4vxl.de/jNN/")
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("de.c4vxl:jNN:1.0.0")
 }
 
 tasks.test {

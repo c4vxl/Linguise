@@ -2,75 +2,94 @@ package de.c4vxl.app;
 
 import de.c4vxl.app.lib.component.Window;
 import de.c4vxl.app.lib.element.ChatBar;
-import de.c4vxl.app.lib.element.MessagePrompt;
-import de.c4vxl.app.lib.element.MessageResponse;
+import de.c4vxl.app.lib.element.ChatOptionButtons;
+import de.c4vxl.app.lib.element.MessagePanel;
 import de.c4vxl.app.lib.element.Sidebar;
 import de.c4vxl.app.util.AnimationUtils;
+import de.c4vxl.app.util.GenerationUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class App extends Window {
     public Theme theme;
 
-    public JPanel content = new JPanel();
+    public JPanel content;
     public final ChatBar chatBar;
+    public final ChatOptionButtons chatOptionButtons;
     public final Sidebar sidebar;
+    public final MessagePanel messagePanel;
 
     public App() { this(Theme.standard); }
     public App(Theme theme) {
         super("Linguise", 1200, 800);
+
         this.theme = theme;
         Theme.current = theme;
 
-        this    .background(theme.background)
-                .borderRadius(20)
-                .layout(null);
+        this.background(theme.background)
+            .borderRadius(20)
+            .layout(null);
 
+        this.content = _create_content_pane();
+        this.chatBar = _create_chat_bar();
+        this.chatOptionButtons = _create_chat_option_buttons();
+        this.sidebar = _create_size_bar();
+        this.messagePanel = _create_message_panel();
 
-        content.setLayout(null);
-        content.setBounds((1200 - 890) / 2, 0, 890, getHeight());
-        content.setOpaque(false);
         this.add(content);
 
-        this.chatBar = new ChatBar(this, System.out::println);
         this.content.add(this.chatBar);
-
-        JLabel notice = new JLabel("<html><body style='font-family: Inter; font-weight: 100'>Linguise can make mistakes. <b>Consider checking important information!</b></body></html>");
-        notice.setSize(notice.getPreferredSize());
-        notice.setLocation((content.getWidth() - notice.getWidth()) / 2, getHeight() - 30);
-        notice.setForeground(theme.text);
-        this.content.add(notice);
-
-        this.sidebar = new Sidebar();
+        this.content.add(_create_notice());
+        this.content.add(this.messagePanel.pane);
         this.add(this.sidebar);
+    }
 
-        MessagePrompt msgp = new MessagePrompt("What is a dolphins favorite food?");
-        msgp.setLocation((content.getWidth() - msgp.getWidth()) / 2, 150);
-        this.content.add(msgp);
+    public ChatBar _create_chat_bar() {
+        ChatBar bar = new ChatBar(600, 50, this::_handle_chat_bar);
+        bar.setLocation((this.content.getWidth() - 600) / 2, this.getHeight() - 90);
+        return bar;
+    }
 
-        MessageResponse msg = new MessageResponse();
-        msg.updateMessage("Hey this is a really cool lorem ipsum text. I don't know what I am supposed to wrifg,hmdfhgjfdghlk jfdlkghjdflkhjfdklhjfdklhjfhkdfhjkdfghj");
-        msg.complete("Base Model · Took 12ms to generate");
-        msg.setLocation((content.getWidth() - msg.getWidth()) / 2, 300);
-        this.content.add(msg);
+    public ChatOptionButtons _create_chat_option_buttons() {
+        ChatOptionButtons buttons = new ChatOptionButtons();
+        buttons.setLocation((this.content.getWidth() - buttons.getWidth()) / 2, this.content.getHeight() - 150);
+        return buttons;
+    }
 
+    public MessagePanel _create_message_panel() {
+        MessagePanel panel = new MessagePanel(this.content.getWidth(), this.content.getHeight() - 240);
+        panel.pane.setLocation(0, 70);
 
-        // handle sidebar animation
+        return panel;
+    }
+
+    public JPanel _create_content_pane() {
+        JPanel content = new JPanel();
+        content.setLayout(null);
+        content.setBounds((getWidth() - 890) / 2, 0, 890, getHeight());
+        content.setOpaque(false);
+        return content;
+    }
+
+    public Sidebar _create_size_bar() {
         this.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (e.getX() < 400) {
                     if (sidebar.getX() != -300) return;
 
-                    AnimationUtils.animateEaseCubic(sidebar, 16, 40, 60, (elem, frame) -> {
+                    AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {
                         int x = (int) (frame * 300) - 300;
                         sidebar.setLocation(x, 0);
                         content.setLocation(Math.max(x + 305, 155), 0);
                     });
                 } else if (sidebar.getX() == 0) {
-                    AnimationUtils.animateEaseCubic(sidebar, 16, 40, 60, (elem, frame) -> {
+                    AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {
                         int x = -(int) (frame * 300);
                         sidebar.setLocation(x, 0);
                         content.setLocation(Math.min(455 + x, getWidth() - content.getWidth() - 5), 0);
@@ -78,5 +97,39 @@ public class App extends Window {
                 }
             }
         });
+
+        return new Sidebar();
+    }
+
+    public JLabel _create_notice() {
+        JLabel notice = new JLabel("<html><body style='font-family: Inter; font-weight: 100'>Linguise can make mistakes. <b>Consider checking important information!</b></body></html>");
+        notice.setSize(notice.getPreferredSize());
+        notice.setLocation((content.getWidth() - notice.getWidth()) / 2, getHeight() - 30);
+        notice.setForeground(theme.text);
+        return notice;
+    }
+
+    public void _handle_chat_bar(String message) {
+        this.chatBar.startHandling();
+
+        this.content.remove(this.chatOptionButtons);
+        this.content.add(this.chatOptionButtons);
+        this.content.repaint();
+        this.content.revalidate();
+
+        this.messagePanel.createPrompt(message);
+
+        this.messagePanel.createResponse();
+        Thread thread = GenerationUtils.fakeGenerationStream(GenerationUtils.ipsum, 0, this.messagePanel::updateLastResponse);
+        thread.start();
+        new Thread(() -> {
+            try {
+                thread.join();
+                this.messagePanel.completeLastResponse("Done!");
+                this.chatBar.stopHandling();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 }
