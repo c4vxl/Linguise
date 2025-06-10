@@ -7,12 +7,14 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 
 public class ScrollBar extends BasicScrollBarUI {
-    private int GAP = 10;
+    public int GAP = 10;
+    public Color _thumbColor = Theme.current.background_3;
+    public Color _trackColor = Theme.current.background;
 
     @Override
     protected void configureScrollBarColors() {
-        thumbColor = Theme.current.background_3;
-        trackColor = Theme.current.background;
+        this.thumbColor = this._thumbColor;
+        this.trackColor = this._trackColor;
     }
 
     @Override

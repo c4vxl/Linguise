@@ -1,5 +1,8 @@
 package de.c4vxl.app.lib.component;
 
+import de.c4vxl.app.Theme;
+import de.c4vxl.app.util.Resource;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -14,6 +17,44 @@ public class Window extends JFrame {
         this.setPreferredSize(this.getPreferredSize());
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null); // open in center of screen
+    }
+
+    private JLabel _create_button(ImageIcon icon, String tooltip, Runnable onClick) {
+        JLabel jl = new JLabel(null, icon, JLabel.CENTER) {
+            @Override
+            public JToolTip createToolTip() {
+                Tooltip tip = new Tooltip(Theme.current.text, Theme.current.background_1);
+                tip.setComponent(this);
+                return tip;
+            }
+        };
+        jl.setToolTipText(tooltip);
+        jl.setSize(jl.getPreferredSize());
+        jl.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) { onClick.run(); }
+        });
+        jl.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        return jl;
+    }
+
+    public Window withButtons() {
+        JPanel buttonPanel = new JPanel();
+
+        buttonPanel.setLayout(new GridLayout(1, 2, 10, 10));
+
+        JLabel minim = _create_button(Resource.loadIcon("minus.png", 20), "Minumize", () -> this.setState(JFrame.ICONIFIED));
+        JLabel close = _create_button(Resource.loadIcon("cross.png", 15), "Close", this::close);
+
+        buttonPanel.add(minim);
+        buttonPanel.add(close);
+
+        buttonPanel.setOpaque(false);
+        buttonPanel.setBounds((getWidth() - 60), 0, 50, 30);
+
+        this.add(buttonPanel);
+
+        return this;
     }
 
     /**

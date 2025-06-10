@@ -1,10 +1,8 @@
 package de.c4vxl.app;
 
+import de.c4vxl.app.lib.component.HR;
 import de.c4vxl.app.lib.component.Window;
-import de.c4vxl.app.lib.element.ChatBar;
-import de.c4vxl.app.lib.element.ChatOptionButtons;
-import de.c4vxl.app.lib.element.MessagePanel;
-import de.c4vxl.app.lib.element.Sidebar;
+import de.c4vxl.app.lib.element.*;
 import de.c4vxl.app.util.AnimationUtils;
 import de.c4vxl.app.util.GenerationUtils;
 
@@ -23,6 +21,7 @@ public class App extends Window {
     public final ChatOptionButtons chatOptionButtons;
     public final Sidebar sidebar;
     public final MessagePanel messagePanel;
+    public final ModelDropdown modelDropdown;
 
     public App() { this(Theme.standard); }
     public App(Theme theme) {
@@ -33,26 +32,38 @@ public class App extends Window {
 
         this.background(theme.background)
             .borderRadius(20)
-            .layout(null);
+            .layout(null)
+            .withButtons();
 
         this.content = _create_content_pane();
         this.chatBar = _create_chat_bar();
         this.chatOptionButtons = _create_chat_option_buttons();
         this.sidebar = _create_size_bar();
         this.messagePanel = _create_message_panel();
+        this.modelDropdown = _create_model_dropdown();
+
+        this.add(this.sidebar);
+
+        this.add(new HR(getWidth(), 1, Theme.current.background_1)
+                .position(0, 70));
 
         this.add(content);
-
+        this.content.add(modelDropdown);
         this.content.add(this.chatBar);
         this.content.add(_create_notice());
         this.content.add(this.messagePanel.pane);
-        this.add(this.sidebar);
     }
 
     public ChatBar _create_chat_bar() {
         ChatBar bar = new ChatBar(600, 50, this::_handle_chat_bar);
         bar.setLocation((this.content.getWidth() - 600) / 2, this.getHeight() - 90);
         return bar;
+    }
+
+    public ModelDropdown _create_model_dropdown() {
+        ModelDropdown dropdown = new ModelDropdown();
+        dropdown.setLocation((this.content.getWidth() - dropdown.getWidth()) / 2, 10);
+        return dropdown;
     }
 
     public ChatOptionButtons _create_chat_option_buttons() {

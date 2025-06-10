@@ -12,9 +12,8 @@ public class Sidebar extends JPanel {
         this.setPreferredSize(this.getSize());
         this.setLocation(-300, 0);
         this.setLayout(null);
-        this.setOpaque(false);
         this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current.background_1));
-
+        this.setBackground(Theme.current.background);
 
         JLabel logo = new JLabel(Resource.loadIcon("Logo large.png", 200));
         logo.setSize(logo.getPreferredSize());

@@ -2,7 +2,10 @@ package de.c4vxl.app.util;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.util.function.Consumer;
 
 public class Resource {
     /**

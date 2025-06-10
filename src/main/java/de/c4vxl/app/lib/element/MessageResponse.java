@@ -1,6 +1,7 @@
 package de.c4vxl.app.lib.element;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.Tooltip;
 import de.c4vxl.app.util.Resource;
 
@@ -9,12 +10,15 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MessageResponse extends JPanel {
+public class MessageResponse extends RoundedPanel {
     private final JLabel text;
     private final int width;
+    public float opacity = 1.0f;
 
     public MessageResponse() { this(500); }
     public MessageResponse(int width) {
+        super(15);
+
         this.width = width - 20;
 
         this.setLayout(new BorderLayout());
@@ -60,7 +64,7 @@ public class MessageResponse extends JPanel {
                 tip.setComponent(this);
                 return tip;
             }
-        };;
+        };
         label.setToolTipText(tooltipText);
 
         label.setSize(label.getPreferredSize());
@@ -94,14 +98,11 @@ public class MessageResponse extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g.create();
+    public void paint(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
 
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        g2d.setColor(getBackground());
-        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
-
-        g2d.dispose();
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+        super.paint(g2);
+        g2.dispose();
     }
 }

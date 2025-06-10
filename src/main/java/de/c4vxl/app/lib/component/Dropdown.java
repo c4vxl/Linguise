@@ -1,53 +1,87 @@
 package de.c4vxl.app.lib.component;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class Dropdown extends RoundedPanel {
-    public JLabel label;
+    private JLabel titleLabel = new JLabel();
+    public HR sep;
+    public JPanel container = new JPanel();
+    public ScrollPane containerPane = new ScrollPane(this.container);
+    private Component sep_gap_1, sep_gap_2;
+    public int padding, gap, width, height, max_height;
+    public boolean isExpanded = false;
+    public String title, expandedTitle;
 
-    public JPanel elementsPanel = new JPanel();
-    public ScrollPane elementsPanelWrapper = new ScrollPane(elementsPanel);
+    /**
+     * Create a new Dropdown
+     * @param title The title of the closed dropdown
+     * @param width The width of the dropdown
+     * @param height The height of the closed dropdown
+     */
+    public Dropdown(String title, int width, int height) {
+        this(title, width, height, 400, 10, 20, Theme.current.background_1, Theme.current.text);
+    }
 
-    public ArrayList<Component> elements = new ArrayList<>();
-
-    public int padding = 10;
-    public int elementHeight = 50;
-    public int gap = 10;
-
-    public int elementWidth;
-
-    public boolean isExpanded;
-
-    public Dropdown(String label) { this(null, label); }
-    public Dropdown(Icon icon) { this(icon, null); }
-
-    public Dropdown(Icon icon, String label) {
+    /**
+     * Create a new Dropdown
+     * @param title The title of the closed dropdown
+     * @param width The width of the dropdown
+     * @param height The height of the closed dropdown
+     * @param max_height The max height of the dropdowns content
+     * @param padding The padding of the dropdown
+     * @param gap The gap in between two items
+     * @param background The background color of the dropdown
+     * @param text The color of text
+     */
+    public Dropdown(String title, int width, int height, int max_height, int padding, int gap, Color background, Color text) {
         super(10);
 
-        this.setLayout(new GridLayout());
-        this.setBackground(Theme.current.background_1);
-        this.setSize(350, 50);
-        this.setForeground(Theme.current.text);
+        this.title = title;
+        this.expandedTitle = title;
+        this.padding = padding;
+        this.gap = gap;
+        this.width = width;
+        this.height = height;
+        this.max_height = max_height;
 
-        this.label = new JLabel(label, icon, JLabel.CENTER);
-        this.label.setSize(this.label.getPreferredSize());
-        this.label.setForeground(this.getForeground());
-        this.add(this.label);
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBackground(background);
+        this.setBorder(BorderFactory.createCompoundBorder(
+                null,
+                BorderFactory.createEmptyBorder(padding, padding, padding, padding)
+        ));
 
-        elementWidth = getWidth() - padding * 2;
+        this.sep_gap_1 = Box.createRigidArea(new Dimension(getWidth(), 10));
+        this.sep = new HR(-1, 1, text);
+        this.sep_gap_2 = Box.createRigidArea(new Dimension(getWidth(), 30));
 
-        elementsPanel.setLayout(new BoxLayout(elementsPanel, BoxLayout.Y_AXIS));
-        elementsPanel.setOpaque(false);
-        elementsPanelWrapper.setMaximumSize(new Dimension(elementWidth, 5000));
+        this.setTitle(title);
+        this.titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.titleLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        this.titleLabel.setSize(width, height);
+        this.titleLabel.setPreferredSize(this.titleLabel.getSize());
+        this.titleLabel.setForeground(text);
+        this.add(this.titleLabel);
 
+        this.container.setOpaque(false);
+        this.container.setLayout(new BoxLayout(this.container, BoxLayout.Y_AXIS));
+        this.container.setSize(width - padding * 2, 0);
+
+        this.containerPane.vertUI.GAP = 0;
+        this.containerPane.setPreferredSize(new Dimension(width - padding * 2, max_height));
+        this.containerPane.setMaximumSize(new Dimension(width - padding * 2, max_height));
+        this.containerPane.horizontalScrollBar.setPreferredSize(new Dimension(0, 0));
+
+        this.titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -55,69 +89,140 @@ public class Dropdown extends RoundedPanel {
                     collapse();
                 else
                     expand();
+
+                isExpanded = !isExpanded;
             }
         });
+
+        this.collapse();
     }
 
-    public Dropdown addOption(String label, Icon icon, Consumer<String> onClick) {
-        RoundedPanel panel = new RoundedPanel(10);
+    /**
+     * Creates a normal item to add to a dropdown
+     * @param label The label on the item
+     * @param isHighlighted Should the item be highlighted
+     * @param onClick The action to be executed when clicked
+     */
+    public JPanel createDefaultItem(String label, Consumer<MouseEvent> onClick, boolean isHighlighted) {
+        JPanel panel = new RoundedPanel(14);
         panel.setLayout(new GridLayout());
-        // panel.setBackground(Theme.current.background_1);
-        panel.setPreferredSize(new Dimension(elementWidth - 30, elementHeight));
-        panel.addMouseListener(new MouseAdapter() { @Override public void mouseClicked(MouseEvent e) { onClick.accept(label); } });
+        panel.setSize(0, 50);
+        panel.setPreferredSize(panel.getSize());
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
-        JLabel text = new JLabel(label, icon, JLabel.CENTER);
-        text.setSize(text.getPreferredSize());
-        text.setForeground(this.getForeground());
-        panel.add(text);
+        panel.setOpaque(false);
 
-        elements.add(panel);
+        Color color = isHighlighted ? Theme.current.background : new Color(0, 0, 0, 0);
+        panel.setBackground(color);
 
+        panel.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) { collapse(); panel.setBackground(color); onClick.accept(e); }
+            @Override public void mouseEntered(MouseEvent e) { panel.setBackground(Theme.current.background_3); }
+            @Override public void mouseExited(MouseEvent e) { panel.setBackground(color); }
+        });
+
+        JLabel jlabel = new JLabel(label, JLabel.CENTER);
+        jlabel.setSize(panel.getSize());
+        jlabel.setForeground(Theme.current.text);
+        panel.add(jlabel);
+
+        return panel;
+    }
+
+    /**
+     * Set the title of the dropdown
+     * @param title Set the title
+     */
+    public Dropdown setTitle(String title) {
+        if (!Objects.equals(title, this.title) && !Objects.equals(title, this.expandedTitle))
+            this.title = title;
+
+        this.titleLabel.setText(title);
         return this;
     }
 
+    /**
+     * Add an item to the list
+     * @param component The component to add
+     */
+    public Dropdown addItem(JComponent component) {
+        this.container.add(component);
+        this.container.add(Box.createRigidArea(new Dimension(getWidth(), gap)));
+        this.repaint();
+        this.revalidate();
+        return this;
+    }
+
+    /**
+     * Remove an item from the list
+     * @param component The component to remove
+     */
+    public Dropdown removeItem(JComponent component) {
+        // Remove next padding element
+        Component[] comps = this.container.getComponents();
+        int index = -1;
+        for (int i = 0; i < comps.length; i++)
+            if (Objects.equals(comps[i], component))
+                index = i;
+
+        if (index + 1 < comps.length && this.container.getComponent(index + 1) instanceof Box.Filler filler)
+            this.container.remove(filler);
+
+        this.container.remove(component);
+        this.repaint();
+        this.revalidate();
+        return this;
+    }
+
+    /**
+     * Collapse the dropdown menu
+     */
     public Dropdown collapse() {
-        if (!isExpanded) return this;
-        isExpanded = false;
+        this.remove(this.sep);
+        this.remove(this.containerPane);
+        this.remove(this.sep_gap_1);
+        this.remove(this.sep_gap_2);
+        this.setPreferredSize(new Dimension(this.width, this.height));
+        this.setSize(this.getPreferredSize());
+        this.titleLabel.setSize(this.getPreferredSize());
 
-        this.elementsPanel.removeAll();
-        this.remove(this.elementsPanelWrapper);
-        this.setLayout(new GridLayout());
-        this.setSize(this.getWidth(), 50);
-
-        SwingUtilities.invokeLater(() -> {
-            this.repaint();
-            this.revalidate();
-        });
+        titleLabel.setIcon(Resource.loadIcon("dropdown_c.png", 20));
+        setTitle(this.title);
+        this.repaint();
+        this.revalidate();
 
         return this;
     }
 
+    /**
+     * Expand the dropdown menu
+     */
     public Dropdown expand() {
-        if (isExpanded) return this;
-        isExpanded = true;
+        int containerHeight = Arrays.stream(container.getComponents()).map(x -> x.getPreferredSize().height).reduce(Integer::sum).orElse(50);
+        this.container.setPreferredSize(new Dimension(width - padding * 2, containerHeight));
+        this.container.setMaximumSize(null);
 
-        this.setLayout(null);
+        this.add(this.sep_gap_1);
+        this.add(this.sep);
+        this.add(this.sep_gap_2);
+        this.add(this.containerPane);
 
-        this.elementsPanel.removeAll();
-        for (int i = 0; i < elements.size(); i++) {
-            this.elementsPanel.add(elements.get(i));
-            if (i != elements.size() - 1)
-                this.elementsPanel.add(Box.createVerticalStrut(gap));
-        }
+        this.setPreferredSize(new Dimension(width, this.getPreferredSize().height));
+        this.setSize(this.getPreferredSize());
+        int expandedHeight = titleLabel.getPreferredSize().height
+                + sep_gap_1.getPreferredSize().height
+                + sep.getPreferredSize().height
+                + sep_gap_2.getPreferredSize().height
+                + containerPane.getPreferredSize().height
+                + padding * 2;
 
-        elementsPanel.setBounds(padding, 50, elementWidth, elements.size() * elementHeight + gap * elements.size());
-        elementsPanelWrapper.setBounds(elementsPanel.getBounds());
+        this.setPreferredSize(new Dimension(width, expandedHeight));
+        this.setSize(this.getPreferredSize());
 
-        this.setSize(this.getWidth(), elementsPanel.getHeight() + 70);
-
-        this.add(elementsPanelWrapper);
-
-        SwingUtilities.invokeLater(() -> {
-            elementsPanelWrapper.scrollToTop();
-            this.repaint();
-            this.revalidate();
-        });
+        titleLabel.setIcon(Resource.loadIcon("dropdown_e.png", 20));
+        setTitle(this.expandedTitle);
+        this.repaint();
+        this.revalidate();
 
         return this;
     }

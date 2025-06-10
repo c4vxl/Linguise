@@ -32,6 +32,17 @@ public class MessagePanel extends JPanel {
 
         this.pane = new ScrollPane(this);
         this.pane.setSize(width, height);
+
+        this.pane.getViewport().addChangeListener((e) -> {
+            for (Component component : this.getComponents()) {
+                if (!(component instanceof MessageResponse)) continue;
+
+                int scrollY = this.pane.getVerticalScrollBar().getValue();
+                int compY = component.getY();
+                int overlapTop = Math.max(0, Math.min(compY + component.getHeight(), scrollY + this.getHeight()) - Math.max(compY, scrollY));
+                ((MessageResponse) component).opacity = (float) overlapTop / component.getHeight();
+            }
+        });
     }
 
     /**
