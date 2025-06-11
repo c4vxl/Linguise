@@ -19,7 +19,7 @@ public class Window extends JFrame {
         this.setLocationRelativeTo(null); // open in center of screen
     }
 
-    private JLabel _create_button(ImageIcon icon, String tooltip, Runnable onClick) {
+    public static JLabel _create_top_bar_button(ImageIcon icon, String tooltip, Runnable onClick) {
         JLabel jl = new JLabel(null, icon, JLabel.CENTER) {
             @Override
             public JToolTip createToolTip() {
@@ -43,8 +43,8 @@ public class Window extends JFrame {
 
         buttonPanel.setLayout(new GridLayout(1, 2, 10, 10));
 
-        JLabel minim = _create_button(Resource.loadIcon("minus.png", 20), "Minumize", () -> this.setState(JFrame.ICONIFIED));
-        JLabel close = _create_button(Resource.loadIcon("cross.png", 15), "Close", this::close);
+        JLabel minim = _create_top_bar_button(Resource.loadIcon("minus.png", 20), "Minumize", () -> this.setState(JFrame.ICONIFIED));
+        JLabel close = _create_top_bar_button(Resource.loadIcon("cross.png", 15), "Close", this::close);
 
         buttonPanel.add(minim);
         buttonPanel.add(close);

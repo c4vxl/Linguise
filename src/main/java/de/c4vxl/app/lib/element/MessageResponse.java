@@ -83,7 +83,7 @@ public class MessageResponse extends RoundedPanel {
 
         // Left-aligned info label
         JLabel infoText = new JLabel("<html><body style='font-family: Inter; font-weight: 100'>" + info + "</body></html>");
-        infoText.setForeground(Theme.standard.text_1);
+        infoText.setForeground(Theme.current.text_1);
         bottomPanel.add(infoText, BorderLayout.LINE_START);
 
         // Right-aligned button panel

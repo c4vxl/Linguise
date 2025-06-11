@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class MessagePanel extends JPanel {
     public ArrayList<JPanel> messages = new ArrayList<>();
     public ScrollPane pane;
-    public int nextY = 50;
+    public int nextY;
 
     public final int gap;
     public final int outerGap;
@@ -69,7 +69,7 @@ public class MessagePanel extends JPanel {
         if (this.messages == null)
             this.messages = new ArrayList<>();
 
-        nextY = 50;
+        nextY = 10;
         int last = messages.size() - 1;
         this.removeAll();
         for (int i = 0; i < this.messages.size(); i++) {

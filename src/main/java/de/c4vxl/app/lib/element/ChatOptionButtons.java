@@ -34,7 +34,7 @@ public class ChatOptionButtons extends JPanel {
                 .withIcon(Resource.loadIcon(icon, 20))
                 .withIconTextGap(10)
                 .foreground(Theme.current.accent)
-                .font(new Font("Roboto", Font.PLAIN, 14).deriveFont(Collections.singletonMap(TextAttribute.WEIGHT, TextAttribute.WEIGHT_MEDIUM)))
+                .font(Theme.current.font_2.deriveFont(Collections.singletonMap(TextAttribute.WEIGHT, TextAttribute.WEIGHT_MEDIUM)))
                 .withBorderRadius(10)
                 .borderStyle();
 

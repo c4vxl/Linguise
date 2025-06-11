@@ -53,6 +53,7 @@ public class Dropdown extends RoundedPanel {
         this.height = height;
         this.max_height = max_height;
 
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(background);
         this.setBorder(BorderFactory.createCompoundBorder(
@@ -81,7 +82,7 @@ public class Dropdown extends RoundedPanel {
         this.containerPane.setMaximumSize(new Dimension(width - padding * 2, max_height));
         this.containerPane.horizontalScrollBar.setPreferredSize(new Dimension(0, 0));
 
-        this.titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -94,6 +95,16 @@ public class Dropdown extends RoundedPanel {
             }
         });
 
+        Toolkit.getDefaultToolkit().addAWTEventListener(event -> {
+            if (!(event instanceof MouseEvent e) || e.getID() != MouseEvent.MOUSE_PRESSED) return;
+
+            Component clicked = SwingUtilities.getDeepestComponentAt(e.getComponent(), e.getX(), e.getY());
+            if (isExpanded && !SwingUtilities.isDescendingFrom(clicked, Dropdown.this)) {
+                collapse();
+                isExpanded = false;
+            }
+        }, AWTEvent.MOUSE_EVENT_MASK);
+
         this.collapse();
     }
 
@@ -103,12 +114,13 @@ public class Dropdown extends RoundedPanel {
      * @param isHighlighted Should the item be highlighted
      * @param onClick The action to be executed when clicked
      */
-    public JPanel createDefaultItem(String label, Consumer<MouseEvent> onClick, boolean isHighlighted) {
+    public static JPanel createDefaultItem(String label, Consumer<MouseEvent> onClick, boolean isHighlighted) {
         JPanel panel = new RoundedPanel(14);
         panel.setLayout(new GridLayout());
         panel.setSize(0, 50);
         panel.setPreferredSize(panel.getSize());
         panel.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         panel.setOpaque(false);
 
@@ -116,7 +128,10 @@ public class Dropdown extends RoundedPanel {
         panel.setBackground(color);
 
         panel.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent e) { collapse(); panel.setBackground(color); onClick.accept(e); }
+            @Override public void mouseClicked(MouseEvent e) {
+                panel.setBackground(color);
+                onClick.accept(e);
+            }
             @Override public void mouseEntered(MouseEvent e) { panel.setBackground(Theme.current.background_3); }
             @Override public void mouseExited(MouseEvent e) { panel.setBackground(color); }
         });

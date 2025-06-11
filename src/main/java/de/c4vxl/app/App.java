@@ -3,17 +3,19 @@ package de.c4vxl.app;
 import de.c4vxl.app.lib.component.HR;
 import de.c4vxl.app.lib.component.Window;
 import de.c4vxl.app.lib.element.*;
+import de.c4vxl.app.lib.settings.Settings;
 import de.c4vxl.app.util.AnimationUtils;
 import de.c4vxl.app.util.GenerationUtils;
+import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 public class App extends Window {
+    private final Container contentPane;
+
     public Theme theme;
 
     public JPanel content;
@@ -23,9 +25,15 @@ public class App extends Window {
     public final MessagePanel messagePanel;
     public final ModelDropdown modelDropdown;
 
-    public App() { this(Theme.standard); }
+    private Settings settings;
+    private boolean isInSettings = false;
+
+    public App() { this(Theme.dark); }
     public App(Theme theme) {
         super("Linguise", 1200, 800);
+
+        this.contentPane = this.getContentPane();
+        this.contentPane.setLayout(null);
 
         this.theme = theme;
         Theme.current = theme;
@@ -41,17 +49,47 @@ public class App extends Window {
         this.sidebar = _create_size_bar();
         this.messagePanel = _create_message_panel();
         this.modelDropdown = _create_model_dropdown();
+        this.settings = new Settings(this, getWidth() - 150, getHeight() - 70);
 
         this.add(this.sidebar);
 
         this.add(new HR(getWidth(), 1, Theme.current.background_1)
-                .position(0, 70));
+                .position(0, 85));
 
         this.add(content);
+        this.add(_create_settings_button());
         this.content.add(modelDropdown);
         this.content.add(this.chatBar);
         this.content.add(_create_notice());
         this.content.add(this.messagePanel.pane);
+    }
+
+    public void openSettings() {
+        if (isInSettings) return;
+        isInSettings = true;
+        this.settings.setLocation((getWidth() - settings.getWidth()) / 2, (getHeight() - settings.getHeight()) / 2);
+        contentPane.add(settings);
+        contentPane.setComponentZOrder(this.settings, 1);
+        this.repaint();
+        this.revalidate();
+    }
+
+    public void closeSettings() {
+        isInSettings = false;
+        this.contentPane.remove(this.settings);
+        this.repaint();
+        this.revalidate();
+    }
+
+    public JLabel _create_settings_button() {
+        JLabel label = new JLabel(Resource.loadIcon("settings.png", 40));
+        label.setSize(label.getPreferredSize());
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        label.setLocation(getWidth() - 40 - 10, getHeight() - 40 - 10);
+        label.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) { openSettings(); }
+        });
+        return label;
     }
 
     public ChatBar _create_chat_bar() {
@@ -62,7 +100,7 @@ public class App extends Window {
 
     public ModelDropdown _create_model_dropdown() {
         ModelDropdown dropdown = new ModelDropdown();
-        dropdown.setLocation((this.content.getWidth() - dropdown.getWidth()) / 2, 10);
+        dropdown.setLocation((this.content.getWidth() - dropdown.getWidth()) / 2, 15);
         return dropdown;
     }
 
@@ -73,8 +111,8 @@ public class App extends Window {
     }
 
     public MessagePanel _create_message_panel() {
-        MessagePanel panel = new MessagePanel(this.content.getWidth(), this.content.getHeight() - 240);
-        panel.pane.setLocation(0, 70);
+        MessagePanel panel = new MessagePanel(this.content.getWidth(), this.content.getHeight() - 250);
+        panel.pane.setLocation(0, 85);
 
         return panel;
     }
@@ -91,7 +129,7 @@ public class App extends Window {
         this.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (e.getX() < 400) {
+                if (e.getX() < 400 && !isInSettings) {
                     if (sidebar.getX() != -300) return;
 
                     AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {

@@ -4,8 +4,10 @@ import de.c4vxl.app.Theme;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.function.Consumer;
 
 public class Button extends JButton {
     public int arcw, arch;
@@ -60,6 +62,8 @@ public class Button extends JButton {
     public Button size(int width, int height) {
         this.setSize(width, height);
         this.setPreferredSize(this.getSize());
+        this.setMaximumSize(this.getSize());
+        this.setMinimumSize(this.getSize());
         return this;
     }
 
@@ -137,6 +141,15 @@ public class Button extends JButton {
      */
     public Button withBorderRadius(int borderRadius) {
         return this.withBorderRadius(borderRadius, borderRadius);
+    }
+
+    /**
+     * Add a click action listener
+     * @param onClick The action
+     */
+    public Button withAction(Consumer<ActionEvent> onClick) {
+        this.addActionListener(onClick::accept);
+        return this;
     }
 
     /**
