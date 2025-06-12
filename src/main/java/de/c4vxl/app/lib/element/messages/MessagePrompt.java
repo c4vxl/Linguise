@@ -1,4 +1,4 @@
-package de.c4vxl.app.lib.element;
+package de.c4vxl.app.lib.element.messages;
 
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.util.Elements;

@@ -137,12 +137,18 @@ public class Factory<T extends JComponent> {
     public Factory<T> centerY(Component parent) { return apply(e -> e.setLocation(e.getX(), (parent.getHeight() - e.getHeight()) / 2)); }
 
     /**
-     * Set the position of the element
+     * Set the size of the element
      * @param width The width
      * @param height The height
      */
-    public Factory<T> size(int width, int height) { return apply(e -> {
-        e.setSize(width, height);
+    public Factory<T> size(int width, int height) { return this.size(new Dimension(width, height)); }
+
+    /**
+     * Set the size of the element
+     * @param size The size
+     */
+    public Factory<T> size(Dimension size) { return apply(e -> {
+        e.setSize(size);
         e.setPreferredSize(e.getSize());
         e.setMaximumSize(e.getSize());
         e.setMinimumSize(e.getSize());

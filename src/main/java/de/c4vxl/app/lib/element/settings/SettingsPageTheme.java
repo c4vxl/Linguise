@@ -1,4 +1,4 @@
-package de.c4vxl.app.lib.settings;
+package de.c4vxl.app.lib.element.settings;
 
 import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;

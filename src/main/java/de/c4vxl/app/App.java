@@ -2,8 +2,12 @@ package de.c4vxl.app;
 
 import de.c4vxl.app.lib.component.HR;
 import de.c4vxl.app.lib.component.Window;
-import de.c4vxl.app.lib.element.*;
-import de.c4vxl.app.lib.settings.Settings;
+import de.c4vxl.app.lib.element.chatbar.ChatBar;
+import de.c4vxl.app.lib.element.chatbar.ChatOptionButtons;
+import de.c4vxl.app.lib.element.messages.MessagePanel;
+import de.c4vxl.app.lib.element.model.ModelDropdown;
+import de.c4vxl.app.lib.element.sidebar.Sidebar;
+import de.c4vxl.app.lib.element.settings.Settings;
 import de.c4vxl.app.util.*;
 
 import javax.swing.*;

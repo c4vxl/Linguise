@@ -1,4 +1,4 @@
-package de.c4vxl.app.lib.element;
+package de.c4vxl.app.lib.element.chatbar;
 
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.Button;
@@ -8,10 +8,8 @@ import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.font.TextAttribute;
 import java.util.Collections;
-import java.util.function.Consumer;
 
 public class ChatOptionButtons extends JPanel {
     public ChatOptionButtons() {

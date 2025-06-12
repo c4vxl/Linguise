@@ -1,4 +1,4 @@
-package de.c4vxl.app.lib.element;
+package de.c4vxl.app.lib.element.model;
 
 import de.c4vxl.app.lib.component.Dropdown;
 

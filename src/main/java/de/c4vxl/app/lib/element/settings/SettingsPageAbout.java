@@ -1,7 +1,5 @@
-package de.c4vxl.app.lib.settings;
+package de.c4vxl.app.lib.element.settings;
 
-import de.c4vxl.app.Theme;
-import de.c4vxl.app.lib.component.Button;
 import de.c4vxl.app.util.Elements;
 
 import javax.swing.*;

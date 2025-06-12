@@ -1,4 +1,4 @@
-package de.c4vxl.app.lib.element;
+package de.c4vxl.app.lib.element.chatbar;
 
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.util.Elements;
@@ -7,8 +7,6 @@ import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
 
 public class ChatBar extends JPanel {
