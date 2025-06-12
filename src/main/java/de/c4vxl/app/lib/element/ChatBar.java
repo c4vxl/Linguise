@@ -1,6 +1,8 @@
 package de.c4vxl.app.lib.element;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
@@ -30,13 +32,9 @@ public class ChatBar extends JPanel {
         textField.setBounds(0, 0, getWidth() - 50, getHeight());
         this.add(textField);
 
-        JLabel submitButton = new JLabel(Resource.loadIcon("send_b.png", 40));
-        submitButton.setSize(submitButton.getPreferredSize());
-        submitButton.setBounds(getWidth() - 45, (getHeight() - submitButton.getHeight()) / 2, submitButton.getWidth(), submitButton.getHeight());
-        submitButton.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent e) { textField.postActionEvent(); }
-        });
-        this.add(submitButton);
+        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("send_b.png", 40)))
+                .onClick(textField::postActionEvent)
+                .posX(getWidth() - 45).centerY(this).get());
     }
 
     /**

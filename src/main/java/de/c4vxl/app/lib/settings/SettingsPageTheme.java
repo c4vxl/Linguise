@@ -5,11 +5,10 @@ import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.ScrollPane;
 import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.util.Factory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class SettingsPageTheme extends SettingsPage {
@@ -83,29 +82,15 @@ public class SettingsPageTheme extends SettingsPage {
      * @param isHighlighted Is the element highlighted/is it the currently selected theme
      */
     private JPanel createEntry(String name, Color c1, Color c2, boolean isHighlighted, Runnable onClick) {
-        JPanel panel = new RoundedPanel(10);
-        panel.setLayout(null);
-        panel.setSize(130, 190);
-        panel.setPreferredSize(panel.getSize());
-        panel.setOpaque(false);
-        panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        JPanel panel = new Factory<>(new RoundedPanel(10)).layout(null).size(130, 190).opaque(false).cursor(Cursor.HAND_CURSOR)
+                .hoverAnimation(isHighlighted ? Theme.current.background_2 : Theme.current.background_1, Theme.current.background_2, false)
+                .onClick(onClick).get();
 
-        Color color = isHighlighted ? Theme.current.background_2 : new Color(0, 0, 0, 0);
-        panel.setBackground(color);
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) { onClick.run(); }
+        // Label
+        panel.add(new Factory<>(Elements.text(name, panel.getWidth())).posY(20).centerX(panel).get());
 
-            @Override public void mouseEntered(MouseEvent e) { panel.setBackground(Theme.current.background_2); }
-            @Override public void mouseExited(MouseEvent e) { panel.setBackground(color); }
-        });
-
-        JLabel label = Elements.text(name, panel.getWidth());
-        label.setSize(label.getPreferredSize());
-        label.setLocation((panel.getWidth() - label.getWidth()) / 2, 20);
-        panel.add(label);
-
-        JPanel circle = new JPanel() {
+        // Colors preview
+        panel.add(new Factory<>(new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -117,12 +102,7 @@ public class SettingsPageTheme extends SettingsPage {
                 g2d.fillOval((getWidth() - size) / 2, (getHeight() - size) / 2, size, size);
                 g2d.dispose();
             }
-        };
-
-        circle.setSize(100, 100);
-        circle.setOpaque(false);
-        circle.setLocation((panel.getWidth() - circle.getWidth()) / 2, 70);
-        panel.add(circle);
+        }).size(100, 100).opaque(false).posY(70).centerX(panel).get());
 
         return panel;
     }

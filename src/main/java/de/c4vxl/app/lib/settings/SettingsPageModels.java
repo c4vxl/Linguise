@@ -4,11 +4,10 @@ import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.ScrollPane;
 import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.util.Factory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,25 +75,13 @@ public class SettingsPageModels extends SettingsPage {
      * @param name The name of the model
      */
     private JPanel createEntry(String name, boolean isOdd) {
-        JPanel panel = new RoundedPanel(10);
-        panel.setLayout(null);
-        panel.setSize(getWidth() - 90, 60);
-        panel.setPreferredSize(panel.getSize());
-        panel.setOpaque(false);
-        panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        JPanel panel = new Factory<>(new RoundedPanel(10)).layout(null).size(getWidth() - 90, 60)
+                .opaque(false).cursor(Cursor.HAND_CURSOR)
+                .hoverAnimation(isOdd ? Theme.current.background : Theme.current.background.darker(), Theme.current.background_2, false)
+                .get();
 
-
-        Color color = isOdd ? Theme.current.background : Theme.current.background.darker();
-        panel.setBackground(color);
-        panel.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) { panel.setBackground(Theme.current.background_2); }
-            @Override public void mouseExited(MouseEvent e) { panel.setBackground(color); }
-        });
-
-        JLabel label = Elements.text(name, panel.getWidth());
-        label.setSize(label.getPreferredSize());
-        label.setLocation((panel.getWidth() - label.getWidth()) / 2, 20);
-        panel.add(label);
+        // Label
+        panel.add(new Factory<>(Elements.text(name, panel.getWidth())).posY(20).centerX(panel).get());
 
         return panel;
     }

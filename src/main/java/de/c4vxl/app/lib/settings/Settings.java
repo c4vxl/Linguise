@@ -6,6 +6,7 @@ import de.c4vxl.app.lib.component.Dropdown;
 import de.c4vxl.app.lib.component.HR;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.Window;
+import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
@@ -66,11 +67,8 @@ public class Settings extends RoundedPanel {
 
         for (int i = 0; i < pageNames.length; i++) {
             int finalI = i;
-            JPanel panel = Dropdown.createDefaultItem(pageNames[i], (e) -> openPage(finalI), currentPage == i);
-
-            panel.setSize(SIDEBAR_WIDTH - 20, 50);
-            panel.setPreferredSize(panel.getSize());
-            panel.setMaximumSize(panel.getSize());
+            JPanel panel = new Factory<>(Dropdown.createDefaultItem(pageNames[i], () -> openPage(finalI), currentPage == i))
+                    .size(SIDEBAR_WIDTH - 20, 50).get();
 
             this.sideBar.add(panel);
             if (i != pageNames.length - 1)

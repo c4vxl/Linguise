@@ -1,6 +1,8 @@
 package de.c4vxl.app.lib.element;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.util.Factory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,15 +27,15 @@ public class MessagePrompt extends JPanel {
 
         this.setBackground(Theme.current.background_3);
 
-        infoText = new JLabel("<html><body style='width:" + (width - 200) + "px; font-family: Inter; font-weight: 100; font-size: 11px;'>" +
-                "You - <b>" + DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm").format(LocalDateTime.now()) + "</b>" +
-                "</body></html>");
-        infoText.setForeground(Theme.current.text_1);
-        this.add(infoText);
+        // Information
+        this.infoText = new Factory<>(Elements.text("<p style='font-weight: 100; font-size: 11px;'>" +
+                        "You - <b>" + DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm").format(LocalDateTime.now()) + "</b></p>",
+                width - 200)).foreground(Theme.current.text_1).get();
+        this.add(this.infoText);
 
-        text = new JLabel(prompt);
-        text.setForeground(Theme.current.text);
-        this.add(text);
+        // Prompt
+        this.text = Elements.text(prompt, width - 200);
+        this.add(this.text);
 
         update();
     }

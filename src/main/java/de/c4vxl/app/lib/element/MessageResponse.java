@@ -3,6 +3,7 @@ package de.c4vxl.app.lib.element;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.Tooltip;
+import de.c4vxl.app.util.Elements;
 import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
@@ -82,9 +83,9 @@ public class MessageResponse extends RoundedPanel {
 
 
         // Left-aligned info label
-        JLabel infoText = new JLabel("<html><body style='font-family: Inter; font-weight: 100'>" + info + "</body></html>");
-        infoText.setForeground(Theme.current.text_1);
-        bottomPanel.add(infoText, BorderLayout.LINE_START);
+        JLabel label = Elements.text("<p style='font-weight: 100; font-size: 11px;'>" + info + "</p>", (int) (width / 1.25));
+        label.setForeground(Theme.current.text_1);
+        bottomPanel.add(label, BorderLayout.LINE_START);
 
         // Right-aligned button panel
         JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 0));

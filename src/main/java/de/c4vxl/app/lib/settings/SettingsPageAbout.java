@@ -21,19 +21,14 @@ public class SettingsPageAbout extends SettingsPage {
 
         this.add(Box.createVerticalGlue());
 
-        this.add(new Button()
-                .size(300, 50)
-                .foreground(Theme.current.accent)
-                .borderStyle().withBorderRadius(10)
-                .withLabel("Visit project on GitHub")
-                .font(Theme.current.font.deriveFont(14f))
+
+        this.add(Elements.hollowButton().withLabel("Visit project on GitHub")
                 .withAction((event) -> {
                     try {
                         Desktop.getDesktop().browse(new URI("https://github.com/"));
                     } catch (IOException | URISyntaxException e) {
                         throw new RuntimeException(e);
                     }
-                })
-        );
+                }));
     }
 }

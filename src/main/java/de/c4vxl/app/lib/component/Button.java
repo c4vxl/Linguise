@@ -55,38 +55,6 @@ public class Button extends JButton {
     }
 
     /**
-     * Set the size of the button
-     * @param width Set the width of the button
-     * @param height Set the height of the button
-     */
-    public Button size(int width, int height) {
-        this.setSize(width, height);
-        this.setPreferredSize(this.getSize());
-        this.setMaximumSize(this.getSize());
-        this.setMinimumSize(this.getSize());
-        return this;
-    }
-
-    /**
-     * Set the position of the button
-     * @param x Pass the x-coordinate
-     * @param y Pass the y-coordinate
-     */
-    public Button pos(int x, int y) {
-        this.setLocation(x, y);
-        return this;
-    }
-
-    /**
-     * Set the font
-     * @param font Set the font
-     */
-    public Button font(Font font) {
-        this.setFont(font);
-        return this;
-    }
-
-    /**
      * Add an icon to the button
      * @param icon The icon
      */
@@ -101,26 +69,6 @@ public class Button extends JButton {
      */
     public Button withIconTextGap(int gap) {
         this.setIconTextGap(gap);
-        return this;
-    }
-
-    /**
-     * Set the foreground color
-     * @param foreground The new foreground color
-     */
-    public Button foreground(Color foreground) {
-        this.foreground = foreground;
-        this.setForeground(foreground);
-        return this;
-    }
-
-    /**
-     * Set the background color
-     * @param background The new background color
-     */
-    public Button background(Color background) {
-        this.background = background;
-        this.setBackground(background);
         return this;
     }
 

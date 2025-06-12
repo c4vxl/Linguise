@@ -4,11 +4,10 @@ import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.ScrollPane;
 import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.util.Factory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,24 +78,12 @@ public class SettingsPageLanguage extends SettingsPage {
      * @param isHighlighted Is the element highlighted/is it the currently selected language
      */
     private JPanel createEntry(String name, boolean isHighlighted) {
-        JPanel panel = new RoundedPanel(10);
-        panel.setLayout(null);
-        panel.setSize(230, 60);
-        panel.setPreferredSize(panel.getSize());
-        panel.setOpaque(false);
-        panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        JPanel panel = new Factory<>(new RoundedPanel(10)).layout(null).size(230, 60).opaque(false).cursor(Cursor.HAND_CURSOR)
+                .hoverAnimation(Theme.current.background_3, Theme.current.background_2, isHighlighted)
+                .get();
 
-        Color color = isHighlighted ? Theme.current.background_2 : Theme.current.background_3;
-        panel.setBackground(color);
-        panel.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) { panel.setBackground(Theme.current.background_2); }
-            @Override public void mouseExited(MouseEvent e) { panel.setBackground(color); }
-        });
-
-        JLabel label = Elements.text(name, panel.getWidth());
-        label.setSize(label.getPreferredSize());
-        label.setLocation((panel.getWidth() - label.getWidth()) / 2, (panel.getHeight() - label.getHeight()) / 2);
-        panel.add(label);
+        // Label
+        panel.add(new Factory<>(Elements.text(name, panel.getWidth())).center(panel).get());
 
         return panel;
     }

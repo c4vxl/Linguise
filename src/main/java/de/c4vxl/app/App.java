@@ -4,13 +4,10 @@ import de.c4vxl.app.lib.component.HR;
 import de.c4vxl.app.lib.component.Window;
 import de.c4vxl.app.lib.element.*;
 import de.c4vxl.app.lib.settings.Settings;
-import de.c4vxl.app.util.AnimationUtils;
-import de.c4vxl.app.util.GenerationUtils;
-import de.c4vxl.app.util.Resource;
+import de.c4vxl.app.util.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class App extends Window {
@@ -52,6 +49,8 @@ public class App extends Window {
         this.settings = new Settings(this, getWidth() - 150, getHeight() - 70);
 
         this.add(this.sidebar);
+        this.add(new HR(2, getHeight() / 2, Theme.current.background_1)
+                .position(7, (getHeight() - (getHeight() / 2)) / 2));
 
         this.add(new HR(getWidth(), 1, Theme.current.background_1)
                 .position(0, 85));
@@ -67,95 +66,90 @@ public class App extends Window {
     public void openSettings() {
         if (isInSettings) return;
         isInSettings = true;
-        this.settings.setLocation((getWidth() - settings.getWidth()) / 2, (getHeight() - settings.getHeight()) / 2);
-        contentPane.add(settings);
-        contentPane.setComponentZOrder(this.settings, 1);
+
+        this.settings = new Factory<>(this.settings).center(this).get();
+        ModalUtils.createModalBackground(this)
+                .add(this.settings);
+        ((JPanel) this.getGlassPane()).setComponentZOrder(this.settings, 0);
+
         this.repaint();
         this.revalidate();
     }
 
     public void closeSettings() {
         isInSettings = false;
-        this.contentPane.remove(this.settings);
+        ((JPanel) this.getGlassPane()).remove(this.settings);
+        this.getGlassPane().setVisible(false);
         this.repaint();
         this.revalidate();
     }
 
     public JLabel _create_settings_button() {
-        JLabel label = new JLabel(Resource.loadIcon("settings.png", 40));
-        label.setSize(label.getPreferredSize());
-        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        label.setLocation(getWidth() - 40 - 10, getHeight() - 40 - 10);
-        label.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent e) { openSettings(); }
-        });
-        return label;
+        return new Factory<>(Elements.iconButton(Resource.loadIcon("settings.png", 40)))
+                .onClick(this::openSettings).pos(getWidth() - 40 - 10, getHeight() - 40 - 10).get();
     }
 
     public ChatBar _create_chat_bar() {
-        ChatBar bar = new ChatBar(600, 50, this::_handle_chat_bar);
-        bar.setLocation((this.content.getWidth() - 600) / 2, this.getHeight() - 90);
-        return bar;
+        return new Factory<>(new ChatBar(600, 50, this::_handle_chat_bar))
+                .posY(this.getHeight() - 90).centerX(this.content).get();
     }
 
     public ModelDropdown _create_model_dropdown() {
-        ModelDropdown dropdown = new ModelDropdown();
-        dropdown.setLocation((this.content.getWidth() - dropdown.getWidth()) / 2, 15);
-        return dropdown;
+        return new Factory<>(new ModelDropdown()).posY(15).centerX(this.content).get();
     }
 
     public ChatOptionButtons _create_chat_option_buttons() {
-        ChatOptionButtons buttons = new ChatOptionButtons();
-        buttons.setLocation((this.content.getWidth() - buttons.getWidth()) / 2, this.content.getHeight() - 150);
-        return buttons;
+        return new Factory<>(new ChatOptionButtons()).posY(this.content.getHeight() - 150).centerX(this.content).get();
     }
 
     public MessagePanel _create_message_panel() {
         MessagePanel panel = new MessagePanel(this.content.getWidth(), this.content.getHeight() - 250);
         panel.pane.setLocation(0, 85);
-
         return panel;
     }
 
     public JPanel _create_content_pane() {
-        JPanel content = new JPanel();
-        content.setLayout(null);
-        content.setBounds((getWidth() - 890) / 2, 0, 890, getHeight());
-        content.setOpaque(false);
-        return content;
+        return new Factory<>(new JPanel()).layout(null).opaque(false).size(890, getHeight()).centerX(this).get();
     }
 
     public Sidebar _create_size_bar() {
-        this.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                if (e.getX() < 400 && !isInSettings) {
-                    if (sidebar.getX() != -300) return;
+        JFrame window = this;
+        Toolkit.getDefaultToolkit().addAWTEventListener(e -> {
+            if (e instanceof MouseEvent event) {
+                if (event.getID() != MouseEvent.MOUSE_MOVED) return;
+                SwingUtilities.invokeLater(() -> {
+                    if (!window.isVisible()) return;
+                    Point windowLocation = window.getLocationOnScreen();
+                    int wx = event.getXOnScreen() - windowLocation.x, wy = event.getYOnScreen() - windowLocation.y;
+                    if (wy <= 200) return;
 
-                    AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {
-                        int x = (int) (frame * 300) - 300;
-                        sidebar.setLocation(x, 0);
-                        content.setLocation(Math.max(x + 305, 155), 0);
-                    });
-                } else if (sidebar.getX() == 0) {
-                    AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {
-                        int x = -(int) (frame * 300);
-                        sidebar.setLocation(x, 0);
-                        content.setLocation(Math.min(455 + x, getWidth() - content.getWidth() - 5), 0);
-                    });
-                }
+                    if (wx < 300) {
+                        if (sidebar.getX() != -300) return;
+
+                        AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {
+                            int x = (int) (frame * 300) - 300;
+                            sidebar.setLocation(x, 0);
+                            content.setLocation(Math.max(x + 305, 155), 0);
+                        });
+                    } else if (sidebar.getX() == 0) {
+                        AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {
+                            int x = -(int) (frame * 300);
+                            sidebar.setLocation(x, 0);
+                            content.setLocation(Math.min(455 + x, getWidth() - content.getWidth() - 5), 0);
+                        });
+                    }
+                });
             }
-        });
+        }, AWTEvent.MOUSE_MOTION_EVENT_MASK);
 
         return new Sidebar();
     }
 
     public JLabel _create_notice() {
-        JLabel notice = new JLabel("<html><body style='font-family: Inter; font-weight: 100'>Linguise can make mistakes. <b>Consider checking important information!</b></body></html>");
-        notice.setSize(notice.getPreferredSize());
-        notice.setLocation((content.getWidth() - notice.getWidth()) / 2, getHeight() - 30);
-        notice.setForeground(theme.text);
-        return notice;
+        return new Factory<>(Elements.text(
+                "<p style='font-weight: 100; font-size: 11px'>Linguise can make mistakes. <b>Consider checking important information!</b></p>",
+                Integer.MAX_VALUE
+        )).posY(getHeight() - 30).centerX(this.content).get();
     }
 
     public void _handle_chat_bar(String message) {
@@ -169,7 +163,7 @@ public class App extends Window {
         this.messagePanel.createPrompt(message);
 
         this.messagePanel.createResponse();
-        Thread thread = GenerationUtils.fakeGenerationStream(GenerationUtils.ipsum, 0, this.messagePanel::updateLastResponse);
+        Thread thread = GenerationUtils.fakeGenerationStream(GenerationUtils.ipsum, 5, this.messagePanel::updateLastResponse);
         thread.start();
         new Thread(() -> {
             try {

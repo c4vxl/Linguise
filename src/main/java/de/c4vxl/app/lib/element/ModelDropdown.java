@@ -29,7 +29,7 @@ public class ModelDropdown extends Dropdown {
     }
 
     public JPanel[] getElements() {
-        return models.stream().map(name -> createDefaultItem(name, (event) -> {
+        return models.stream().map(name -> createDefaultItem(name, () -> {
             this.current = name;
             System.out.println("Switch to model: " + current);
             this.setTitle(current);

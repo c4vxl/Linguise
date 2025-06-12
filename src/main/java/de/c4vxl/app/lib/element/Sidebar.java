@@ -3,9 +3,11 @@ package de.c4vxl.app.lib.element;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.HR;
 import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Sidebar extends JPanel {
     public Sidebar() {
@@ -16,26 +18,21 @@ public class Sidebar extends JPanel {
         this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current.background_1));
         this.setBackground(Theme.current.background);
 
-        JLabel logo = new JLabel(Resource.loadIcon("Logo large.png", 200));
-        logo.setSize(logo.getPreferredSize());
-        logo.setLocation((getWidth() - logo.getWidth()) / 2, 30);
-        this.add(logo);
+        // logo
+        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("Logo large.png", 200)))
+                .posY(30).centerX(this).get());
 
-        this.add(
-                new HR(getWidth() - 140, 1, Theme.current.text)
-                        .position(70, 80)
-        );
+        // hr underneath logo
+        this.add(new HR(getWidth() - 140, 1, Theme.current.text).position(70, 80));
 
-
-        JLabel historyLabel = new JLabel("<html><body style='font-family: Inter; font-size: 130%; font-weight: 700'>History</body></html>");
-        historyLabel.setForeground(Theme.current.text_1);
-        historyLabel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current.text_1),
-                BorderFactory.createEmptyBorder(0, 3, 0, 0)
-        ));
-        historyLabel.setSize(historyLabel.getPreferredSize());
-        historyLabel.setLocation(20, 120);
-        this.add(historyLabel);
+        // history label
+        this.add(new Factory<>(Elements.text("Chat History", -1))
+                .size(999, 20)
+                .pos(20, 120).foreground(Theme.current.text_1)
+                .border(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current.text_1),
+                        BorderFactory.createEmptyBorder(0, 5, 0, 0)
+                )).font(Theme.current.font.deriveFont(Font.BOLD)).get());
     }
 
     @Override

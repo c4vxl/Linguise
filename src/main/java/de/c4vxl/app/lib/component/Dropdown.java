@@ -1,6 +1,8 @@
 package de.c4vxl.app.lib.component;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
@@ -114,32 +116,18 @@ public class Dropdown extends RoundedPanel {
      * @param isHighlighted Should the item be highlighted
      * @param onClick The action to be executed when clicked
      */
-    public static JPanel createDefaultItem(String label, Consumer<MouseEvent> onClick, boolean isHighlighted) {
-        JPanel panel = new RoundedPanel(14);
-        panel.setLayout(new GridLayout());
-        panel.setSize(0, 50);
-        panel.setPreferredSize(panel.getSize());
-        panel.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        panel.setOpaque(false);
-
-        Color color = isHighlighted ? Theme.current.background : new Color(0, 0, 0, 0);
-        panel.setBackground(color);
-
-        panel.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent e) {
-                panel.setBackground(color);
-                onClick.accept(e);
-            }
-            @Override public void mouseEntered(MouseEvent e) { panel.setBackground(Theme.current.background_3); }
-            @Override public void mouseExited(MouseEvent e) { panel.setBackground(color); }
-        });
-
-        JLabel jlabel = new JLabel(label, JLabel.CENTER);
-        jlabel.setSize(panel.getSize());
-        jlabel.setForeground(Theme.current.text);
-        panel.add(jlabel);
+    public static JPanel createDefaultItem(String label, Runnable onClick, boolean isHighlighted) {
+        JPanel panel = new Factory<>(new RoundedPanel(14))
+                .layout(new FlowLayout(FlowLayout.CENTER))
+                .size(0, 50)
+                .border(BorderFactory.createEmptyBorder(5, 15, 5, 15))
+                .cursor(Cursor.HAND_CURSOR)
+                .opaque(false)
+                .hoverAnimation(isHighlighted ? Theme.current.background : new Color(0, 0, 0, 0), Theme.current.background, false)
+                .onClick(onClick)
+                .get();
+        panel.setMaximumSize(null);
+        panel.add(Elements.text(label, 0));
 
         return panel;
     }
@@ -203,8 +191,10 @@ public class Dropdown extends RoundedPanel {
 
         titleLabel.setIcon(Resource.loadIcon("dropdown_c.png", 20));
         setTitle(this.title);
-        this.repaint();
-        this.revalidate();
+        SwingUtilities.invokeLater(() -> {
+            this.repaint();
+            this.revalidate();
+        });
 
         return this;
     }
@@ -236,8 +226,10 @@ public class Dropdown extends RoundedPanel {
 
         titleLabel.setIcon(Resource.loadIcon("dropdown_e.png", 20));
         setTitle(this.expandedTitle);
-        this.repaint();
-        this.revalidate();
+        SwingUtilities.invokeLater(() -> {
+            this.repaint();
+            this.revalidate();
+        });
 
         return this;
     }
