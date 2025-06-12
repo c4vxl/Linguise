@@ -7,6 +7,7 @@ import de.c4vxl.app.lib.component.ScrollPane;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MessagePanel extends JPanel {
     public ArrayList<JPanel> messages = new ArrayList<>();
@@ -31,6 +32,7 @@ public class MessagePanel extends JPanel {
         this.setLayout(null);
 
         this.pane = new ScrollPane(this);
+        this.pane.setLocation(0, 85);
         this.pane.setSize(width, height);
 
         this.pane.getViewport().addChangeListener((e) -> {
@@ -50,7 +52,11 @@ public class MessagePanel extends JPanel {
      * @param clazz The class of the item to look for
      */
     @SuppressWarnings("unchecked")
-    public <T> T getLastItem(Class<T> clazz) { return (T) messages.stream().filter(clazz::isInstance).toList().getLast(); }
+    public <T> T getLastItem(Class<T> clazz) {
+        List<JPanel> elements = messages.stream().filter(clazz::isInstance).toList();
+        if (!elements.isEmpty()) return (T) elements.getLast();
+        return null;
+    }
 
     /**
      * Get the last MessagePrompt item in the elements stack
@@ -124,7 +130,9 @@ public class MessagePanel extends JPanel {
      * @param response The new response
      */
     public MessagePanel updateLastResponse(String response) {
-        this.getLastResponse().updateMessage(response);
+        MessageResponse r = this.getLastResponse();
+        if (r == null) return this;
+        r.updateMessage(response);
         this.reload();
         return this;
     }
@@ -134,7 +142,9 @@ public class MessagePanel extends JPanel {
      * @param info The Info to pass
      */
     public MessagePanel completeLastResponse(String info) {
-        this.getLastResponse().complete(info);
+        MessageResponse r = this.getLastResponse();
+        if (r == null) return this;
+        r.complete(info);
         this.reload();
         return this;
     }

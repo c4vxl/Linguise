@@ -11,13 +11,14 @@ import java.util.function.Consumer;
 
 public class ChatBar extends JPanel {
     public boolean isLocked = false;
+    public JTextField textField;
 
     public ChatBar(int width, int height, Consumer<String> onSubmit) {
         this.setSize(width, height);
         this.setPreferredSize(this.getSize());
         this.setLayout(null);
 
-        JTextField textField = new JTextField();
+        textField = new JTextField();
         textField.addActionListener(l -> {
             if (textField.getText().isBlank() || isLocked) return;
 
@@ -33,6 +34,14 @@ public class ChatBar extends JPanel {
         this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("send_b.png", 40)))
                 .onClick(textField::postActionEvent)
                 .posX(getWidth() - 45).centerY(this).get());
+    }
+
+    /**
+     * Focuses the chatbar
+     */
+    public ChatBar focus() {
+        this.textField.grabFocus();
+        return this;
     }
 
     /**
