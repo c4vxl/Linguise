@@ -2,7 +2,7 @@ package de.c4vxl.app.lib.element.chatbar;
 
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.Button;
-import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
 
@@ -16,11 +16,11 @@ public class ChatOptionButtons extends JPanel {
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
         this.setOpaque(false);
 
-        this.add(createButton("reload_p.png", "Regenerate", () -> {
+        this.add(createButton("media/reload_p.png", "Regenerate", () -> {
             System.out.println("Regenerate");
         }));
 
-        this.add(createButton("share_p.png", "Share", () -> {
+        this.add(createButton("media/share_p.png", "Share", () -> {
             System.out.println("Share");
         }));
 

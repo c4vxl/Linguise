@@ -1,0 +1,14 @@
+{
+  "name": "Dark",
+  "accent": "#6b6886",
+  "accent_1": "#464451",
+  "accent_2": "#605e6a",
+  "background": "#2a2828",
+  "background_1": "#413e3e",
+  "background_2": "#515050",
+  "background_3": "#333232",
+  "text": "#ffffff",
+  "text_1": "#d0d0d0",
+  "font": "Inter",
+  "font_2": "Roboto"
+}

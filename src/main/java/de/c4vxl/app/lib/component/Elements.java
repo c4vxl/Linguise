@@ -1,12 +1,10 @@
-package de.c4vxl.app.util;
+package de.c4vxl.app.lib.component;
 
 import de.c4vxl.app.Theme;
-import de.c4vxl.app.lib.component.Button;
+import de.c4vxl.app.util.Factory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class Elements {
     /**

@@ -47,8 +47,8 @@ public class Window extends JFrame {
 
         buttonPanel.setLayout(new GridLayout(1, 2, 10, 10));
 
-        JLabel minim = _create_top_bar_button(Resource.loadIcon("minus.png", 20), "Minumize", () -> this.setState(JFrame.ICONIFIED));
-        JLabel close = _create_top_bar_button(Resource.loadIcon("cross.png", 15), "Close", this::close);
+        JLabel minim = _create_top_bar_button(Resource.loadIcon("media/minus.png", 20), "Minumize", () -> this.setState(JFrame.ICONIFIED));
+        JLabel close = _create_top_bar_button(Resource.loadIcon("media/cross.png", 15), "Close", this::close);
 
         buttonPanel.add(minim);
         buttonPanel.add(close);

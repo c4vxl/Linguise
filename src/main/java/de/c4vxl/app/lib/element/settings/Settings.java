@@ -3,7 +3,7 @@ package de.c4vxl.app.lib.element.settings;
 import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.Dropdown;
-import de.c4vxl.app.lib.component.HR;
+import de.c4vxl.app.lib.component.Line;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.Window;
 import de.c4vxl.app.util.Factory;
@@ -35,10 +35,10 @@ public class Settings extends RoundedPanel {
         this.setSize(width, height);
         this.setPreferredSize(this.getSize());
 
-        this.add(new HR(getWidth() - SIDEBAR_WIDTH, 1, Theme.current.background)
+        this.add(new Line(getWidth() - SIDEBAR_WIDTH, 1, Theme.current.background)
                 .position(SIDEBAR_WIDTH, 40));
 
-        this.add(new HR(1, getHeight(), Theme.current.background)
+        this.add(new Line(1, getHeight(), Theme.current.background)
                 .position(SIDEBAR_WIDTH, 0));
 
         this.sideBar.setBounds(0, 0, SIDEBAR_WIDTH, getHeight());
@@ -48,7 +48,7 @@ public class Settings extends RoundedPanel {
         this.add(this.sideBar);
 
 
-        JLabel closeButton = Window._create_top_bar_button(Resource.loadIcon("cross.png", 15), "Close", app::closeSettings);
+        JLabel closeButton = Window._create_top_bar_button(Resource.loadIcon("media/cross.png", 15), "Close", app::closeSettings);
 
         closeButton.setLocation(getWidth() - 15 - 13, 13);
         this.add(closeButton);

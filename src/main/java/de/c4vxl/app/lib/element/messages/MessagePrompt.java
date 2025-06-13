@@ -1,7 +1,7 @@
 package de.c4vxl.app.lib.element.messages;
 
 import de.c4vxl.app.Theme;
-import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Factory;
 
 import javax.swing.*;

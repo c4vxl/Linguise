@@ -2,43 +2,50 @@ package de.c4vxl.app.lib.element.settings;
 
 import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.config.Config;
+import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.lib.component.RoundedPanel;
-import de.c4vxl.app.lib.component.ScrollPane;
-import de.c4vxl.app.util.Elements;
 import de.c4vxl.app.util.Factory;
+import de.c4vxl.app.util.FileUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 
 public class SettingsPageTheme extends SettingsPage {
-    private JPanel panel = new JPanel(new GridLayout(0, 5, 10, 20));
-    private ScrollPane pane = new ScrollPane(this.panel);
-
-    public ArrayList<Theme> themes = new ArrayList<>(){{
-        add(Theme.dark);
-        add(Theme.light);
-    }};
-
-
+    @SuppressWarnings("CallToPrintStackTrace")
     @Override
     public void init() {
-        this.setLayout(new BorderLayout());
-
+        // Title
         this.add(Elements.title("Themes", this.getWidth() - 200), BorderLayout.NORTH);
-        this.add(this.pane, BorderLayout.CENTER);
 
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setOpaque(false);
-
-        // TODO: Implement theme loading
+        // Buttons
         buttonPanel.add(Elements.hollowButton()
                 .withLabel("Load custom theme")
-                .withAction(e -> System.out.println("Loading custom theme...")));
-        this.add(buttonPanel, BorderLayout.PAGE_END);
+                .withAction(e -> {
+                    System.out.println("[ACTION]: Loading custom theme");
+                    File file = FileUtils.openFileDialog("user.downloads", "Linguise theme files", new String[]{Config.THEME_FILE_EXTENSION});
+                    if (file == null) return;
 
-        this.panel.setOpaque(false);
+                    try {
+                        Files.copy(file.toPath(), Path.of(Config.THEMES_DIRECTORY + "/" + file.getName()));
+                    } catch (IOException ex) {
+                        System.out.println("[ERROR]: Couldn't copy theme file!");
+                        ex.printStackTrace();
+                    }
+                    reload();
+                }));
+
+        buttonPanel.add(Elements.hollowButton()
+                .withLabel("Reload themes")
+                .withAction(e -> {
+                    System.out.println("[ACTION]: Reloading themes list");
+                    reload();
+                }));
 
         this.reload();
     }
@@ -47,27 +54,18 @@ public class SettingsPageTheme extends SettingsPage {
      * Reloads all themes
      */
     public void reload() {
-        // Add "normal" entries
+        System.out.println("[UPDATE]: Reloading SettingsPageTheme");
+        Theme[] themes = Config.getLocalThemes();
+        System.out.println("[UPDATE]: Found themes: " + String.join(", ", Arrays.stream(themes).map(x -> x.name).toArray(String[]::new)));
+
+        // Add entries
         this.panel.removeAll();
         for (Theme theme : themes) {
-            this.panel.add(createEntry(theme.name, theme.background_1, theme.background_3, theme == Theme.current, () -> {
+            this.panel.add(createEntry(theme.name, theme.background_1, theme.background_3, theme.name.equals(Theme.current.name), () -> {
                 SwingUtilities.getWindowAncestor(this).dispose();
                 new App(theme).open();
+                Config.setConfigValue("app.theme", theme.getFileName());
             }));
-        }
-
-        // Create "fake" entries so that the GridLayout won't mess up the sizing of the actual entries
-        int missing = 3 * 5 - themes.size();
-        if (missing > 0) {
-            for (int i = 0; i < missing; i++) {
-                JPanel p = createEntry("Mystery", Color.BLUE, Color.CYAN, false, () -> {});
-                p.setVisible(false);
-                this.panel.add(p);
-            }
-
-            this.pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-            this.pane.getVerticalScrollBar().setEnabled(false);
-            this.pane.getVerticalScrollBar().setUnitIncrement(0);
         }
 
         this.repaint();

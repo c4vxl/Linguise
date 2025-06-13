@@ -1,11 +1,17 @@
 package de.c4vxl.app.util;
 
+import de.c4vxl.app.Theme;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.function.Consumer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class Resource {
     /**
@@ -51,4 +57,35 @@ public class Resource {
      * @param width The width to resize the image to (calculate height via aspect ratio)
      */
     public static ImageIcon loadIcon(String path, int width) { return new ImageIcon(resizeImage(loadIcon(path).getImage(), width)); }
+
+    /**
+     * Copy a resource to the file system
+     *
+     * @param path The path to the resource
+     * @param to   The path to copy the resource to
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static void copyResource(String path, String to) {
+        File parent = new File(to);
+        if (parent.getParentFile() != null)
+            parent.getParentFile().mkdirs();
+
+        try (InputStream is = Theme.class.getClassLoader().getResourceAsStream(path)) {
+            assert is != null;
+            Files.copy(is, Paths.get(to));
+        } catch (Exception ignored) {}
+    }
+
+    /**
+     * Get a list of all resources in a path
+     * @param path The path/directory
+     */
+    public static String[] listResources(String path) {
+        try {
+            return Arrays.stream(Objects.requireNonNull(new File(Objects.requireNonNull(Resource.class.getClassLoader().getResource(path)).toURI())
+                    .listFiles())).map(File::getName).toArray(String[]::new);
+        } catch (URISyntaxException e) {
+            return new String[0];
+        }
+    }
 }

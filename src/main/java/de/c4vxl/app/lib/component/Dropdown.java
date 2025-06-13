@@ -1,7 +1,6 @@
 package de.c4vxl.app.lib.component;
 
 import de.c4vxl.app.Theme;
-import de.c4vxl.app.util.Elements;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
 
@@ -11,11 +10,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class Dropdown extends RoundedPanel {
     private JLabel titleLabel = new JLabel();
-    public HR sep;
+    public Line sep;
     public JPanel container = new JPanel();
     public ScrollPane containerPane = new ScrollPane(this.container);
     private Component sep_gap_1, sep_gap_2;
@@ -64,7 +62,7 @@ public class Dropdown extends RoundedPanel {
         ));
 
         this.sep_gap_1 = Box.createRigidArea(new Dimension(getWidth(), 10));
-        this.sep = new HR(-1, 1, text);
+        this.sep = new Line(-1, 1, text);
         this.sep_gap_2 = Box.createRigidArea(new Dimension(getWidth(), 30));
 
         this.setTitle(title);
@@ -189,7 +187,7 @@ public class Dropdown extends RoundedPanel {
         this.setSize(this.getPreferredSize());
         this.titleLabel.setSize(this.getPreferredSize());
 
-        titleLabel.setIcon(Resource.loadIcon("dropdown_c.png", 20));
+        titleLabel.setIcon(Resource.loadIcon("media/dropdown_c.png", 20));
         setTitle(this.title);
         SwingUtilities.invokeLater(() -> {
             this.repaint();
@@ -224,7 +222,7 @@ public class Dropdown extends RoundedPanel {
         this.setPreferredSize(new Dimension(width, expandedHeight));
         this.setSize(this.getPreferredSize());
 
-        titleLabel.setIcon(Resource.loadIcon("dropdown_e.png", 20));
+        titleLabel.setIcon(Resource.loadIcon("media/dropdown_e.png", 20));
         setTitle(this.expandedTitle);
         SwingUtilities.invokeLater(() -> {
             this.repaint();

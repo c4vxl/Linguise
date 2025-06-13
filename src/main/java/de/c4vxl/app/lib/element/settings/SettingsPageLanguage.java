@@ -3,7 +3,7 @@ package de.c4vxl.app.lib.element.settings;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.ScrollPane;
-import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Factory;
 
 import javax.swing.*;
@@ -12,24 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SettingsPageLanguage extends SettingsPage {
-    private JPanel panel = new JPanel(new GridLayout(0, 3, 10, 20));
-    private ScrollPane pane = new ScrollPane(this.panel);
-
     public ArrayList<String> languages = new ArrayList<>(List.of(new String[]{
             "English", "German", "French"
     }));
 
     @Override
     public void init() {
-        this.setLayout(new BorderLayout());
-
+        // Title
         this.add(Elements.title("Language", this.getWidth() - 200), BorderLayout.NORTH);
-        this.add(this.pane, BorderLayout.CENTER);
-        this.panel.setOpaque(false);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setOpaque(false);
-
+        // Buttons
         // TODO: Implement language loading
         buttonPanel.add(Elements.hollowButton()
                 .withLabel("Load custom language")
@@ -39,7 +31,6 @@ public class SettingsPageLanguage extends SettingsPage {
         buttonPanel.add(Elements.hollowButton()
                 .withLabel("Contribute")
                 .withAction(e -> System.out.println("Redirecting to contribution...")));
-        this.add(buttonPanel, BorderLayout.PAGE_END);
 
         reload();
     }
@@ -52,20 +43,6 @@ public class SettingsPageLanguage extends SettingsPage {
         this.panel.removeAll();
         for (String language : languages) {
             this.panel.add(createEntry(language, false));
-        }
-
-        // Create "fake" entries so that the GridLayout won't mess up the sizing of the actual entries
-        int missing = 7 * 3 - languages.size();
-        if (missing > 0) {
-            for (int i = 0; i < missing; i++) {
-                JPanel p = createEntry("Mystery", false);
-                p.setVisible(false);
-                this.panel.add(p);
-            }
-
-            this.pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-            this.pane.getVerticalScrollBar().setEnabled(false);
-            this.pane.getVerticalScrollBar().setUnitIncrement(0);
         }
 
         this.repaint();

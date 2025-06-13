@@ -3,7 +3,7 @@ package de.c4vxl.app.lib.element.messages;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.Tooltip;
-import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
@@ -90,9 +90,9 @@ public class MessageResponse extends RoundedPanel {
         // Right-aligned button panel
         JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 0));
         buttonPanel.setOpaque(false);
-        buttonPanel.add(createButton("copy.png", 22, "Copy message", () -> System.out.println("Copy")));
-        buttonPanel.add(createButton("change.png", 18, "Regenerate with a different model", () -> System.out.println("Change")));
-        buttonPanel.add(createButton("sound.png", 25, "Speak out loud", () -> System.out.println("Speak")));
+        buttonPanel.add(createButton("media/copy.png", 22, "Copy message", () -> System.out.println("Copy")));
+        buttonPanel.add(createButton("media/change.png", 18, "Regenerate with a different model", () -> System.out.println("Change")));
+        buttonPanel.add(createButton("media/sound.png", 25, "Speak out loud", () -> System.out.println("Speak")));
         bottomPanel.add(buttonPanel, BorderLayout.EAST);
 
         return bottomPanel;

@@ -1,0 +1,14 @@
+{
+  "name": "Moonlight",
+  "accent": "#5276B9",
+  "accent_1": "#E6739F",
+  "accent_2": "#FFD966",
+  "background": "#1E1B1F",
+  "background_1": "#2C2A33",
+  "background_2": "#3F3D4A",
+  "background_3": "#2A2A2E",
+  "text": "#FFFFFF",
+  "text_1": "#D4D4D4",
+  "font": "Inter",
+  "font_2": "Roboto"
+}

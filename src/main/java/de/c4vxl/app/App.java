@@ -1,6 +1,8 @@
 package de.c4vxl.app;
 
-import de.c4vxl.app.lib.component.HR;
+import de.c4vxl.app.lib.component.Elements;
+import de.c4vxl.app.util.Factory;
+import de.c4vxl.app.lib.component.Line;
 import de.c4vxl.app.lib.component.Window;
 import de.c4vxl.app.lib.element.chatbar.ChatBar;
 import de.c4vxl.app.lib.element.chatbar.ChatOptionButtons;
@@ -28,9 +30,9 @@ public class App extends Window {
     public ModelDropdown modelDropdown;
     private Settings settings;
     private boolean isInSettings = false;
-    private final JLabel welcomeLogo = Elements.iconButton(Resource.loadIcon("Logo large.png", 400));
+    private final JLabel welcomeLogo = Elements.iconButton(Resource.loadIcon("media/Logo large.png", 400));
 
-    public App() { this(Theme.dark); }
+    public App() { this(Theme.current); }
     public App(Theme theme) {
         super("Linguise", 1200, 800);
         Theme.current = theme;
@@ -46,9 +48,9 @@ public class App extends Window {
         this.registerKeyboardShortcut("chat_action_new", "control N", this::reset);
 
         // Option buttons
-        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("settings.png", 40)))
+        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/settings.png", 40)))
                 .onClick(this::openSettings).pos(this.getWidth() - 40 - 10, 30).get());
-        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("create.png", 40)))
+        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/create.png", 40)))
                 .onClick(this::reset).pos(this.getWidth() - 40 * 2 - 10, 30).get());
 
         // Load items
@@ -90,7 +92,7 @@ public class App extends Window {
         if (generationThread != null) generationThread.interrupt();
         if (this.content != null) this.remove(this.content);
         if (this.sidebar != null) this.remove(this.sidebar);
-        Arrays.stream(this.getComponents()).filter(x -> x instanceof HR).forEach(this::remove);
+        Arrays.stream(this.getComponents()).filter(x -> x instanceof Line).forEach(this::remove);
 
         // Create elements
         this.content = new Factory<>(new JPanel()).layout(null).opaque(false).size(890, getHeight()).centerX(this).get();
@@ -104,10 +106,10 @@ public class App extends Window {
 
         // Sidebar
         this.add(this.sidebar);
-        this.add(new HR(2, getHeight() / 2, Theme.current.background_1).position(7, (getHeight() - (getHeight() / 2)) / 2)); // Indicator on the left
+        this.add(new Line(2, getHeight() / 2, Theme.current.background_1).position(7, (getHeight() - (getHeight() / 2)) / 2)); // Indicator on the left
 
         // Top section
-        this.add(new HR(getWidth(), 1, Theme.current.background_1).position(0, 85));
+        this.add(new Line(getWidth(), 1, Theme.current.background_1).position(0, 85));
         this.content.add(this.modelDropdown);
 
         // Center/Content

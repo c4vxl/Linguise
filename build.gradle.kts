@@ -12,8 +12,5 @@ repositories {
 
 dependencies {
     implementation("de.c4vxl:jNN:1.0.0")
-}
-
-tasks.test {
-    useJUnitPlatform()
+    implementation("com.google.code.gson:gson:2.13.1")
 }

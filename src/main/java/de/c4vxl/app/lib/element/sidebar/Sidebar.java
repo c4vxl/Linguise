@@ -1,10 +1,10 @@
 package de.c4vxl.app.lib.element.sidebar;
 
 import de.c4vxl.app.Theme;
-import de.c4vxl.app.lib.component.HR;
+import de.c4vxl.app.lib.component.Line;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.ScrollPane;
-import de.c4vxl.app.util.Elements;
+import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
 import de.c4vxl.app.util.TextUtils;
@@ -49,11 +49,11 @@ public class Sidebar extends JPanel {
         this.setBackground(Theme.current.background);
 
         // logo
-        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("Logo large.png", 200)))
+        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/Logo large.png", 200)))
                 .posY(30).centerX(this).get());
 
         // hr underneath logo
-        this.add(new HR(getWidth() - 140, 1, Theme.current.text).position(70, 80));
+        this.add(new Line(getWidth() - 140, 1, Theme.current.text).position(70, 80));
 
         // history label
         this.add(new Factory<>(Elements.text("Chat History", -1))
@@ -99,7 +99,7 @@ public class Sidebar extends JPanel {
                 .border(BorderFactory.createEmptyBorder(0, 10, 0, 0))
                 .get();
 
-        JLabel moreButton = new Factory<>(Elements.iconButton(Resource.loadIcon("more.png", 20)))
+        JLabel moreButton = new Factory<>(Elements.iconButton(Resource.loadIcon("media/more.png", 20)))
                 .centerY(panel).posX(panel.getWidth() - 20 - 5).cursor(Cursor.HAND_CURSOR)
                 .get();
 

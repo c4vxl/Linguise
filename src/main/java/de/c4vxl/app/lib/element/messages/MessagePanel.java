@@ -1,7 +1,7 @@
 package de.c4vxl.app.lib.element.messages;
 
 import de.c4vxl.app.Theme;
-import de.c4vxl.app.lib.component.HR;
+import de.c4vxl.app.lib.component.Line;
 import de.c4vxl.app.lib.component.ScrollPane;
 
 import javax.swing.*;
@@ -86,7 +86,7 @@ public class MessagePanel extends JPanel {
             nextY += component.getHeight() + (i == last ? 0 : isOuterElement ? (outerGap / 2) : gap);
 
             if (isOuterElement && i != last) {
-                this.add(new HR(getWidth() - 50, 1, Theme.current.accent).position(15, nextY));
+                this.add(new Line(getWidth() - 50, 1, Theme.current.accent).position(15, nextY));
                 nextY += outerGap / 2;
             }
 
