@@ -31,7 +31,6 @@ public class Factory<T extends JComponent> {
         try {
             Method m = this.element.getClass().getMethod(method, Arrays.stream(args).map(Object::getClass).toArray(Class[]::new));
             m.invoke(this.element, args);
-            System.out.println(m);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }

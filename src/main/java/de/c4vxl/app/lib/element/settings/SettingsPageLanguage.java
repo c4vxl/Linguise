@@ -8,25 +8,42 @@ import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.ScrollPane;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Factory;
+import de.c4vxl.app.util.FileUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 public class SettingsPageLanguage extends SettingsPage {
+    @SuppressWarnings("CallToPrintStackTrace")
     @Override
     public void init() {
         // Title
         this.add(Elements.title(Language.current.get("app.settings.language.title"), this.getWidth() - 200), BorderLayout.NORTH);
 
         // Buttons
-        // TODO: Implement language loading
         buttonPanel.add(Elements.hollowButton()
                 .withLabel(Language.current.get("app.settings.language.button.1"))
-                .withAction(e -> System.out.println("Loading custom language...")));
+                .withAction(e -> {
+                    System.out.println("[ACTION]: Loading custom language");
+                    File file = FileUtils.openFileDialog("user.downloads", "Linguise language files", new String[]{Config.LANG_FILE_EXTENSION});
+                    if (file == null) return;
+
+                    try {
+                        Files.copy(file.toPath(), Path.of(Config.LANGS_DIRECTORY + "/" + file.getName()));
+                    } catch (IOException ex) {
+                        System.out.println("[ERROR]: Couldn't copy theme file!");
+                        ex.printStackTrace();
+                    }
+                    reload();
+                }));
 
         // TODO: Implement redirect
         buttonPanel.add(Elements.hollowButton()

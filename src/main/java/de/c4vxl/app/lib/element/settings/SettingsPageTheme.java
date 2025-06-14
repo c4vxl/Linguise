@@ -63,6 +63,7 @@ public class SettingsPageTheme extends SettingsPage {
         this.panel.removeAll();
         for (Theme theme : themes) {
             this.panel.add(createEntry(theme.name, theme.background_1, theme.background_3, theme.name.equals(Theme.current.name), () -> {
+                if (Theme.current.name.equals(theme.name)) return;
                 SwingUtilities.getWindowAncestor(this).dispose();
                 new App(theme, Language.current).open();
                 Config.setConfigValue("app.theme", theme.getFileName());

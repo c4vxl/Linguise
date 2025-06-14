@@ -97,7 +97,6 @@ public class FileUtils {
      */
     public static File openFileDialog(String startPath, String fileTypeName, String[] acceptedFileExtensions) {
         JFileChooser fileChooser = new JFileChooser(startPath);
-        System.out.println(Arrays.toString(Arrays.stream(acceptedFileExtensions).map(x -> x.replace(".", "")).toArray(String[]::new)));
         fileChooser.setFileFilter(new FileNameExtensionFilter(
                 fileTypeName, Arrays.stream(acceptedFileExtensions).map(x -> x.replace(".", "")).toArray(String[]::new)
         ));

@@ -59,7 +59,6 @@ public class MessageResponse extends RoundedPanel {
 
     private JLabel createButton(String path, int width, String tooltipText, Runnable onClick) {
         MessageResponse self = this;
-        // System.out.println(Theme.current.text);
         JLabel label = new JLabel(Resource.loadIcon(path, width, Theme.current.text)) {
             @Override
             public JToolTip createToolTip() {
