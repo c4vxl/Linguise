@@ -4,6 +4,7 @@ import de.c4vxl.app.Theme;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -55,8 +56,37 @@ public class Resource {
      * Load a resource as an image
      * @param path The path to the image
      * @param width The width to resize the image to (calculate height via aspect ratio)
+     * @param color The color of the icon
      */
-    public static ImageIcon loadIcon(String path, int width) { return new ImageIcon(resizeImage(loadIcon(path).getImage(), width)); }
+    public static ImageIcon loadIcon(String path, int width, Color color) { return recolor(new ImageIcon(resizeImage(loadIcon(path).getImage(), width)), color); }
+
+    /**
+     * Recolors an icon
+     * @param image The icon
+     * @param color The new color
+     */
+    public static ImageIcon recolor(ImageIcon image, Color color) { return new ImageIcon(recolor(image.getImage(), color)); }
+
+    /**
+     * Recolors an image
+     * @param image The image
+     * @param color The new color
+     */
+    public static Image recolor(Image image, Color color) {
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        bufferedImage.getGraphics().drawImage(image, 0, 0, null);
+
+        for (int y = 0; y < image.getHeight(null); y++) {
+            for (int x = 0; x < image.getWidth(null); x++) {
+                Color original = new Color(bufferedImage.getRGB(x, y), true);
+                if (original.getRed() == 255 && original.getGreen() == 255 && original.getBlue() == 255) {
+                    bufferedImage.setRGB(x, y, new Color(color.getRed(), color.getGreen(), color.getBlue(), original.getAlpha()).getRGB());
+                }
+            }
+        }
+
+        return bufferedImage;
+    }
 
     /**
      * Copy a resource to the file system

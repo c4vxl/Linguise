@@ -48,7 +48,7 @@ public class Settings extends RoundedPanel {
         this.add(this.sideBar);
 
 
-        JLabel closeButton = Window._create_top_bar_button(Resource.loadIcon("media/cross.png", 15), "Close", app::closeSettings);
+        JLabel closeButton = Window._create_top_bar_button(Resource.loadIcon("media/cross.png", 15, Theme.current.text_1), "Close", app::closeSettings);
 
         closeButton.setLocation(getWidth() - 15 - 13, 13);
         this.add(closeButton);

@@ -30,7 +30,7 @@ public class App extends Window {
     public ModelDropdown modelDropdown;
     private Settings settings;
     private boolean isInSettings = false;
-    private final JLabel welcomeLogo = Elements.iconButton(Resource.loadIcon("media/Logo large.png", 400));
+    private final JLabel welcomeLogo = Elements.iconButton(Resource.loadIcon("media/Logo large.png", 400, Theme.current.accent));
 
     public App() { this(Theme.current); }
     public App(Theme theme) {
@@ -48,9 +48,9 @@ public class App extends Window {
         this.registerKeyboardShortcut("chat_action_new", "control N", this::reset);
 
         // Option buttons
-        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/settings.png", 40)))
+        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/settings.png", 45, Theme.current.text)))
                 .onClick(this::openSettings).pos(this.getWidth() - 40 - 10, 30).get());
-        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/create.png", 40)))
+        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/create.png", 45, Theme.current.text)))
                 .onClick(this::reset).pos(this.getWidth() - 40 * 2 - 10, 30).get());
 
         // Load items
@@ -187,7 +187,7 @@ public class App extends Window {
         this.messagePanel.createPrompt(message);
 
         this.messagePanel.createResponse();
-        generationThread = GenerationUtils.fakeGenerationStream(GenerationUtils.ipsum, 5, this.messagePanel::updateLastResponse, () -> {
+        generationThread = GenerationUtils.fakeGenerationStream(GenerationUtils.ipsum, 0, this.messagePanel::updateLastResponse, () -> {
             this.messagePanel.completeLastResponse("Done!");
             this.chatBar.stopHandling();
         });

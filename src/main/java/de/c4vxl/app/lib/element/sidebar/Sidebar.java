@@ -49,7 +49,7 @@ public class Sidebar extends JPanel {
         this.setBackground(Theme.current.background);
 
         // logo
-        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/Logo large.png", 200)))
+        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/Logo large.png", 200, Theme.current.accent)))
                 .posY(30).centerX(this).get());
 
         // hr underneath logo
@@ -99,7 +99,7 @@ public class Sidebar extends JPanel {
                 .border(BorderFactory.createEmptyBorder(0, 10, 0, 0))
                 .get();
 
-        JLabel moreButton = new Factory<>(Elements.iconButton(Resource.loadIcon("media/more.png", 20)))
+        JLabel moreButton = new Factory<>(Elements.iconButton(Resource.loadIcon("media/more.png", 20, Theme.current.text_1)))
                 .centerY(panel).posX(panel.getWidth() - 20 - 5).cursor(Cursor.HAND_CURSOR)
                 .get();
 

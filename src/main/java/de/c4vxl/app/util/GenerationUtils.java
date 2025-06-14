@@ -8,7 +8,10 @@ public class GenerationUtils {
         String[] parts = message.split("");
 
         if (delay == 0)
-            return new Thread(() -> handler.accept(message));
+            return new Thread(() -> {
+                handler.accept(message);
+                onDone.run();
+            });
 
         return new Thread(() -> {
             String current = "";

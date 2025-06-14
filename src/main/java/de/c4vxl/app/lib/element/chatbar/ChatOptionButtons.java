@@ -16,11 +16,11 @@ public class ChatOptionButtons extends JPanel {
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
         this.setOpaque(false);
 
-        this.add(createButton("media/reload_p.png", "Regenerate", () -> {
+        this.add(createButton("media/reload.png", "Regenerate", () -> {
             System.out.println("Regenerate");
         }));
 
-        this.add(createButton("media/share_p.png", "Share", () -> {
+        this.add(createButton("media/share.png", "Share", () -> {
             System.out.println("Share");
         }));
 
@@ -28,7 +28,7 @@ public class ChatOptionButtons extends JPanel {
     }
 
     private Button createButton(String icon, String label, Runnable l) {
-        return new Factory<>(Elements.hollowButton().withLabel(label).withIcon(Resource.loadIcon(icon, 20)).withIconTextGap(10))
+        return new Factory<>(Elements.hollowButton().withLabel(label).withIcon(Resource.loadIcon(icon, 20, Theme.current.accent)).withIconTextGap(10))
                 .font(Theme.current.font_2.deriveFont(Collections.singletonMap(TextAttribute.WEIGHT, TextAttribute.WEIGHT_MEDIUM)))
                 .onClick(l).get();
     }

@@ -31,7 +31,7 @@ public class ChatBar extends JPanel {
         textField.setBounds(0, 0, getWidth() - 50, getHeight());
         this.add(textField);
 
-        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/send_b.png", 40)))
+        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/send.png", 40, Theme.current.accent)))
                 .onClick(textField::postActionEvent)
                 .posX(getWidth() - 45).centerY(this).get());
     }

@@ -187,7 +187,7 @@ public class Dropdown extends RoundedPanel {
         this.setSize(this.getPreferredSize());
         this.titleLabel.setSize(this.getPreferredSize());
 
-        titleLabel.setIcon(Resource.loadIcon("media/dropdown_c.png", 20));
+        titleLabel.setIcon(Resource.loadIcon("media/dropdown_c.png", 20, Theme.current.text_1));
         setTitle(this.title);
         SwingUtilities.invokeLater(() -> {
             this.repaint();
@@ -222,7 +222,7 @@ public class Dropdown extends RoundedPanel {
         this.setPreferredSize(new Dimension(width, expandedHeight));
         this.setSize(this.getPreferredSize());
 
-        titleLabel.setIcon(Resource.loadIcon("media/dropdown_e.png", 20));
+        titleLabel.setIcon(Resource.loadIcon("media/dropdown_e.png", 20, Theme.current.text_1));
         setTitle(this.expandedTitle);
         SwingUtilities.invokeLater(() -> {
             this.repaint();
