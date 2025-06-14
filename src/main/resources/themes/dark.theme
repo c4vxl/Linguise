@@ -9,6 +9,7 @@
   "background_3": "#333232",
   "text": "#ffffff",
   "text_1": "#d0d0d0",
+  "danger": "#DA3F3F",
   "font": "Inter",
   "font_2": "Roboto"
 }

@@ -4,7 +4,6 @@ import com.google.gson.reflect.TypeToken;
 import de.c4vxl.app.util.FileUtils;
 
 import java.awt.*;
-import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.file.Path;
@@ -15,11 +14,11 @@ import java.util.function.Function;
 
 public class Theme {
     public final String name;
-    public final Color accent, accent_1, accent_2, background, background_1, background_2, background_3, text, text_1;
+    public final Color accent, accent_1, accent_2, background, background_1, background_2, background_3, text, text_1, danger;
     public final Font font, font_2;
     private final String fileName;
 
-    public Theme(String file, String name, Font font, Font font_2, Color accent, Color accent_1, Color accent_2, Color background, Color background_1, Color background_2, Color background_3, Color text, Color text_1) {
+    public Theme(String file, String name, Font font, Font font_2, Color accent, Color accent_1, Color accent_2, Color background, Color background_1, Color background_2, Color background_3, Color text, Color text_1, Color danger) {
         this.font = font;
         this.font_2 = font_2;
 
@@ -32,6 +31,7 @@ public class Theme {
         this.background_3 = background_3;
         this.text = text;
         this.text_1 = text_1;
+        this.danger = danger;
 
         this.name = name;
         this.fileName = file;
@@ -57,6 +57,7 @@ public class Theme {
             put("background_3", toHex.apply(background_3));
             put("text", toHex.apply(text));
             put("text_1", toHex.apply(text_1));
+            put("danger", toHex.apply(danger));
             put("font", font.getName());
             put("font_2", font_2.getName());
         }}, true));
@@ -87,7 +88,8 @@ public class Theme {
                 Color.decode(content.get("background_2")),
                 Color.decode(content.get("background_3")),
                 Color.decode(content.get("text")),
-                Color.decode(content.get("text_1"))
+                Color.decode(content.get("text_1")),
+                Color.decode(content.get("danger"))
         );
     }
 

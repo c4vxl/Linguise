@@ -49,7 +49,10 @@ public class App extends Window {
         this.welcomeLogo = Elements.iconButton(Resource.loadIcon("media/Logo large.png", 400, Theme.current.accent));
 
         // Keyboard shortcuts
-        this.registerKeyboardShortcut("chat_action_new", "control N", this::reset);
+        this.registerKeyboardShortcut("action_chat_new", "control N", this::reset);
+        this.registerKeyboardShortcut("action_settings_close", "ESCAPE", this::closeSettings);
+        this.registerKeyboardShortcut("action_settings_option", "control K", this::openSettings);
+
 
         // Option buttons
         this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/settings.png", 45, Theme.current.text)))

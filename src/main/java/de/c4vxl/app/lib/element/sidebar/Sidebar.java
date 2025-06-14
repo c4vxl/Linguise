@@ -100,8 +100,8 @@ public class Sidebar extends JPanel {
                 .border(BorderFactory.createEmptyBorder(0, 10, 0, 0))
                 .get();
 
-        JLabel moreButton = new Factory<>(Elements.iconButton(Resource.loadIcon("media/more.png", 20, Theme.current.text_1)))
-                .centerY(panel).posX(panel.getWidth() - 20 - 5).cursor(Cursor.HAND_CURSOR)
+        JLabel moreButton = new Factory<>(Elements.iconButton(Resource.loadIcon("media/trash.png", 25, Theme.current.danger)))
+                .centerY(panel).posX(panel.getWidth() - 25 - 5).cursor(Cursor.HAND_CURSOR)
                 .get();
 
         String normal = TextUtils.cutString(name, "...", Theme.current.font, panel.getWidth());
