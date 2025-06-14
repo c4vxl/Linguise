@@ -1,5 +1,6 @@
 package de.c4vxl.app;
 
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.lib.component.Line;
@@ -30,12 +31,13 @@ public class App extends Window {
     public ModelDropdown modelDropdown;
     private Settings settings;
     private boolean isInSettings = false;
-    private final JLabel welcomeLogo = Elements.iconButton(Resource.loadIcon("media/Logo large.png", 400, Theme.current.accent));
+    private final JLabel welcomeLogo;
 
-    public App() { this(Theme.current); }
-    public App(Theme theme) {
-        super("Linguise", 1200, 800);
+    public App() { this(Theme.current, Language.current); }
+    public App(Theme theme, Language language) {
+        super(language.get("app.name"), 1200, 800);
         Theme.current = theme;
+        Language.current = language;
 
         // Basic styling
         this.getContentPane().setLayout(null);
@@ -43,6 +45,8 @@ public class App extends Window {
             .borderRadius(20)
             .layout(null)
             .withButtons();
+
+        this.welcomeLogo = Elements.iconButton(Resource.loadIcon("media/Logo large.png", 400, Theme.current.accent));
 
         // Keyboard shortcuts
         this.registerKeyboardShortcut("chat_action_new", "control N", this::reset);
@@ -135,7 +139,7 @@ public class App extends Window {
         this.content.remove(this.welcomeLogo);
 
         this.content.add(new Factory<>(Elements.text(
-                "<p style='font-weight: 100; font-size: 11px'>Linguise can make mistakes. <b>Consider checking important information!</b></p>",
+                "<p style='font-weight: 100; font-size: 11px'>" + Language.current.get("chat.info.notice") + "</p>",
                 Integer.MAX_VALUE
         )).posY(getHeight() - 30).centerX(this.content).get());
     }
@@ -188,7 +192,7 @@ public class App extends Window {
 
         this.messagePanel.createResponse();
         generationThread = GenerationUtils.fakeGenerationStream(GenerationUtils.ipsum, 0, this.messagePanel::updateLastResponse, () -> {
-            this.messagePanel.completeLastResponse("Done!");
+            this.messagePanel.completeLastResponse(Language.current.get("chat.message.response.complete.info", "Fake model", "20ms"));
             this.chatBar.stopHandling();
         });
         generationThread.start();

@@ -2,6 +2,7 @@ package de.c4vxl.app.lib.element.settings;
 
 import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Dropdown;
 import de.c4vxl.app.lib.component.Line;
 import de.c4vxl.app.lib.component.RoundedPanel;
@@ -18,10 +19,15 @@ public class Settings extends RoundedPanel {
     public SettingsPage container;
     public JPanel sideBar = new JPanel();
 
-    public JLabel titleLabel = new JLabel("SETTINGS");
+    public JLabel titleLabel = new JLabel(Language.current.get("app.settings.title", ""));
 
     private int currentPage = 0;
-    private String[] pageNames = new String[]{"About", "Models", "Theme", "Language"};
+    private String[] pageNames = new String[]{
+            Language.current.get("app.settings.tabs.about"),
+            Language.current.get("app.settings.tabs.models"),
+            Language.current.get("app.settings.tabs.themes"),
+            Language.current.get("app.settings.tabs.language"),
+    };
     private SettingsPage[] pages = new SettingsPage[]{ new SettingsPageAbout(), new SettingsPageModels(), new SettingsPageTheme(), new SettingsPageLanguage() };
 
     public Settings(App app, int width, int height) {
@@ -77,7 +83,7 @@ public class Settings extends RoundedPanel {
         this.sideBar.add(Box.createVerticalGlue());
 
 
-        titleLabel.setText("Settings - " + pageNames[currentPage]);
+        titleLabel.setText(Language.current.get("app.settings.title", pageNames[currentPage]));
         titleLabel.setSize(titleLabel.getPreferredSize());
         titleLabel.setLocation((getWidth() - SIDEBAR_WIDTH - titleLabel.getWidth()) / 2 + SIDEBAR_WIDTH, (40 - titleLabel.getHeight()) / 2);
 

@@ -1,6 +1,7 @@
 package de.c4vxl.app.lib.element.sidebar;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Line;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.ScrollPane;
@@ -56,7 +57,7 @@ public class Sidebar extends JPanel {
         this.add(new Line(getWidth() - 140, 1, Theme.current.text).position(70, 80));
 
         // history label
-        this.add(new Factory<>(Elements.text("Chat History", -1))
+        this.add(new Factory<>(Elements.text(Language.current.get("app.sidebar.history.title"), -1))
                 .size(999, 20)
                 .pos(20, 120).foreground(Theme.current.text_1)
                 .border(BorderFactory.createCompoundBorder(

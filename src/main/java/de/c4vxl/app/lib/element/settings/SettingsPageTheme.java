@@ -3,6 +3,7 @@ package de.c4vxl.app.lib.element.settings;
 import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.config.Config;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.util.Factory;
@@ -21,11 +22,11 @@ public class SettingsPageTheme extends SettingsPage {
     @Override
     public void init() {
         // Title
-        this.add(Elements.title("Themes", this.getWidth() - 200), BorderLayout.NORTH);
+        this.add(Elements.title(Language.current.get("app.settings.themes.title"), this.getWidth() - 200), BorderLayout.NORTH);
 
         // Buttons
         buttonPanel.add(Elements.hollowButton()
-                .withLabel("Load custom theme")
+                .withLabel(Language.current.get("app.settings.themes.button.1"))
                 .withAction(e -> {
                     System.out.println("[ACTION]: Loading custom theme");
                     File file = FileUtils.openFileDialog("user.downloads", "Linguise theme files", new String[]{Config.THEME_FILE_EXTENSION});
@@ -41,7 +42,7 @@ public class SettingsPageTheme extends SettingsPage {
                 }));
 
         buttonPanel.add(Elements.hollowButton()
-                .withLabel("Reload themes")
+                .withLabel(Language.current.get("app.settings.themes.button.2"))
                 .withAction(e -> {
                     System.out.println("[ACTION]: Reloading themes list");
                     reload();
@@ -63,7 +64,7 @@ public class SettingsPageTheme extends SettingsPage {
         for (Theme theme : themes) {
             this.panel.add(createEntry(theme.name, theme.background_1, theme.background_3, theme.name.equals(Theme.current.name), () -> {
                 SwingUtilities.getWindowAncestor(this).dispose();
-                new App(theme).open();
+                new App(theme, Language.current).open();
                 Config.setConfigValue("app.theme", theme.getFileName());
             }));
         }

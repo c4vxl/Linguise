@@ -1,5 +1,6 @@
 package de.c4vxl.app.lib.element.model;
 
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Dropdown;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ public class ModelDropdown extends Dropdown {
     public ModelDropdown() {
         super("Base model", 400, 50);
 
-        this.expandedTitle = "Select a model";
+        this.expandedTitle = Language.current.get("chat.model.dropdown.expanded");
         this.current = title;
 
         models.add(current);
@@ -31,7 +32,7 @@ public class ModelDropdown extends Dropdown {
     public JPanel[] getElements() {
         return models.stream().map(name -> createDefaultItem(name, () -> {
             this.current = name;
-            System.out.println("Switch to model: " + current);
+            System.out.println("[ACTION]: Switch to model: " + current);
             this.setTitle(current);
             reload();
         }, name.equals(current))).toArray(JPanel[]::new);

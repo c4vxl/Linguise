@@ -1,6 +1,7 @@
 package de.c4vxl.app.lib.element.messages;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Factory;
 
@@ -29,8 +30,8 @@ public class MessagePrompt extends JPanel {
 
         // Information
         this.infoText = new Factory<>(Elements.text("<p style='font-weight: 100; font-size: 11px;'>" +
-                        "You - <b>" + DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm").format(LocalDateTime.now()) + "</b></p>",
-                width - 200)).foreground(Theme.current.text_1).get();
+                        Language.current.get("chat.message.prompt.title", DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm").format(LocalDateTime.now())) +
+                        "</p>", width - 200)).foreground(Theme.current.text_1).get();
         this.add(this.infoText);
 
         // Prompt

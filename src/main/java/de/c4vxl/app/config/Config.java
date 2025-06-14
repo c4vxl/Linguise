@@ -2,6 +2,7 @@ package de.c4vxl.app.config;
 
 import com.google.gson.reflect.TypeToken;
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.util.FileUtils;
 
 import java.io.File;
@@ -14,7 +15,7 @@ public class Config {
     public static String APP_DIRECTORY = "./appdata";                      // Path to the app's configuration directory
     public static String MODELS_DIRECTORY = APP_DIRECTORY + "/models";     // Path to the models
     public static String THEMES_DIRECTORY = APP_DIRECTORY + "/themes";     // Path to the themes
-    public static String LANGS_DIRECTORY = APP_DIRECTORY + "/themes";      // Path to the languages
+    public static String LANGS_DIRECTORY = APP_DIRECTORY + "/langs";       // Path to the languages
     public static String HISTORIES_DIRECTORY = APP_DIRECTORY + "/chats";   // Path to the chat histories
     public static String CONFIG_FILE = APP_DIRECTORY + "/app.lconf";       // Path to the configuration file
     public static String MODEL_FILE_EXTENSION = ".mdl";                    // File extension for model files
@@ -93,7 +94,10 @@ public class Config {
     /**
      * Gets a list of all locally installed languages
      */
-    public static String[] getLocalLangs() { return listFiles(Config.LANGS_DIRECTORY, Config.LANG_FILE_EXTENSION); }
+    public static Language[] getLocalLangs() {
+        return Arrays.stream(listFiles(Config.LANGS_DIRECTORY, Config.LANG_FILE_EXTENSION))
+                .map(Language::load).toArray(Language[]::new);
+    }
 
     /**
      * Returns a list of locally found themes

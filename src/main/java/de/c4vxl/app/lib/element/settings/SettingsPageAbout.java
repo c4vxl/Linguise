@@ -1,6 +1,7 @@
 package de.c4vxl.app.lib.element.settings;
 
 import de.c4vxl.app.config.Config;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Factory;
 
@@ -16,18 +17,18 @@ public class SettingsPageAbout extends SettingsPage {
     public void init() {
         // Title
         int maxTextWidth = this.getWidth() - 200;
-        this.add(Elements.title("About Linguise", maxTextWidth), BorderLayout.PAGE_START);
+        this.add(Elements.title(Language.current.get("app.settings.about.title"), maxTextWidth), BorderLayout.PAGE_START);
 
         // Content
         this.panel.add(new Factory<>(new JPanel()).opaque(false).apply((panel) -> {
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(Elements.text("Linguise is a chat bot written entirely from scratch in the programming language ‘Java’", maxTextWidth));
+            panel.add(Elements.text(Language.current.get("app.settings.about.1"), maxTextWidth));
             panel.add(Box.createVerticalGlue());
         }).get());
 
         // Buttons
         buttonPanel.add(Elements.hollowButton()
-                .withLabel("Visit Project on GitHub")
+                .withLabel(Language.current.get("app.settings.about.button.1"))
                 .withAction(e -> {
                     System.out.println("[ACTION]: Opening GitHub");
                     try { Desktop.getDesktop().browse(new URI("https://github.com/")); }
@@ -35,7 +36,7 @@ public class SettingsPageAbout extends SettingsPage {
                 }));
 
         buttonPanel.add(Elements.hollowButton()
-                .withLabel("Open data folder")
+                .withLabel(Language.current.get("app.settings.about.button.2"))
                 .withAction(e -> {
                     System.out.println("[ACTION]: Opening data dir");
                     try { Desktop.getDesktop().open(new File(Config.APP_DIRECTORY)); }

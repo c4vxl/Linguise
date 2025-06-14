@@ -1,6 +1,7 @@
 package de.c4vxl.app.lib.element.settings;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.util.Factory;
@@ -14,15 +15,15 @@ public class SettingsPageModels extends SettingsPage {
     @Override
     public void init() {
         // Title
-        this.add(Elements.title("Models", this.getWidth() - 200), BorderLayout.NORTH);
+        this.add(Elements.title(Language.current.get("app.settings.models.title"), this.getWidth() - 200), BorderLayout.NORTH);
 
         // Buttons
         // TODO: Implement model loading
         buttonPanel.add(Elements.hollowButton()
-                .withLabel("Load model from file")
+                .withLabel(Language.current.get("app.settings.models.button.1"))
                 .withAction(e -> System.out.println("Loading custom model [file]...")));
         buttonPanel.add(Elements.hollowButton()
-                .withLabel("Load model from url")
+                .withLabel(Language.current.get("app.settings.models.button.1"))
                 .withAction(e -> System.out.println("Loading custom model [url]...")));
 
         reload();
