@@ -6,12 +6,14 @@ import de.c4vxl.app.lib.component.Line;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.ScrollPane;
 import de.c4vxl.app.lib.component.Elements;
+import de.c4vxl.app.util.AnimationUtils;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
 import de.c4vxl.app.util.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +102,7 @@ public class Sidebar extends JPanel {
                 .border(BorderFactory.createEmptyBorder(0, 10, 0, 0))
                 .get();
 
-        JLabel moreButton = new Factory<>(Elements.iconButton(Resource.loadIcon("media/trash.png", 25, Theme.current.danger)))
+        JLabel deleteButton = new Factory<>(Elements.iconButton(Resource.loadIcon("media/trash.png", 25, Theme.current.danger)))
                 .centerY(panel).posX(panel.getWidth() - 25 - 5).cursor(Cursor.HAND_CURSOR)
                 .get();
 
@@ -110,11 +112,11 @@ public class Sidebar extends JPanel {
 
         new Factory<>(panel).onHoverEnter(() -> {
             label.setText(cut);
-            panel.add(moreButton);
+            panel.add(deleteButton);
             panel.repaint();
         }).onHoverLeave(() -> {
             label.setText(normal);
-            panel.remove(moreButton);
+            panel.remove(deleteButton);
             panel.repaint();
         });
 

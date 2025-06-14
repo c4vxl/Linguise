@@ -2,6 +2,7 @@ package de.c4vxl.app;
 
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
+import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.lib.component.Line;
 import de.c4vxl.app.lib.component.Window;
@@ -16,6 +17,9 @@ import de.c4vxl.app.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
 
 public class App extends Window {
@@ -33,7 +37,10 @@ public class App extends Window {
     private boolean isInSettings = false;
     private final JLabel welcomeLogo;
 
-    public App() { this(Theme.current, Language.current); }
+    public App() {
+        this(Theme.current, Language.current);
+    }
+
     public App(Theme theme, Language language) {
         super(language.get("app.name"), 1200, 800);
         Theme.current = theme;
@@ -42,9 +49,9 @@ public class App extends Window {
         // Basic styling
         this.getContentPane().setLayout(null);
         this.background(theme.background)
-            .borderRadius(20)
-            .layout(null)
-            .withButtons();
+                .borderRadius(20)
+                .layout(null)
+                .withButtons();
 
         this.welcomeLogo = Elements.iconButton(Resource.loadIcon("media/Logo large.png", 400, Theme.current.accent));
 
@@ -95,16 +102,19 @@ public class App extends Window {
      * Resets the layout and elements of the current window
      */
     public void reset() {
+        // Reset
         isChatActive = false;
         if (generationThread != null) generationThread.interrupt();
         if (this.content != null) this.remove(this.content);
         if (this.sidebar != null) this.remove(this.sidebar);
         Arrays.stream(this.getComponents()).filter(x -> x instanceof Line).forEach(this::remove);
 
+        if (this.sidebar == null) createMouseHandler(); // Register mouse handler (only once)
+
         // Create elements
         this.content = new Factory<>(new JPanel()).layout(null).opaque(false).size(890, getHeight()).centerX(this).get();
         this.chatOptionButtons = new Factory<>(new ChatOptionButtons()).posY(this.content.getHeight() - 150).centerX(this.content).get();
-        this.sidebar = _create_side_bar();
+        this.sidebar = new Sidebar();
         this.messagePanel = new MessagePanel(this.content.getWidth(), this.content.getHeight() - 250);
         this.modelDropdown = new Factory<>(new ModelDropdown()).posY(15).centerX(this.content).get();
         this.settings = new Settings(this, getWidth() - 150, getHeight() - 70);
@@ -138,64 +148,81 @@ public class App extends Window {
         if (isChatActive) return;
         isChatActive = true;
 
+        // Reset option buttons
+        this.content.remove(this.chatOptionButtons);
+        this.content.add(this.chatOptionButtons);
+
+        // Move chatbar
         this.chatBar.setLocation(this.chatBar.getX(), this.getHeight() - 85);
+
+        // Remove logo
         this.content.remove(this.welcomeLogo);
 
+        // Create notice
         this.content.add(new Factory<>(Elements.text(
                 "<p style='font-weight: 100; font-size: 11px'>" + Language.current.get("chat.info.notice") + "</p>",
                 Integer.MAX_VALUE
         )).posY(getHeight() - 30).centerX(this.content).get());
+
+        this.repaint();
+        this.revalidate();
     }
 
-    private Sidebar _create_side_bar() {
+    /**
+     * Registers the mouse listener for the sidebar
+     */
+    public void createMouseHandler() {
         JFrame window = this;
-        if (this.sidebar == null) // Create the listener only once
-            Toolkit.getDefaultToolkit().addAWTEventListener(e -> {
-                if (e instanceof MouseEvent event) {
-                    if (event.getID() != MouseEvent.MOUSE_MOVED) return;
-                    SwingUtilities.invokeLater(() -> {
-                        if (!window.isVisible()) return;
-                        Point windowLocation = window.getLocationOnScreen();
-                        int wx = event.getXOnScreen() - windowLocation.x, wy = event.getYOnScreen() - windowLocation.y;
-                        if (wy <= 200) return;
+        Toolkit.getDefaultToolkit().addAWTEventListener(e -> {
+            if (e instanceof MouseEvent event) {
+                if (event.getID() != MouseEvent.MOUSE_MOVED) return;
+                SwingUtilities.invokeLater(() -> {
+                    if (!window.isVisible()) return;
+                    Point windowLocation = window.getLocationOnScreen();
+                    int wx = event.getXOnScreen() - windowLocation.x, wy = event.getYOnScreen() - windowLocation.y;
+                    if (wx < 300) {
+                        if (sidebar.getX() != -300) return;
 
-                        if (wx < 300) {
-                            if (sidebar.getX() != -300) return;
-
-                            AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {
-                                int x = (int) (frame * 300) - 300;
-                                sidebar.setLocation(x, 0);
-                                content.setLocation(Math.max(x + 305, 155), 0);
-                            });
-                        } else if (sidebar.getX() == 0) {
-                            AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {
-                                int x = -(int) (frame * 300);
-                                sidebar.setLocation(x, 0);
-                                content.setLocation(Math.min(455 + x, getWidth() - content.getWidth() - 5), 0);
-                            });
-                        }
-                    });
-                }
-            }, AWTEvent.MOUSE_MOTION_EVENT_MASK);
-
-        return new Sidebar();
+                        AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {
+                            int x = (int) (frame * 300) - 300;
+                            sidebar.setLocation(x, 0);
+                            content.setLocation(Math.max(x + 305, 155), 0);
+                        });
+                    } else if (sidebar.getX() == 0) {
+                        AnimationUtils.animateEaseCubic(sidebar, 12, 30, 60, (elem, frame) -> {
+                            int x = -(int) (frame * 300);
+                            sidebar.setLocation(x, 0);
+                            content.setLocation(Math.min(455 + x, getWidth() - content.getWidth() - 5), 0);
+                        });
+                    }
+                });
+            }
+        }, AWTEvent.MOUSE_MOTION_EVENT_MASK);
     }
 
     public void _handle_chat_bar(String message) {
-        this.chatBar.startHandling();
+        // Return if no model is selected
+        Model model = Model.current;
+        if (model == null) {
+            System.out.println("[ERROR]: No model selected");
+            return;
+        }
 
+        // Start handler
+        this.chatBar.startHandling();
         startChat();
 
-        this.content.remove(this.chatOptionButtons);
-        this.content.add(this.chatOptionButtons);
-        this.content.repaint();
-        this.content.revalidate();
-
+        // Display prompt
         this.messagePanel.createPrompt(message);
 
+        // Generate response
         this.messagePanel.createResponse();
-        generationThread = GenerationUtils.fakeGenerationStream(GenerationUtils.ipsum, 0, this.messagePanel::updateLastResponse, () -> {
-            this.messagePanel.completeLastResponse(Language.current.get("chat.message.response.complete.info", "Fake model", "20ms"));
+        long start = System.nanoTime();
+        generationThread = model.generate(message, this.messagePanel::updateLastResponse, () -> {
+            this.messagePanel.completeLastResponse(Language.current.get("chat.message.response.complete.info",
+                    model.name,
+                    Duration.ofNanos(System.nanoTime() - start).getSeconds() + "")
+            );
             this.chatBar.stopHandling();
         });
         generationThread.start();

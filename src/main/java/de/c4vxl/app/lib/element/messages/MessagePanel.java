@@ -133,7 +133,6 @@ public class MessagePanel extends JPanel {
         MessageResponse r = this.getLastResponse();
         if (r == null) return this;
         r.updateMessage(response);
-        this.reload();
         return this;
     }
 

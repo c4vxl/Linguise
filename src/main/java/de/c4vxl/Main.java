@@ -4,14 +4,12 @@ import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
+import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Resource;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println(Model.fakeModel.path);
         // Info logging
         System.out.println("[INFO]: Appdata path: " + Config.APP_DIRECTORY);
         System.out.println("[INFO]: Models path: " + Config.MODELS_DIRECTORY);
@@ -20,8 +18,8 @@ public class Main {
         System.out.println("[INFO]: Histories path: " + Config.HISTORIES_DIRECTORY);
 
         // Load defaults
-        loadDefaults("theme", "themes/", Config.THEMES_DIRECTORY);
-        loadDefaults("language", "languages/", Config.LANGS_DIRECTORY);
+        loadDefaults("theme", "themes/", Config.THEMES_DIRECTORY, false);
+        loadDefaults("language", "languages/", Config.LANGS_DIRECTORY, false);
 
         // Load config
         System.out.println("[STARTUP]: Loading config...");
@@ -29,6 +27,8 @@ public class Main {
         System.out.println("[INFO]: Loaded theme: " + theme.name);
         Language language = Language.load(Config.LANGS_DIRECTORY + "/" + Config.getOrSetConfigValue("app.lang", "english.lang"));
         System.out.println("[INFO]: Loaded language: " + language.file.getName());
+        Model.current = getModel();
+        System.out.println("[INFO]: Loaded model: " + Model.current.name);
 
         // Open app
         System.out.println("[STARTUP]: Opening App...");
@@ -40,23 +40,21 @@ public class Main {
      * @param name The name of the resources for logging
      * @param resourceDir The directory in resources
      * @param dest The destination directory to put the resources in
+     * @param replace Should a previously loaded resources be replaced
      */
-    private static void loadDefaults(String name, String resourceDir, String dest) {
+    private static void loadDefaults(String name, String resourceDir, String dest, boolean replace) {
         // Load default themes
         for (String element : Resource.listResources(resourceDir)) {
             String out = dest + "/" + element;
             element = resourceDir + element;
 
             System.out.println("[STARTUP]: Loading default " + name + ": " + element);
-            try {
-                Files.deleteIfExists(Path.of(out));
-            } catch (IOException ignored) { }
-            Resource.copyResource(element, out);
+            Resource.copyResource(element, out, replace);
         }
     }
 
     /**
-     * Get the current theme or return a fallback theme
+     * Get the current theme or return a fallback
      */
     private static Theme getTheme() {
         // Load dark theme
@@ -64,7 +62,7 @@ public class Main {
 
         // Handle theme not found
         if (theme == null) {
-            System.out.println("[ERROR]: Couldn't find default theme");
+            System.out.println("[ERROR]: Couldn't find theme");
 
             // Find fallback
             Theme[] themes = Config.getLocalThemes();
@@ -79,5 +77,23 @@ public class Main {
         }
 
         return theme;
+    }
+
+    /**
+     * Get the current model or return a fallback
+     */
+    private static Model getModel() {
+        // Load model
+        Model model = Model.fromFile(Config.MODELS_DIRECTORY + "/" + Config.getOrSetConfigValue("app.model", "__fake__"));
+
+        // Handle theme not found
+        if (model == null) {
+            System.out.println("[ERROR]: Couldn't find model");
+
+            System.out.println("[ --> ]: Falling back to fake model");
+            return Model.fakeModel;
+        }
+
+        return model;
     }
 }

@@ -109,4 +109,31 @@ public class FileUtils {
 
         return null;
     }
+
+    /**
+     * Returns the size of a file in a human-readable format
+     * @param path The path to the file
+     */
+    public static String fileSize(String path) {
+        File file = new File(path);
+        if (!file.isFile())
+            return "0B";
+
+        return toReadable(file.length());
+    }
+
+    /**
+     * Converts a bytes length to a human-readable format
+     * @param bytes The amount of bytes
+     */
+    public static String toReadable(long bytes) {
+        String[] units = {"B", "KB", "MB", "GB", "TB"};
+        int i = 0;
+        double size = bytes;
+        while (size >= 1024 && i < units.length - 1) {
+            size /= 1024;
+            i++;
+        }
+        return String.format("%.1f %s", size, units[i]);
+    }
 }

@@ -29,7 +29,7 @@ public class SettingsPageTheme extends SettingsPage {
                 .withLabel(Language.current.get("app.settings.themes.button.1"))
                 .withAction(e -> {
                     System.out.println("[ACTION]: Loading custom theme");
-                    File file = FileUtils.openFileDialog("user.downloads", "Linguise theme files", new String[]{Config.THEME_FILE_EXTENSION});
+                    File file = FileUtils.openFileDialog("user.home", "Linguise theme files", new String[]{Config.THEME_FILE_EXTENSION});
                     if (file == null) return;
 
                     try {

@@ -3,6 +3,7 @@ package de.c4vxl.app.config;
 import com.google.gson.reflect.TypeToken;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.language.Language;
+import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.FileUtils;
 
 import java.io.File;
@@ -72,11 +73,6 @@ public class Config {
     }
 
     /**
-     * Gets the data directory and makes sure it exists
-     */
-    public static File getDataDir() { return FileUtils.getOrCreateDirectory(Config.APP_DIRECTORY); }
-
-    /**
      * Get a list of all filenames in a folder
      * @param path The directory to search
      * @param extension The extension to look for
@@ -89,7 +85,10 @@ public class Config {
     /**
      * Gets a list of all locally installed models
      */
-    public static String[] getLocalModels() { return listFiles(Config.MODELS_DIRECTORY, Config.MODEL_FILE_EXTENSION); }
+    public static Model[] getLocalModels() {
+        return Arrays.stream(listFiles(Config.MODELS_DIRECTORY, Config.MODEL_FILE_EXTENSION))
+                .map(Model::fromFile).filter(Objects::nonNull).toArray(Model[]::new);
+    }
 
     /**
      * Gets a list of all locally installed languages

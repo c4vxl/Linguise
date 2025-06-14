@@ -1,49 +1,40 @@
 package de.c4vxl.app.lib.element.model;
 
+import de.c4vxl.app.Theme;
+import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Dropdown;
+import de.c4vxl.app.model.Model;
+import de.c4vxl.app.util.TextUtils;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class ModelDropdown extends Dropdown {
-    public String current;
-    public ArrayList<String> models = new ArrayList<>();
-
     public ModelDropdown() {
-        super("Base model", 400, 50);
+        super(Model.current.name, 400, 50);
 
         this.expandedTitle = Language.current.get("chat.model.dropdown.expanded");
-        this.current = title;
-
-        models.add(current);
-        models.add("Another one1");
-        models.add("Another one2");
-        models.add("Another one3");
-        models.add("Another one4");
-        models.add("Another one5");
-        models.add("Another one6");
-        models.add("Another one7");
 
         this.reload();
     }
 
     public JPanel[] getElements() {
-        return models.stream().map(name -> createDefaultItem(name, () -> {
-            this.current = name;
-            System.out.println("[ACTION]: Switch to model: " + current);
-            this.setTitle(current);
-            reload();
-        }, name.equals(current))).toArray(JPanel[]::new);
+        return Stream.concat(Stream.of(Model.fakeModel), Arrays.stream(Config.getLocalModels())).map(model ->
+                createDefaultItem(TextUtils.cutString(model.name, "...", Theme.current.font, getWidth() - 100), () -> {
+                    Model.current = model;
+                    System.out.println("[ACTION]: Switch to model: " + model.name);
+                    this.setTitle(model.name);
+                    reload();
+                }, false)).toArray(JPanel[]::new);
     }
 
     public void reload() {
         JPanel[] elements = this.getElements();
         this.container.removeAll();
         for (JPanel element : elements) {
-            this.container.add(element);
-            this.container.add(Box.createRigidArea(new Dimension(getWidth(), 10)));
+            this.addItem(element);
         }
     }
 }

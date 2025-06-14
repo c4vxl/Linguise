@@ -33,7 +33,7 @@ public class SettingsPageLanguage extends SettingsPage {
                 .withLabel(Language.current.get("app.settings.language.button.1"))
                 .withAction(e -> {
                     System.out.println("[ACTION]: Loading custom language");
-                    File file = FileUtils.openFileDialog("user.downloads", "Linguise language files", new String[]{Config.LANG_FILE_EXTENSION});
+                    File file = FileUtils.openFileDialog("user.home", "Linguise language files", new String[]{Config.LANG_FILE_EXTENSION});
                     if (file == null) return;
 
                     try {

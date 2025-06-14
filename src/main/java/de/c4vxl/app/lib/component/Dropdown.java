@@ -28,7 +28,7 @@ public class Dropdown extends RoundedPanel {
      * @param height The height of the closed dropdown
      */
     public Dropdown(String title, int width, int height) {
-        this(title, width, height, 400, 10, 20, Theme.current.background_1, Theme.current.text);
+        this(title, width, height, 400, 10, 5, Theme.current.background_1, Theme.current.text);
     }
 
     /**
@@ -78,7 +78,6 @@ public class Dropdown extends RoundedPanel {
         this.container.setSize(width - padding * 2, 0);
 
         this.containerPane.vertUI.GAP = 0;
-        this.containerPane.setPreferredSize(new Dimension(width - padding * 2, max_height));
         this.containerPane.setMaximumSize(new Dimension(width - padding * 2, max_height));
         this.containerPane.horizontalScrollBar.setPreferredSize(new Dimension(0, 0));
 

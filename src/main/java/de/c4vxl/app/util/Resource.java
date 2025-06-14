@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -95,10 +96,14 @@ public class Resource {
      * @param to   The path to copy the resource to
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void copyResource(String path, String to) {
+    public static void copyResource(String path, String to, boolean replace) {
         File parent = new File(to);
         if (parent.getParentFile() != null)
             parent.getParentFile().mkdirs();
+        if (replace) {
+            try { Files.deleteIfExists(Paths.get(to)); }
+            catch (IOException e) { throw new RuntimeException(e); }
+        }
 
         try (InputStream is = Theme.class.getClassLoader().getResourceAsStream(path)) {
             assert is != null;

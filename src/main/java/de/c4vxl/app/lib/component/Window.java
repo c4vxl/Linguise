@@ -1,11 +1,11 @@
 package de.c4vxl.app.lib.component;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
@@ -68,10 +68,7 @@ public class Window extends JFrame {
      * @param onAction The action to happen when pressed
      */
     public void registerKeyboardShortcut(String name, String keys, Runnable onAction) {
-        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(keys), name);
-        this.getRootPane().getActionMap().put(name, new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) { onAction.run(); }
-        });
+        new Factory<>(this.getRootPane()).registerKeyboardShortcut(name, keys, onAction);
     }
 
     /**

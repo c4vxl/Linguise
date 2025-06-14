@@ -3,6 +3,7 @@ package de.c4vxl.app.util;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -186,8 +187,30 @@ public class Factory<T extends JComponent> {
      */
     public Factory<T> onHoverLeave(Runnable action) {
         return apply(e -> e.addMouseListener(new MouseAdapter() {
-            @Override public void mouseExited(MouseEvent e) { action.run(); }
+            @Override public void mouseExited(MouseEvent e) {
+                // Check if element has actually been left
+                // Hovering child elements should count as still hovering the actual element!
+                Point mousePos = MouseInfo.getPointerInfo().getLocation();
+                SwingUtilities.convertPointFromScreen(mousePos, element);
+                if (element.contains(mousePos)) return;
+
+                action.run();
+            }
         }));
+    }
+
+    /**
+     * Registers a Keyboard shortcut for the element
+     * @param name The name of the shortcut
+     * @param keys The keyboard strokes
+     * @param onAction The action to happen when pressed
+     */
+    public Factory<T> registerKeyboardShortcut(String name, String keys, Runnable onAction) {
+        this.element.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(keys), name);
+        this.element.getActionMap().put(name, new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) { onAction.run(); }
+        });
+        return this;
     }
 
     /**

@@ -8,7 +8,7 @@
   "chat.message.response.options.copy.tooltip": "Copy message",
   "chat.message.response.options.switch.tooltip": "Regenerate with a different model",
   "chat.message.response.options.speak.tooltip": "Speak out loud",
-  "chat.message.response.complete.info": "$1 · Took $2 to generate",
+  "chat.message.response.complete.info": "$1 · Took $2 sec to generate",
   "chat.model.dropdown.expanded": "Select a model",
   "app.settings.title": "Settings - $1",
   "app.settings.tabs.about": "About",
