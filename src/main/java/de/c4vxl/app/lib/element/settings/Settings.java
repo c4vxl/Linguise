@@ -24,8 +24,9 @@ public class Settings extends RoundedPanel {
             Language.current.get("app.settings.tabs.models"),
             Language.current.get("app.settings.tabs.themes"),
             Language.current.get("app.settings.tabs.language"),
+            Language.current.get("app.settings.tabs.dev"),
     };
-    private SettingsPage[] pages = new SettingsPage[]{ new SettingsPageAbout(), new SettingsPageModels(), new SettingsPageTheme(), new SettingsPageLanguage() };
+    private SettingsPage[] pages = new SettingsPage[]{ new SettingsPageAbout(), new SettingsPageModels(), new SettingsPageTheme(), new SettingsPageLanguage(), new SettingsPageDev() };
 
     public Settings(App app, int width, int height) {
         super(15);

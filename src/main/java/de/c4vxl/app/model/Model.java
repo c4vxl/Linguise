@@ -1,6 +1,7 @@
 package de.c4vxl.app.model;
 
 import de.c4vxl.app.config.Config;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.util.FileUtils;
 import de.c4vxl.app.util.GenerationUtils;
 
@@ -25,9 +26,21 @@ public class Model {
     }
 
     public static Model current = null;
-    public static Model fakeModel = new Model("Lorem ipsum" + Config.MODEL_FILE_EXTENSION, (prompt, handler, onDone) ->
-            GenerationUtils.fakeGenerationStream(GenerationUtils.ipsum, 1, handler, onDone)
-    );
+    public static Model fakeModel = null;
+
+    /**
+     * Get a "fake" model which outputs a sequence of Lorem Ipsum text, no matter the prompt
+     * @param delay The delay between two characters
+     */
+    public static Model getFakeModel(int delay) {
+        if (fakeModel != null) return fakeModel;
+
+        fakeModel = new Model(Language.current.get("app.models.fake_model.name") + Config.MODEL_FILE_EXTENSION,
+                (prompt, handler, onDone) ->
+                        GenerationUtils.fakeGenerationStream(GenerationUtils.ipsum, delay, handler, onDone)
+        );
+        return fakeModel;
+    }
 
     /**
      * Generate from the model

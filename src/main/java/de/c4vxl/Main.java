@@ -9,7 +9,6 @@ import de.c4vxl.app.util.Resource;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(Model.fakeModel.path);
         // Info logging
         System.out.println("[INFO]: Appdata path: " + Config.APP_DIRECTORY);
         System.out.println("[INFO]: Models path: " + Config.MODELS_DIRECTORY);
@@ -25,14 +24,14 @@ public class Main {
         System.out.println("[STARTUP]: Loading config...");
         Theme theme = getTheme();
         System.out.println("[INFO]: Loaded theme: " + theme.name);
-        Language language = Language.load(Config.LANGS_DIRECTORY + "/" + Config.getOrSetConfigValue("app.lang", "english.lang"));
-        System.out.println("[INFO]: Loaded language: " + language.file.getName());
+        Language.current = Language.load(Config.LANGS_DIRECTORY + "/" + Config.getOrSetConfigValue("app.lang", "english.lang"));
+        System.out.println("[INFO]: Loaded language: " + Language.current.file.getName());
         Model.current = getModel();
-        System.out.println("[INFO]: Loaded model: " + Model.current.name);
+        System.out.println("[INFO]: Loaded model: " + (Model.current == null ? "None" : Model.current.name));
 
         // Open app
         System.out.println("[STARTUP]: Opening App...");
-        new App(theme, language).open();
+        new App(theme, Language.current).open();
     }
 
     /**
@@ -91,7 +90,7 @@ public class Main {
             System.out.println("[ERROR]: Couldn't find model");
 
             System.out.println("[ --> ]: Falling back to fake model");
-            return Model.fakeModel;
+            return ((boolean) Config.getOrSetConfigValue("app.isdev", false)) ? Model.getFakeModel(1) : null;
         }
 
         return model;

@@ -18,8 +18,16 @@ public class Dropdown extends RoundedPanel {
     public ScrollPane containerPane = new ScrollPane(this.container);
     private Component sep_gap_1, sep_gap_2;
     public int padding, gap, width, height, max_height;
-    public boolean isExpanded = false;
+    private boolean isExpanded = false;
     public String title, expandedTitle;
+
+    /**
+     * Checks if the content panel is visible
+     */
+    public boolean isExpanded() {
+        return Arrays.stream(this.getComponents())
+                .anyMatch(c -> c.equals(this.containerPane));
+    }
 
     /**
      * Create a new Dropdown

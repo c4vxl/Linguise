@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class SettingsPageModels extends SettingsPage {
     @SuppressWarnings("CallToPrintStackTrace")
@@ -58,9 +59,14 @@ public class SettingsPageModels extends SettingsPage {
     public void reload() {
         // Add entries
         this.panel.removeAll();
-        for (Model model : Config.getLocalModels()) {
-            this.panel.add(createEntry(model));
-        }
+        Model[] models = Config.getLocalModels();
+        if (models.length != 0)
+            for (Model model : models)
+                this.panel.add(createEntry(model));
+        else
+            this.panel.add(new Factory<>(Elements.text(Language.current.get("app.settings.models.no_models"), this.panel.getWidth()))
+                            .center(this.panel)
+                    .get());
 
         this.repaint();
         this.revalidate();
@@ -74,20 +80,17 @@ public class SettingsPageModels extends SettingsPage {
     private JPanel createEntry(Model model) {
         // Main panel
         boolean isHighlighted = model.name.equals(Model.current == null ? "" : Model.current.name);
-        JPanel panel = new Factory<>(new RoundedPanel(10)).layout(null).size(getWidth() - 90, 60)
-                .opaque(false)
-                .hoverAnimation(isHighlighted ? Theme.current.background_2 : Theme.current.background_1, Theme.current.background_2, false)
-                .get();
+        Factory<RoundedPanel> panelFactory = new Factory<>(new RoundedPanel(10)).layout(null).size(getWidth() - 90, 60)
+                .opaque(false);
 
-        // Delete button
-        JLabel deleteButton = new Factory<>(Elements.iconButton(Resource.loadIcon("media/trash.png", 30, Theme.current.danger)))
-                .onClick(() -> {
-                    if (model.file != null && model.file.isFile())
-                        model.file.delete();
+        boolean isFakeModel = model == Model.fakeModel;
+        if (isFakeModel) {
+            panelFactory.background(Theme.current.accent_1);
+        } else {
+            panelFactory.hoverAnimation(isHighlighted ? Theme.current.background_2 : Theme.current.background_1, Theme.current.background_2, false);
+        }
 
-                    reload();
-                })
-                .centerY(panel).posX(panel.getWidth() - 30 - 15).cursor(Cursor.HAND_CURSOR).get();
+        RoundedPanel panel = panelFactory.get();
 
         // Size label
         JLabel sizeLabel = new Factory<>(Elements.text(FileUtils.fileSize(model.path), -1)).foreground(Theme.current.text_1).centerY(panel).get();
@@ -101,18 +104,30 @@ public class SettingsPageModels extends SettingsPage {
         JLabel label = new Factory<>(Elements.text(normal, -1)).centerY(panel).posX(10).get();
         panel.add(label);
 
-        // Hover handler
-        new Factory<>(panel).onHoverEnter(() -> {
-            sizeLabel.setLocation(panel.getWidth() - deleteButton.getWidth() - 100, sizeLabel.getY());
-            label.setText(cut);
-            panel.add(deleteButton);
-            panel.repaint();
-        }).onHoverLeave(() -> {
-            sizeLabel.setLocation(panel.getWidth() - 10 - sizeLabel.getWidth(), sizeLabel.getY());
-            label.setText(normal);
-            panel.remove(deleteButton);
-            panel.repaint();
-        });
+        if (!isFakeModel) {
+            // Delete button
+            JLabel deleteButton = new Factory<>(Elements.iconButton(Resource.loadIcon("media/trash.png", 30, Theme.current.danger)))
+                    .onClick(() -> {
+                        if (model.file != null && model.file.isFile())
+                            model.file.delete();
+
+                        reload();
+                    })
+                    .centerY(panel).posX(panel.getWidth() - 30 - 15).cursor(Cursor.HAND_CURSOR).get();
+
+            // Hover handler
+            new Factory<>(panel).onHoverEnter(() -> {
+                sizeLabel.setLocation(panel.getWidth() - deleteButton.getWidth() - 100, sizeLabel.getY());
+                label.setText(cut);
+                panel.add(deleteButton);
+                panel.repaint();
+            }).onHoverLeave(() -> {
+                sizeLabel.setLocation(panel.getWidth() - 10 - sizeLabel.getWidth(), sizeLabel.getY());
+                label.setText(normal);
+                panel.remove(deleteButton);
+                panel.repaint();
+            });
+        }
 
         return panel;
     }

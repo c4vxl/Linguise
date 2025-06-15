@@ -129,7 +129,7 @@ public class Button extends JButton {
             g2.setColor(background);
         }
 
-        if (borderWidth == null)
+        if (borderWidth == null || borderWidth < 0)
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), arcw, arch);
         else {
             g2.setStroke(new BasicStroke(borderWidth));

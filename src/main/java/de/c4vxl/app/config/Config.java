@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class Config {
     // Global paths
@@ -86,8 +87,14 @@ public class Config {
      * Gets a list of all locally installed models
      */
     public static Model[] getLocalModels() {
-        return Arrays.stream(listFiles(Config.MODELS_DIRECTORY, Config.MODEL_FILE_EXTENSION))
+        Model[] models = Arrays.stream(listFiles(Config.MODELS_DIRECTORY, Config.MODEL_FILE_EXTENSION))
                 .map(Model::fromFile).filter(Objects::nonNull).toArray(Model[]::new);
+
+        if ((boolean) getOrSetConfigValue("app.isdev", false)) {
+            models = Stream.concat(Stream.of(Model.getFakeModel(1)), Arrays.stream(models)).toArray(Model[]::new);
+        }
+
+        return models;
     }
 
     /**

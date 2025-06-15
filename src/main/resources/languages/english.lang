@@ -10,6 +10,9 @@
   "chat.message.response.options.speak.tooltip": "Speak out loud",
   "chat.message.response.complete.info": "$1 · Took $2 sec to generate",
   "chat.model.dropdown.expanded": "Select a model",
+  "chat.model.dropdown.title.no_model": "No model selected",
+  "chat.model.dropdown.no_models": "No models found!",
+  "app.models.fake_model.name": "Fake model",
   "app.settings.title": "Settings - $1",
   "app.settings.tabs.about": "About",
   "app.settings.about.title": "About Linguise",
@@ -18,6 +21,7 @@
   "app.settings.about.button.2": "Open data folder!",
   "app.settings.tabs.models": "Models",
   "app.settings.models.title": "Models",
+  "app.settings.models.no_models": "No models found.",
   "app.settings.models.button.1": "Load model from file",
   "app.settings.models.button.2": "Load model from url",
   "app.settings.tabs.themes": "Theme",
@@ -28,5 +32,10 @@
   "app.settings.language.title": "Languages",
   "app.settings.language.name.unknown": "unknown",
   "app.settings.language.button.1": "Load custom language",
-  "app.settings.language.button.2": "Contribute"
+  "app.settings.language.button.2": "Contribute",
+  "app.settings.tabs.dev": "Developer settings",
+  "app.settings.dev.title": "Developer settings",
+  "app.settings.dev.devmode.text": "Developer mode",
+  "app.settings.dev.devmode.enabled.button": "</> Disable Developer mode",
+  "app.settings.dev.devmode.disabled.button": "</> Enable Developer mode"
 }

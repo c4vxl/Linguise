@@ -2,8 +2,6 @@ package de.c4vxl.app;
 
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
-import de.c4vxl.app.model.Model;
-import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.lib.component.Line;
 import de.c4vxl.app.lib.component.Window;
 import de.c4vxl.app.lib.element.chatbar.ChatBar;
@@ -12,14 +10,16 @@ import de.c4vxl.app.lib.element.messages.MessagePanel;
 import de.c4vxl.app.lib.element.model.ModelDropdown;
 import de.c4vxl.app.lib.element.settings.Settings;
 import de.c4vxl.app.lib.element.sidebar.Sidebar;
-import de.c4vxl.app.util.*;
+import de.c4vxl.app.model.Model;
+import de.c4vxl.app.util.AnimationUtils;
+import de.c4vxl.app.util.Factory;
+import de.c4vxl.app.util.ModalUtils;
+import de.c4vxl.app.util.Resource;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
 
 public class App extends Window {
@@ -58,7 +58,10 @@ public class App extends Window {
         // Keyboard shortcuts
         this.registerKeyboardShortcut("action_chat_new", "control N", this::reset);
         this.registerKeyboardShortcut("action_settings_close", "ESCAPE", this::closeSettings);
-        this.registerKeyboardShortcut("action_settings_option", "control K", this::openSettings);
+        this.registerKeyboardShortcut("action_settings_toggle", "control K", () -> {
+            if (isInSettings) this.closeSettings();
+            else this.openSettings();
+        });
 
 
         // Option buttons

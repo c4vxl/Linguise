@@ -20,11 +20,7 @@ public class SettingsPageAbout extends SettingsPage {
         this.add(Elements.title(Language.current.get("app.settings.about.title"), maxTextWidth), BorderLayout.PAGE_START);
 
         // Content
-        this.panel.add(new Factory<>(new JPanel()).opaque(false).apply((panel) -> {
-            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(Elements.text(Language.current.get("app.settings.about.1"), maxTextWidth));
-            panel.add(Box.createVerticalGlue());
-        }).get());
+        this.textPanel.add(Elements.text(Language.current.get("app.settings.about.1"), maxTextWidth));
 
         // Buttons
         buttonPanel.add(Elements.hollowButton()
