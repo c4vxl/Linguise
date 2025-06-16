@@ -3,6 +3,7 @@ package de.c4vxl.app;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.lib.component.Line;
+import de.c4vxl.app.lib.component.NotificationPanel;
 import de.c4vxl.app.lib.component.Window;
 import de.c4vxl.app.lib.element.chatbar.ChatBar;
 import de.c4vxl.app.lib.element.chatbar.ChatOptionButtons;
@@ -23,6 +24,8 @@ import java.time.Duration;
 import java.util.Arrays;
 
 public class App extends Window {
+    public static App instance;
+
     public Thread generationThread; // Thread of current generation
     public boolean isChatActive = false;
 
@@ -33,6 +36,7 @@ public class App extends Window {
     public Sidebar sidebar;
     public MessagePanel messagePanel;
     public ModelDropdown modelDropdown;
+    public NotificationPanel notificationPanel;
     private Settings settings;
     private boolean isInSettings = false;
     private final JLabel welcomeLogo;
@@ -45,6 +49,7 @@ public class App extends Window {
         super(language.get("app.name"), 1200, 800);
         Theme.current = theme;
         Language.current = language;
+        App.instance = this;
 
         // Basic styling
         this.getContentPane().setLayout(null);
@@ -72,6 +77,31 @@ public class App extends Window {
 
         // Load items
         reset();
+    }
+
+    /**
+     * Displays a notification in the most recent instance of App
+     * @param colorName The background color of the message box; Pass the name of the color in Theme
+     * @param time The duration the notification should stay
+     * @param translationKey The key to the translation for the message
+     * @param translationArgs The arguments to the translation
+     */
+    public static void notificationFromKey(String colorName, int time, String translationKey, String... translationArgs) {
+        // Handle edge cases
+        if (Language.current == null || Theme.current == null || App.instance == null || App.instance.notificationPanel == null)
+            return;
+
+        // Get color
+        Color color;
+        try { color = (Color) Theme.current.getClass().getField(colorName).get(Theme.current); }
+        catch (Exception e) { color = Theme.current.accent; }
+
+        String message = Arrays.asList(new String[]{
+                "app.notifications.language.error.no_translation" // would cause stack overflow if not present in a language
+        }).contains(translationKey) ? translationKey // check for "banned" keys
+                        : Language.current.get(translationKey, translationArgs);
+
+        App.instance.notificationPanel.addMessage(message, color, time);
     }
 
     /**
@@ -123,6 +153,12 @@ public class App extends Window {
         this.settings = new Settings(this, getWidth() - 150, getHeight() - 70);
         this.chatBar = new Factory<>(new ChatBar(600, 50, this::_handle_chat_bar))
                 .posY((this.getHeight() - 50) / 2 + 70).centerX(this.content).get();
+        this.notificationPanel = new Factory<>(new NotificationPanel())
+                .size((int) (getWidth() / 1.5), -1)
+                .centerX(this).posY(10)
+                .get();
+
+        this.add(this.notificationPanel);
 
         // Sidebar
         this.add(this.sidebar);
@@ -207,6 +243,7 @@ public class App extends Window {
         // Return if no model is selected
         Model model = Model.current;
         if (model == null) {
+            App.notificationFromKey("danger", 300, "app.notifications.models.error.none_selected");
             System.out.println("[ERROR]: No model selected");
             return;
         }

@@ -25,6 +25,12 @@ public class SettingsPageDev extends SettingsPage {
                         Model.current;                                                             // else keep model
 
                 new App(Theme.current, Language.current).open();
+
+                App.notificationFromKey(
+                        isDevMode ? "accent" : "danger",
+                        300,
+                        "app.notifications.devmode.info." + (isDevMode ? "enabled" : "disabled")
+                );
             });
 
     @Override

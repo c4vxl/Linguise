@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class SettingsPageLanguage extends SettingsPage {
-    @SuppressWarnings("CallToPrintStackTrace")
     @Override
     public void init() {
         // Title
@@ -39,8 +38,8 @@ public class SettingsPageLanguage extends SettingsPage {
                     try {
                         Files.copy(file.toPath(), Path.of(Config.LANGS_DIRECTORY + "/" + file.getName()));
                     } catch (IOException ex) {
+                        App.notificationFromKey("danger", 300, "app.notifications.global.error.copy_failed", file.getAbsolutePath());
                         System.out.println("[ERROR]: Couldn't copy theme file!");
-                        ex.printStackTrace();
                     }
                     reload();
                 }));
@@ -65,6 +64,7 @@ public class SettingsPageLanguage extends SettingsPage {
                 SwingUtilities.getWindowAncestor(this).dispose();
                 new App(Theme.current, language).open();
                 Config.setConfigValue("app.lang", language.file.getName());
+                App.notificationFromKey("accent", 300, "app.notifications.language.info.switched", language.name);
             }));
         }
 

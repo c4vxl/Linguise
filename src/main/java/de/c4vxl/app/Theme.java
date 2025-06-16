@@ -1,6 +1,7 @@
 package de.c4vxl.app;
 
 import com.google.gson.reflect.TypeToken;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.util.FileUtils;
 
 import java.awt.*;
@@ -68,15 +69,19 @@ public class Theme {
      * @param path The path to the file
      */
     public static Theme fromFile(String path) {
+        String filename = Path.of(path).getFileName().toString();
+
         HashMap<String, String> content = FileUtils.fromJSON(FileUtils.readContent(path, "{}"), new TypeToken<>() {});
         Field[] args = Arrays.stream(Theme.class.getFields()).filter(x -> !Modifier.isStatic(x.getModifiers())).toArray(Field[]::new);
         
         // Return if file doesn't contain all needed variables
-        if (Arrays.stream(args).map(Field::getName).map(content::containsKey).filter(x -> !x).toList().contains(false))
+        if (Arrays.stream(args).map(Field::getName).map(content::containsKey).filter(x -> !x).toList().contains(false)) {
+            App.notificationFromKey("danger", 300, "app.notifications.themes.error.invalid_file", filename);
             return null;
+        }
         
         return new Theme(
-                Path.of(path).getFileName().toString(),
+                filename,
                 content.get("name"),
                 new Font(content.get("font"), Font.PLAIN, 17),
                 new Font(content.get("font_1"), Font.PLAIN, 17),

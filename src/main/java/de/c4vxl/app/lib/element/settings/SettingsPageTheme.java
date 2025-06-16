@@ -15,10 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 
 public class SettingsPageTheme extends SettingsPage {
-    @SuppressWarnings("CallToPrintStackTrace")
     @Override
     public void init() {
         // Title
@@ -33,10 +33,10 @@ public class SettingsPageTheme extends SettingsPage {
                     if (file == null) return;
 
                     try {
-                        Files.copy(file.toPath(), Path.of(Config.THEMES_DIRECTORY + "/" + file.getName()));
+                        Files.copy(file.toPath(), Path.of(Config.THEMES_DIRECTORY + "/" + file.getName()), StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException ex) {
+                        App.notificationFromKey("danger", 300, "app.notifications.global.error.copy_failed", file.getAbsolutePath());
                         System.out.println("[ERROR]: Couldn't copy theme file!");
-                        ex.printStackTrace();
                     }
                     reload();
                 }));
@@ -67,6 +67,7 @@ public class SettingsPageTheme extends SettingsPage {
                 SwingUtilities.getWindowAncestor(this).dispose();
                 new App(theme, Language.current).open();
                 Config.setConfigValue("app.theme", theme.getFileName());
+                App.notificationFromKey("accent", 300, "app.notifications.themes.info.switched", theme.name);
             }));
         }
 

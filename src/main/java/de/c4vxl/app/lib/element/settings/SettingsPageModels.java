@@ -1,5 +1,6 @@
 package de.c4vxl.app.lib.element.settings;
 
+import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
@@ -17,20 +18,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
 
 public class SettingsPageModels extends SettingsPage {
-    @SuppressWarnings("CallToPrintStackTrace")
     @Override
     public void init() {
         // Title
         this.add(Elements.title(Language.current.get("app.settings.models.title"), this.getWidth() - 200), BorderLayout.NORTH);
 
         // Buttons
-        // TODO: Implement model loading
         buttonPanel.add(Elements.hollowButton()
                 .withLabel(Language.current.get("app.settings.models.button.1"))
                 .withAction(e -> {
@@ -41,8 +36,8 @@ public class SettingsPageModels extends SettingsPage {
                     try {
                         Files.copy(file.toPath(), Path.of(Config.MODELS_DIRECTORY + "/" + file.getName()));
                     } catch (IOException ex) {
+                        App.notificationFromKey("danger", 300, "app.notifications.global.error.copy_failed", file.getAbsolutePath());
                         System.out.println("[ERROR]: Couldn't copy model file!");
-                        ex.printStackTrace();
                     }
                     reload();
                 }));

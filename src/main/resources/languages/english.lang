@@ -18,7 +18,7 @@
   "app.settings.about.title": "About Linguise",
   "app.settings.about.1": "Linguise is something!",
   "app.settings.about.button.1": "Visit project on GitHub",
-  "app.settings.about.button.2": "Open data folder!",
+  "app.settings.about.button.2": "Open data folder",
   "app.settings.tabs.models": "Models",
   "app.settings.models.title": "Models",
   "app.settings.models.no_models": "No models found.",
@@ -37,5 +37,17 @@
   "app.settings.dev.title": "Developer settings",
   "app.settings.dev.devmode.text": "Developer mode",
   "app.settings.dev.devmode.enabled.button": "</> Disable Developer mode",
-  "app.settings.dev.devmode.disabled.button": "</> Enable Developer mode"
+  "app.settings.dev.devmode.disabled.button": "</> Enable Developer mode",
+  "app.notifications.global.error.copy_failed": "Failed to copy $1",
+  "app.notifications.models.error.empty_file": "The file $1 appears to be empty or can't be read!",
+  "app.notifications.models.error.none_selected": "No model selected!",
+  "app.notifications.language.error.no_fallback_found": "No fallback language found!",
+  "app.notifications.language.info.falling_back": "Falling back to $1",
+  "app.notifications.language.info.switched": "Changed language to $1",
+  "app.notifications.language.error.no_translation": "No translation for $1 in $2",
+  "app.notifications.language.error.invalid_file": "Invalid Language file: $1",
+  "app.notifications.themes.error.invalid_file": "Not a theme file: $1",
+  "app.notifications.themes.info.switched": "Switched to $1 theme!",
+  "app.notifications.devmode.info.enabled": "Developer mode has been enabled.",
+  "app.notifications.devmode.info.disabled": "Developer mode has been disabled."
 }

@@ -1,6 +1,8 @@
 package de.c4vxl.app.language;
 
 import com.google.gson.reflect.TypeToken;
+import de.c4vxl.app.App;
+import de.c4vxl.app.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.util.FileUtils;
 
@@ -34,9 +36,11 @@ public class Language {
      */
     public static Language getFallback() {
         if (fallback != null && fallback.file != null) {
+            App.notificationFromKey("accent", 300, "app.notifications.language.info.falling_back", fallback.file.getName());
             System.out.println("[ --> ]: Falling back to " + fallback.file.getName());
             return fallback;
         } else {
+            App.notificationFromKey("danger", 300, "app.notifications.language.error.no_fallback_found");
             System.out.println("[ERROR]: Couldn't find fallback language!");
             return new Language(null, new HashMap<>());
         }
@@ -61,6 +65,7 @@ public class Language {
 
         // Handle empty language file
         if (translations.isEmpty()) {
+            App.notificationFromKey("danger", 300, "app.notifications.language.error.invalid_file", file.getName());
             System.out.println("[ERROR]: Not a language file: " + path);
             return getFallback();
         }
@@ -81,8 +86,10 @@ public class Language {
         for (int i = 0; i < args.length; i++)
             translation = translation.replace("$" + (i + 1), args[i]);
 
-        if (Objects.equals(translation, key))
+        if (Objects.equals(translation, key)) {
+            App.notificationFromKey("danger", 300, "app.notifications.language.error.no_translation", key, file.getName());
             System.out.println("[ERROR]: Couldn't find a translation for " + key + "!");
+        }
 
         return translation;
     }

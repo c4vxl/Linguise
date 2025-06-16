@@ -1,5 +1,7 @@
 package de.c4vxl.app.model;
 
+import de.c4vxl.app.App;
+import de.c4vxl.app.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.util.FileUtils;
@@ -63,6 +65,7 @@ public class Model {
 
         String content = FileUtils.readContent(path, null); // Fallback is null
         if (content == null || content.isEmpty()) { // If fallback is triggered (file doesn't exist or isn't readable)
+            App.notificationFromKey("danger", 300, "app.notifications.models.error.empty_file", Path.of(path).getFileName().toString());
             System.out.println("[ERROR]: Not a valid model: " + path);
             return null;
         }
