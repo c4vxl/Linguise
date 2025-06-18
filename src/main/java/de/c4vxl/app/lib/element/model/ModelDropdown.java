@@ -31,6 +31,7 @@ public class ModelDropdown extends Dropdown {
         return Arrays.stream(Config.getLocalModels()).map(model ->
                 createDefaultItem(TextUtils.cutString(model.name, "...", Theme.current.font, getWidth() - 100), () -> {
                     Model.current = model;
+                    model.initialize();
                     Config.setConfigValue("app.model", Model.current.path.replace(Config.MODELS_DIRECTORY + "/", ""));
                     System.out.println("[ACTION]: Switch to model: " + model.name);
                     this.setTitle(model.name);

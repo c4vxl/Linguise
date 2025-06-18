@@ -68,13 +68,6 @@ public class App extends Window {
             else this.openSettings();
         });
 
-
-        // Option buttons
-        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/settings.png", 45, Theme.current.text)))
-                .onClick(this::openSettings).pos(this.getWidth() - 40 - 10, 30).get());
-        this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/create.png", 45, Theme.current.text)))
-                .onClick(this::reset).pos(this.getWidth() - 40 * 2 - 10, 30).get());
-
         // Load items
         reset();
     }
@@ -166,7 +159,17 @@ public class App extends Window {
 
         // Top section
         this.add(new Line(getWidth(), 1, Theme.current.background_1).position(0, 85));
+        modelDropdown.setLocation(modelDropdown.getX() - 45 - 30, modelDropdown.getY());
         this.content.add(this.modelDropdown);
+        this.content.add(new Line(1, 45, Theme.current.accent).position(modelDropdown.getX() + modelDropdown.getWidth() + 40, 18));
+        this.content.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/create.png", 45, Theme.current.text_1)))
+                .onClick(this::reset).pos(modelDropdown.getX() + modelDropdown.getWidth() + 45 + 30, 17).get());
+        this.content.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/settings.png", 45, Theme.current.text_1)))
+                        .onClick(this::openSettings).pos(modelDropdown.getX() + modelDropdown.getWidth() + 45 + 45 + 30, 17).get());
+
+        // Option buttons
+
+
 
         // Center/Content
         this.add(this.content);

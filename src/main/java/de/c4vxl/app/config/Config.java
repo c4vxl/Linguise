@@ -103,7 +103,7 @@ public class Config {
      */
     public static Language[] getLocalLangs() {
         return Arrays.stream(listFiles(Config.LANGS_DIRECTORY, Config.LANG_FILE_EXTENSION))
-                .map(Language::load).toArray(Language[]::new);
+                .map(Language::load).filter(Objects::nonNull).toArray(Language[]::new);
     }
 
     /**
@@ -111,7 +111,7 @@ public class Config {
      */
     public static Theme[] getLocalThemes() {
         return Arrays.stream(listFiles(Config.THEMES_DIRECTORY, Config.THEME_FILE_EXTENSION))
-                .map(Theme::fromFile).toArray(Theme[]::new);
+                .map(Theme::fromFile).filter(Objects::nonNull).toArray(Theme[]::new);
     }
 
     /**

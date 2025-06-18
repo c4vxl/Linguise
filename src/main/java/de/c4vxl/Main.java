@@ -56,11 +56,15 @@ public class Main {
 
         // Load model
         Model model = Model.current = Config.getOrFallback(
-                Model.fromFile(Config.MODELS_DIRECTORY + "/" + Config.getOrSetConfigValue("app.model", isDevMode ? "__fake__" : null)),
+                Model.fromFile(Config.MODELS_DIRECTORY + "/" + Config.getOrSetConfigValue("app.model", isDevMode ? "__fake__" : "")),
                 Config.getLocalModels(),
                 "model"
         );
-        System.out.println("[INFO]: Loaded model: " + (model == null ? "None" : model.name));
+        if (model != null) {
+            model.initialize();
+            System.out.println("[INFO]: Loaded model: " + model.name);
+        } else
+            System.out.println("[INFO]: No model loaded!");
     }
 
 
