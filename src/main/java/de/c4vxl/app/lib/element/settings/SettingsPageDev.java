@@ -24,6 +24,9 @@ public class SettingsPageDev extends SettingsPage {
                         !isDevMode && Model.current == Model.getFakeModel(1) ? null :        // if not devmode and fake model -> no model
                         Model.current;                                                             // else keep model
 
+                // Save to config
+                Config.setConfigValue("app.model", Model.current != null ? Model.current.path.replace(Config.MODELS_DIRECTORY + "/", "") : null);
+
                 new App(Theme.current, Language.current).open();
 
                 App.notificationFromKey(

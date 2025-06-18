@@ -1,6 +1,7 @@
 package de.c4vxl.app.config;
 
 import com.google.gson.reflect.TypeToken;
+import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.model.Model;
@@ -111,5 +112,37 @@ public class Config {
     public static Theme[] getLocalThemes() {
         return Arrays.stream(listFiles(Config.THEMES_DIRECTORY, Config.THEME_FILE_EXTENSION))
                 .map(Theme::fromFile).toArray(Theme[]::new);
+    }
+
+    /**
+     * Returns an element or if it is null the first option out of a list of fallbacks that isn't
+     * @param element The initial element
+     * @param fallbacks The fallback options
+     * @param loggingName The name of the items (for logging)
+     */
+    public static <T> T getOrFallback(T element, T[] fallbacks, String loggingName) {
+        if (element != null) return element;
+
+        // No fallbacks found
+        if (fallbacks.length == 0) {
+            System.out.println("[ERROR]: No fallback " + loggingName + " found");
+            return null;
+        }
+
+        // Get first fallback option or continue looking for one
+        element = getOrFallback(
+                fallbacks[0],
+                Arrays.copyOfRange(fallbacks, 1, fallbacks.length),
+                loggingName
+        );
+
+        // No element in fallbacks works
+        if (element == null) {
+            System.out.println("[ERROR]: Couldn't find a fallback " + loggingName);
+            App.notificationFromKey("danger", 200, "app.notifications.global.error.no_fallback_found", loggingName);
+            return null;
+        }
+
+        return element;
     }
 }

@@ -39,6 +39,7 @@
   "app.settings.dev.devmode.enabled.button": "</> Disable Developer mode",
   "app.settings.dev.devmode.disabled.button": "</> Enable Developer mode",
   "app.notifications.global.error.copy_failed": "Failed to copy $1",
+  "app.notifications.global.error.no_fallback_found": "No fallback found: $1",
   "app.notifications.models.error.empty_file": "The file $1 appears to be empty or can't be read!",
   "app.notifications.models.error.none_selected": "No model selected!",
   "app.notifications.language.error.no_fallback_found": "No fallback language found!",
