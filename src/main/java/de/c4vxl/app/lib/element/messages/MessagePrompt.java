@@ -4,11 +4,10 @@ import de.c4vxl.app.Theme;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Factory;
+import de.c4vxl.app.util.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class MessagePrompt extends JPanel {
     private final JLabel infoText;
@@ -30,7 +29,7 @@ public class MessagePrompt extends JPanel {
 
         // Information
         this.infoText = new Factory<>(Elements.text("<p style='font-weight: 100; font-size: 11px;'>" +
-                        Language.current.get("chat.message.prompt.title", DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm").format(LocalDateTime.now())) +
+                        Language.current.get("chat.message.prompt.title", TextUtils.date()) +
                         "</p>", width - 200)).foreground(Theme.current.text_1).get();
         this.add(this.infoText);
 
@@ -41,6 +40,18 @@ public class MessagePrompt extends JPanel {
         update();
     }
 
+    /**
+     * Returns the text
+     */
+    public String getText() {
+        return this.text.getText()
+                .replace("<html><div style='max-width: " + (width - 200) + "px'>", "")
+                .replace("</div></html>", "");
+    }
+
+    /**
+     * Reloads the layout
+     */
     public void update() {
         this.setMaximumSize(new Dimension(width, Integer.MAX_VALUE));
         this.setSize(width + 20, this.getPreferredSize().height);

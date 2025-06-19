@@ -7,8 +7,8 @@ import de.c4vxl.app.language.Language;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.FileUtils;
 
-import javax.swing.*;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
@@ -114,6 +114,15 @@ public class Config {
     public static Theme[] getLocalThemes() {
         return Arrays.stream(listFiles(Config.THEMES_DIRECTORY, Config.THEME_FILE_EXTENSION))
                 .map(Theme::fromFile).filter(Objects::nonNull).toArray(Theme[]::new);
+    }
+
+    /**
+     * Returns a list of locally found chats
+     */
+    public static String[] getLocalChats() {
+        return Arrays.stream(listFiles(Config.HISTORIES_DIRECTORY, Config.HISTORY_FILE_EXTENSION))
+                .map(path -> Path.of(path).getFileName().toString())
+                .map(path -> path.substring(0, path.length() - Config.HISTORY_FILE_EXTENSION.length())).toArray(String[]::new);
     }
 
     /**

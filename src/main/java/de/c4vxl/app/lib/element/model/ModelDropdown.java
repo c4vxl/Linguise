@@ -5,14 +5,12 @@ import de.c4vxl.app.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Dropdown;
-import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.TextUtils;
 
 import javax.swing.*;
 import java.util.Arrays;
-import java.util.Optional;
 
 public class ModelDropdown extends Dropdown {
     public ModelDropdown() {

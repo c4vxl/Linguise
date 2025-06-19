@@ -113,6 +113,10 @@ public class SettingsPageModels extends SettingsPage {
                         // Find a fallback model
                         Config.setModel(Config.getOrFallback(null, Config.getLocalModels(), "model"));
 
+                        // Logging
+                        System.out.println("[ACTION]: Deleted model: " + model.name);
+                        App.notificationFromKey("accent", 200, "app.notifications.models.info.deleted", model.name);
+
                         reload();
                     })
                     .centerY(panel).posX(panel.getWidth() - 30 - 15).cursor(Cursor.HAND_CURSOR).get();

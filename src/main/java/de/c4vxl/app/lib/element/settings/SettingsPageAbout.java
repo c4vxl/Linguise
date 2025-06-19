@@ -1,13 +1,9 @@
 package de.c4vxl.app.lib.element.settings;
 
-import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
-import de.c4vxl.app.util.Factory;
 
-import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,14 +25,6 @@ public class SettingsPageAbout extends SettingsPage {
                     System.out.println("[ACTION]: Opening GitHub");
                     try { Desktop.getDesktop().browse(new URI("https://github.com/")); }
                     catch (IOException | URISyntaxException ex) { throw new RuntimeException(ex); }
-                }));
-
-        buttonPanel.add(Elements.hollowButton()
-                .withLabel(Language.current.get("app.settings.about.button.2"))
-                .withAction(e -> {
-                    System.out.println("[ACTION]: Opening data dir");
-                    try { Desktop.getDesktop().open(new File(Config.APP_DIRECTORY)); }
-                    catch (IOException ex) { throw new RuntimeException(ex); }
                 }));
     }
 }

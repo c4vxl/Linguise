@@ -24,7 +24,6 @@
   "app.settings.about.title": "About Linguise",
   "app.settings.about.1": "Linguise is something!",
   "app.settings.about.button.1": "Visit project on GitHub",
-  "app.settings.about.button.2": "Open data folder",
   "app.settings.tabs.models": "Models",
   "app.settings.models.title": "Models",
   "app.settings.models.no_models": "No models found.",
@@ -53,7 +52,9 @@
   "app.settings.dev.env.langs_ext": "Language file-extension: <b>$1</b>",
   "app.settings.dev.env.chats_dir": "Histories directory: <b>$1</b>",
   "app.settings.dev.env.chats_ext": "History file-extension: <b>$1</b>",
-  "app.settings.dev.open_config": "Open config file",
+  "app.settings.dev.env.date_format": "Date format: <b>$1</b>",
+  "app.settings.dev.button.open_data_dir": "Open data folder",
+  "app.settings.dev.button.edit_config": "Edit config file",
   "app.notifications.global.error.copy_failed": "Failed to copy $1",
   "app.notifications.global.error.no_fallback_found": "No fallback found: $1",
   "app.notifications.global.error.file_open_fail": "Couldn't open file: $1",
@@ -61,6 +62,7 @@
   "app.notifications.models.error.invalid_pipeline": "The pipeline for $1 seems to be invalid or couldn't be loaded!",
   "app.notifications.models.error.not_initialized": "The current model hasn't been initialized!",
   "app.notifications.models.error.none_selected": "No model selected!",
+  "app.notifications.models.info.deleted": "Deleted the model '$1'",
   "app.notifications.language.error.no_fallback_found": "No fallback language found!",
   "app.notifications.language.info.falling_back": "Falling back to $1",
   "app.notifications.language.info.switched": "Changed language to $1",
@@ -71,5 +73,7 @@
   "app.notifications.devmode.info.enabled": "Developer mode has been enabled.",
   "app.notifications.devmode.info.disabled": "Developer mode has been disabled.",
   "app.notifications.chat.info.copied": "Copied to clipboard!",
-  "app.notifications.chat.error.tts_model": "Failed to load the tts model."
+  "app.notifications.chat.error.tts_model": "Failed to load the tts model.",
+  "app.notifications.chat.error.load_failed": "Failed to load part of conversation: $1",
+  "app.notifications.chat.info.deleted": "Deleted chat '$1'"
 }

@@ -1,5 +1,6 @@
 package de.c4vxl.app;
 
+import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.lib.component.Line;
@@ -28,6 +29,8 @@ public class App extends Window {
 
     public Thread generationThread; // Thread of current generation
     public boolean isChatActive = false;
+
+    public String chat; // Current chat name
 
     // Elements on window
     public JPanel content;
@@ -260,10 +263,9 @@ public class App extends Window {
         this.messagePanel.createResponse();
         long start = System.nanoTime();
         generationThread = model.generate(message, this.messagePanel::updateLastResponse, () -> {
-            this.messagePanel.completeLastResponse(Language.current.get("chat.message.response.complete.info",
-                    model.name,
-                    Duration.ofNanos(System.nanoTime() - start).getSeconds() + "")
-            );
+            this.messagePanel.completeLastResponse(model.name, Duration.ofNanos(System.nanoTime() - start).getSeconds());
+            this.chat = this.messagePanel.getName();
+            this.sidebar.reload();
             this.chatBar.stopHandling();
         });
         generationThread.start();
@@ -282,5 +284,16 @@ public class App extends Window {
             App.instance.close();
 
         new App(theme, language).open();
+    }
+
+    /**
+     * Set the current chat
+     * @param name The name of the chat
+     */
+    public void setChat(String name) {
+        this.chat = name;
+        this.reset();
+        if (name == null) return;
+        this.messagePanel.load(Config.HISTORIES_DIRECTORY + "/" + name + Config.HISTORY_FILE_EXTENSION);
     }
 }

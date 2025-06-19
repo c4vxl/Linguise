@@ -13,7 +13,9 @@ import de.c4vxl.tokenizers.type.Tokenizer;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 
 public class Model {

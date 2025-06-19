@@ -6,13 +6,12 @@ import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Button;
 import de.c4vxl.app.lib.component.Elements;
-import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.model.Model;
-import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -55,6 +54,14 @@ public class SettingsPageDev extends SettingsPage {
         this.textPanel.add(this.devmodeButton);
         reloadDevModeButton();
 
+        buttonPanel.add(Elements.hollowButton()
+                .withLabel(Language.current.get("app.settings.dev.button.open_data_dir"))
+                .withAction(e -> {
+                    System.out.println("[ACTION]: Opening data dir");
+                    try { Desktop.getDesktop().open(new File(Config.APP_DIRECTORY)); }
+                    catch (IOException ex) { throw new RuntimeException(ex); }
+                }));
+
         // Only display in devmode
         if (isDevMode) {
             this.textPanel.add(Box.createVerticalStrut(30)); // Gap
@@ -69,8 +76,10 @@ public class SettingsPageDev extends SettingsPage {
             this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.langs_ext", Config.LANG_FILE_EXTENSION), maxWidth));
             this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.chats_dir", Config.HISTORIES_DIRECTORY), maxWidth));
             this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.chats_ext", Config.HISTORY_FILE_EXTENSION), maxWidth));
+            this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.date_format", TextUtils.DATE_FORMAT), maxWidth));
+            this.textPanel.add(Box.createVerticalStrut(10));
 
-            this.textPanel.add(Elements.hollowButton().withLabel(Language.current.get("app.settings.dev.open_config")).withAction(e -> {
+            this.buttonPanel.add(Elements.hollowButton().withLabel(Language.current.get("app.settings.dev.button.edit_config")).withAction(e -> {
                 try {
                     Desktop.getDesktop().browse(Path.of(Config.CONFIG_FILE).toUri());
                 } catch (IOException ex) {

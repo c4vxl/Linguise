@@ -6,8 +6,12 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TextUtils {
+    public static String DATE_FORMAT = "dd.MM.yyyy - HH:mm";
+
     /**
      * Cut a string to a certain max width
      * @param str The width
@@ -58,4 +62,15 @@ public class TextUtils {
             System.out.println("[ERROR]: Failed tts!");
         }
     }
+
+    /**
+     * Returns the current date
+     */
+    public static String date() { return date(System.currentTimeMillis()); }
+
+    /**
+     * Returns the current date
+     * @param millis The date to display in milliseconds
+     */
+    public static String date(Long millis) { return new SimpleDateFormat(TextUtils.DATE_FORMAT).format(new Date(millis)); }
 }

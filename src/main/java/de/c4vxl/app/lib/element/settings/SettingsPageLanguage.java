@@ -4,9 +4,8 @@ import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
-import de.c4vxl.app.lib.component.RoundedPanel;
-import de.c4vxl.app.lib.component.ScrollPane;
 import de.c4vxl.app.lib.component.Elements;
+import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.FileUtils;
 
@@ -16,10 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 
 public class SettingsPageLanguage extends SettingsPage {
     @Override

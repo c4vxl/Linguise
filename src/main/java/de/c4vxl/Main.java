@@ -35,7 +35,7 @@ public class Main {
      */
     private static void loadConfig() {
         // Load environment variables
-        loadEnvs();
+        loadEnvVars();
 
         // Load dev-mode
         boolean isDevMode = ((boolean) Config.getOrSetConfigValue("app.isdev", false));
@@ -76,9 +76,8 @@ public class Main {
      * Loads the environment variables from the config
      */
     @SuppressWarnings("unchecked")
-    private static void loadEnvs() {
-        LinkedHashMap<String, String> env = (LinkedHashMap<String, String>) Config.getConfigValue("env", HashMap.class);
-        env = env == null ? new LinkedHashMap<>() : env;
+    private static void loadEnvVars() {
+        LinkedHashMap<String, String> env = new LinkedHashMap<>((Map<String, String>) Config.getOrSetConfigValue("env", new HashMap<>()));
 
         // Get config
         Config.MODELS_DIRECTORY = env.getOrDefault("models_dir", Config.MODELS_DIRECTORY);
@@ -89,6 +88,7 @@ public class Main {
         Config.LANG_FILE_EXTENSION = env.getOrDefault("langs_ext", Config.LANG_FILE_EXTENSION);
         Config.HISTORIES_DIRECTORY = env.getOrDefault("chats_dir", Config.HISTORIES_DIRECTORY);
         Config.HISTORY_FILE_EXTENSION = env.getOrDefault("chats_ext", Config.HISTORY_FILE_EXTENSION);
+        TextUtils.DATE_FORMAT = env.getOrDefault("date_format", TextUtils.DATE_FORMAT);
 
         // Save config
         env.put("models_dir", Config.MODELS_DIRECTORY);
@@ -99,17 +99,20 @@ public class Main {
         env.put("langs_ext", Config.LANG_FILE_EXTENSION);
         env.put("chats_dir", Config.HISTORIES_DIRECTORY);
         env.put("chats_ext", Config.HISTORY_FILE_EXTENSION);
+        env.put("date_format", TextUtils.DATE_FORMAT);
         Config.setConfigValue("env", env);
 
         // Log env
-        System.out.println("[INFO]: Models path: " + Config.MODELS_DIRECTORY);
-        System.out.println("[INFO]: Model file extension: " + Config.MODEL_FILE_EXTENSION);
-        System.out.println("[INFO]: Themes path: " + Config.THEMES_DIRECTORY);
-        System.out.println("[INFO]: Theme file extension: " + Config.THEME_FILE_EXTENSION);
-        System.out.println("[INFO]: Languages path: " + Config.LANGS_DIRECTORY);
-        System.out.println("[INFO]: Language file extension: " + Config.LANG_FILE_EXTENSION);
-        System.out.println("[INFO]: Histories path: " + Config.HISTORIES_DIRECTORY);
-        System.out.println("[INFO]: History file extension: " + Config.HISTORY_FILE_EXTENSION);
+        System.out.println("[INFO]: Loading environment variables.");
+        System.out.println("[ENV]: Models path: " + Config.MODELS_DIRECTORY);
+        System.out.println("[ENV]: Model file extension: " + Config.MODEL_FILE_EXTENSION);
+        System.out.println("[ENV]: Themes path: " + Config.THEMES_DIRECTORY);
+        System.out.println("[ENV]: Theme file extension: " + Config.THEME_FILE_EXTENSION);
+        System.out.println("[ENV]: Languages path: " + Config.LANGS_DIRECTORY);
+        System.out.println("[ENV]: Language file extension: " + Config.LANG_FILE_EXTENSION);
+        System.out.println("[ENV]: Histories path: " + Config.HISTORIES_DIRECTORY);
+        System.out.println("[ENV]: History file extension: " + Config.HISTORY_FILE_EXTENSION);
+        System.out.println("[ENV]: Date format: " + TextUtils.DATE_FORMAT);
     }
 
     /**

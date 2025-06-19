@@ -1,7 +1,5 @@
 package de.c4vxl.app.lib.element.settings;
 
-import de.c4vxl.app.language.Language;
-import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.lib.component.ScrollPane;
 import de.c4vxl.app.util.Factory;
 
@@ -14,7 +12,7 @@ public abstract class SettingsPage extends JPanel {
     public JPanel panel = new Factory<>(new JPanel() {
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(this.getParent().getParent().getParent().getWidth() - 40,
+            return new Dimension(this.getParent().getParent().getParent().getWidth() - 70,
                     Arrays.stream(this.getComponents()).map(x -> Math.max(x.getHeight(), x.getPreferredSize().height) + 5).reduce(Integer::sum).orElse(0));
         }
     }).opaque(false).get();
@@ -23,8 +21,8 @@ public abstract class SettingsPage extends JPanel {
     public JPanel textPanel = new Factory<>(new JPanel() {
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(this.getParent().getParent().getParent().getWidth(),
-                    Arrays.stream(this.getComponents()).map(x -> Math.max(x.getHeight(), x.getPreferredSize().height) + 5).reduce(Integer::sum).orElse(0));
+            return new Dimension(this.getParent().getParent().getParent().getWidth() - 70,
+                    Arrays.stream(this.getComponents()).map(x -> x.getHeight() + 5).reduce(Integer::sum).orElse(0));
         }
     }).opaque(false).apply(x -> x.setLayout(new BoxLayout(x, BoxLayout.Y_AXIS))).get();
 
