@@ -65,6 +65,10 @@ public class SettingsPageModels extends SettingsPage {
 
         this.repaint();
         this.revalidate();
+
+        // Reload dropdown
+        if (App.instance != null && App.instance.modelDropdown != null)
+            App.instance.modelDropdown.reload();
     }
 
     /**
@@ -105,6 +109,9 @@ public class SettingsPageModels extends SettingsPage {
                     .onClick(() -> {
                         if (model.file != null && model.file.isFile())
                             model.file.delete();
+
+                        // Find a fallback model
+                        Config.setModel(Config.getOrFallback(null, Config.getLocalModels(), "model"));
 
                         reload();
                     })

@@ -64,9 +64,8 @@ public class SettingsPageTheme extends SettingsPage {
         for (Theme theme : themes) {
             this.panel.add(createEntry(theme.name, theme.background_1, theme.background_3, theme.name.equals(Theme.current.name), () -> {
                 if (Theme.current.name.equals(theme.name)) return;
-                SwingUtilities.getWindowAncestor(this).dispose();
-                new App(theme, Language.current).open();
-                Config.setConfigValue("app.theme", theme.getFileName());
+                Config.setTheme(theme);
+                App.reopen(theme, Language.current);
                 App.notificationFromKey("accent", 300, "app.notifications.themes.info.switched", theme.name);
             }));
         }

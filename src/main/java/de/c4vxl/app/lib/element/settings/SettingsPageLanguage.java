@@ -61,9 +61,8 @@ public class SettingsPageLanguage extends SettingsPage {
         for (Language language : Config.getLocalLangs()) {
             this.panel.add(createEntry(language.name, Language.current.name.equals(language.name), () -> {
                 if (Language.current.name.equals(language.name)) return;
-                SwingUtilities.getWindowAncestor(this).dispose();
-                new App(Theme.current, language).open();
-                Config.setConfigValue("app.lang", language.file.getName());
+                Config.setLanguage(language);
+                App.reopen(Theme.current, language);
                 App.notificationFromKey("accent", 300, "app.notifications.language.info.switched", language.name);
             }));
         }

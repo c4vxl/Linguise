@@ -38,35 +38,35 @@ public class Main {
         System.out.println("[INFO]: isDevMode: " + isDevMode);
 
         // Load language
-        Language language = Language.current = Config.getOrFallback(
+        Language language = Config.setLanguage(Config.getOrFallback(
                 Language.load(Config.LANGS_DIRECTORY + "/" + Config.getOrSetConfigValue("app.lang", "english.lang")),
                 Config.getLocalLangs(),
                 "language"
-        );
+        ));
         System.out.println("[INFO]: Loaded language: " + language.file.getName());
 
         // Load theme
-        Theme theme = Theme.current = Config.getOrFallback(
+        Theme theme = Config.setTheme(Config.getOrFallback(
                 Theme.fromFile(Config.THEMES_DIRECTORY + "/" + Config.getOrSetConfigValue("app.theme", "dark.theme")),
                 Config.getLocalThemes(),
                 "theme"
-        );
+        ));
         assert theme != null: "No theme found!";
         System.out.println("[INFO]: Loaded theme: " + theme.name);
 
         // Load model
-        Model model = Model.current = Config.getOrFallback(
-                Model.fromFile(Config.MODELS_DIRECTORY + "/" + Config.getOrSetConfigValue("app.model", isDevMode ? "__fake__" : "")),
+        String modelName = (String) Config.getOrSetConfigValue("app.model", isDevMode ? "__fake__" : null);
+        Model model = Config.setModel(modelName == null ? null : Config.getOrFallback(
+                Model.fromFile(Config.MODELS_DIRECTORY + "/" + modelName),
                 Config.getLocalModels(),
                 "model"
-        );
+        ));
         if (model != null) {
             model.initialize();
             System.out.println("[INFO]: Loaded model: " + model.name);
         } else
             System.out.println("[INFO]: No model loaded!");
     }
-
 
     /**
      * Loads the default configs from the resources

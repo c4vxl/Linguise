@@ -18,16 +18,8 @@ public class Dropdown extends RoundedPanel {
     public ScrollPane containerPane = new ScrollPane(this.container);
     private Component sep_gap_1, sep_gap_2;
     public int padding, gap, width, height, max_height;
-    private boolean isExpanded = false;
+    public boolean isExpanded = false;
     public String title, expandedTitle;
-
-    /**
-     * Checks if the content panel is visible
-     */
-    public boolean isExpanded() {
-        return Arrays.stream(this.getComponents())
-                .anyMatch(c -> c.equals(this.containerPane));
-    }
 
     /**
      * Create a new Dropdown
@@ -97,8 +89,6 @@ public class Dropdown extends RoundedPanel {
                     collapse();
                 else
                     expand();
-
-                isExpanded = !isExpanded;
             }
         });
 
@@ -186,6 +176,8 @@ public class Dropdown extends RoundedPanel {
      * Collapse the dropdown menu
      */
     public Dropdown collapse() {
+        this.isExpanded = false;
+
         this.remove(this.sep);
         this.remove(this.containerPane);
         this.remove(this.sep_gap_1);
@@ -208,6 +200,8 @@ public class Dropdown extends RoundedPanel {
      * Expand the dropdown menu
      */
     public Dropdown expand() {
+        this.isExpanded = true;
+
         int containerHeight = Arrays.stream(container.getComponents()).map(x -> x.getPreferredSize().height).reduce(Integer::sum).orElse(50);
         this.container.setPreferredSize(new Dimension(width - padding * 2, containerHeight));
         this.container.setMaximumSize(null);

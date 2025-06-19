@@ -7,6 +7,7 @@ import de.c4vxl.app.language.Language;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.FileUtils;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -144,5 +145,58 @@ public class Config {
         }
 
         return element;
+    }
+
+    /**
+     * Set the current model
+     * @param model The model
+     */
+    public static Model setModel(Model model) {
+        // Logging
+        System.out.println("[ACTION]: Set model to " + (model == null ? "None" : model.name));
+
+        // Update config
+        Model.current = model;
+        Config.setConfigValue("app.model", model == null ? null : model.path.replace(Config.MODELS_DIRECTORY + "/", ""));
+
+        // Initialize model
+        if (model != null)
+            model.initialize();
+
+        return model;
+    }
+
+    /**
+     * Set the current theme
+     * @param theme The theme
+     */
+    public static Theme setTheme(Theme theme) {
+        if (theme == null) return null;
+
+        // Logging
+        System.out.println("[ACTION]: Set theme to " + theme.name);
+
+        // Update config
+        Theme.current = theme;
+        Config.setConfigValue("app.theme", theme.getFileName());
+
+        return theme;
+    }
+
+    /**
+     * Set the current language
+     * @param language The language
+     */
+    public static Language setLanguage(Language language) {
+        if (language == null) return null;
+
+        // Logging
+        System.out.println("[ACTION]: Set language to " + language.name);
+
+        // Update config
+        Language.current = language;
+        Config.setConfigValue("app.lang", language.file.getName());
+
+        return language;
     }
 }

@@ -97,6 +97,9 @@ public class Model {
 
         System.out.println("[INFO]: Initializing model: " + this.name);
 
+        if (this.path.equals("__fake__"))
+            return true;
+
         String content = FileUtils.readContent(this.path, null); // Fallback is null
         if (content == null || content.isEmpty()) { // If file doesn't exist or isn't readable
             App.notificationFromKey("danger", 300, "app.notifications.models.error.empty_file", this.file.getName());
@@ -159,10 +162,10 @@ public class Model {
      * @param path The path to the model
      */
     public static Model fromFile(String path) {
-        String filename = Path.of(path).getFileName().toString();
-        if (filename.equals(getFakeModel(1).path))
-            return Model.fakeModel;
+        if (!Path.of(path).toFile().isFile())
+            return null;
 
+        String filename = Path.of(path).getFileName().toString();
         if (filename.equals("__fake__"))
             return getFakeModel(1);
 

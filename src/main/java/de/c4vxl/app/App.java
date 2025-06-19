@@ -37,7 +37,7 @@ public class App extends Window {
     public MessagePanel messagePanel;
     public ModelDropdown modelDropdown;
     public NotificationPanel notificationPanel;
-    private Settings settings;
+    public Settings settings;
     private boolean isInSettings = false;
     private final JLabel welcomeLogo;
 
@@ -269,5 +269,20 @@ public class App extends Window {
             this.chatBar.stopHandling();
         });
         generationThread.start();
+    }
+
+    /**
+     * Opens a new instance of App and closes the current one
+     * @param theme The new theme
+     * @param language The new language
+     */
+    public static void reopen(Theme theme, Language language) {
+        if (theme == null || language == null)
+            return;
+
+        if (App.instance != null)
+            App.instance.close();
+
+        new App(theme, language).open();
     }
 }
