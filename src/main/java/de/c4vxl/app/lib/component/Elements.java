@@ -39,7 +39,14 @@ public class Elements {
      * @param icon The icon
      */
     public static JLabel iconButton(ImageIcon icon) {
-        JLabel label = new JLabel(icon);
+        JLabel label = new JLabel(icon) {
+            @Override
+            public JToolTip createToolTip() {
+                Tooltip tip = new Tooltip(Theme.current.text, Theme.current.accent.darker());
+                tip.setComponent(this);
+                return tip;
+            }
+        };
         label.setSize(label.getPreferredSize());
         label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return label;

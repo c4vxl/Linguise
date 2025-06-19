@@ -89,9 +89,9 @@ public class App extends Window {
         try { color = (Color) Theme.current.getClass().getField(colorName).get(Theme.current); }
         catch (Exception e) { color = Theme.current.accent; }
 
-        String message = Arrays.asList(new String[]{
+        String message = Arrays.stream(new String[]{
                 "app.notifications.language.error.no_translation" // would cause stack overflow if not present in a language
-        }).contains(translationKey) ? translationKey // check for "banned" keys
+        }).anyMatch(x -> Arrays.asList(translationArgs).contains(x)) ? translationKey // check for "banned" keys
                         : Language.current.get(translationKey, translationArgs);
 
         App.instance.notificationPanel.addMessage(message, color, time);
@@ -163,13 +163,11 @@ public class App extends Window {
         this.content.add(this.modelDropdown);
         this.content.add(new Line(1, 45, Theme.current.accent).position(modelDropdown.getX() + modelDropdown.getWidth() + 40, 18));
         this.content.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/create.png", 45, Theme.current.text_1)))
+                .tooltip(Language.current.get("app.tooltip.new_chat"))
                 .onClick(this::reset).pos(modelDropdown.getX() + modelDropdown.getWidth() + 45 + 30, 17).get());
         this.content.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/settings.png", 45, Theme.current.text_1)))
+                        .tooltip(Language.current.get("app.tooltip.settings_open"))
                         .onClick(this::openSettings).pos(modelDropdown.getX() + modelDropdown.getWidth() + 45 + 45 + 30, 17).get());
-
-        // Option buttons
-
-
 
         // Center/Content
         this.add(this.content);

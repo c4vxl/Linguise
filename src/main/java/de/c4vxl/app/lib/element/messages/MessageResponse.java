@@ -1,14 +1,18 @@
 package de.c4vxl.app.lib.element.messages;
 
+import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.lib.component.Tooltip;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Resource;
+import de.c4vxl.app.util.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -43,6 +47,12 @@ public class MessageResponse extends RoundedPanel {
         );
         this.update();
         return this;
+    }
+
+    public String getText() {
+        return this.text.getText()
+                .replace("<html><div style='width: 655px; font-family: Inter; font-weight: 100; font-size: 11px;'>", "")
+                .replace("</div></html>", "");
     }
 
     public MessageResponse complete(String info) {
@@ -91,9 +101,19 @@ public class MessageResponse extends RoundedPanel {
         // Right-aligned button panel
         JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 0));
         buttonPanel.setOpaque(false);
-        buttonPanel.add(createButton("media/copy.png", 22, Language.current.get("chat.message.response.options.copy.tooltip"), () -> System.out.println("Copy")));
-        buttonPanel.add(createButton("media/change.png", 18, Language.current.get("chat.message.response.options.switch.tooltip"), () -> System.out.println("Change")));
-        buttonPanel.add(createButton("media/sound.png", 25, Language.current.get("chat.message.response.options.speak.tooltip"), () -> System.out.println("Speak")));
+        buttonPanel.add(createButton("media/copy.png", 22, Language.current.get("chat.message.response.options.copy.tooltip"), () -> {
+            TextUtils.copyToClipboard(this.getText());
+            App.notificationFromKey("accent", 150, "app.notifications.chat.info.copied");
+            System.out.println("[ACTION]: Copy response to clipboard.");
+        }));
+
+        buttonPanel.add(createButton("media/change.png", 18, Language.current.get("chat.message.response.options.switch.tooltip"), () -> {
+            System.out.println("[ACTION]: Change");
+        }));
+        buttonPanel.add(createButton("media/sound.png", 25, Language.current.get("chat.message.response.options.speak.tooltip"), () -> {
+            TextUtils.narrateText(getText());
+            System.out.println("[ACTION]: Speak out response.");
+        }));
         bottomPanel.add(buttonPanel, BorderLayout.EAST);
 
         return bottomPanel;

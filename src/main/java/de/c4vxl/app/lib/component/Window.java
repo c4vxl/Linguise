@@ -1,6 +1,7 @@
 package de.c4vxl.app.lib.component;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
 
@@ -47,8 +48,10 @@ public class Window extends JFrame {
 
         buttonPanel.setLayout(new GridLayout(1, 2, 10, 10));
 
-        JLabel minim = _create_top_bar_button(Resource.loadIcon("media/minus.png", 20, Theme.current.text_1), "Minumize", () -> this.setState(JFrame.ICONIFIED));
-        JLabel close = _create_top_bar_button(Resource.loadIcon("media/cross.png", 15, Theme.current.text_1), "Close", this::close);
+        JLabel minim = _create_top_bar_button(Resource.loadIcon("media/minus.png", 20, Theme.current.text_1),
+                Language.current.get("window.bar.button.minimize"), () -> this.setState(JFrame.ICONIFIED));
+        JLabel close = _create_top_bar_button(Resource.loadIcon("media/cross.png", 15, Theme.current.text_1),
+                Language.current.get("window.bar.button.close"), this::close);
 
         buttonPanel.add(minim);
         buttonPanel.add(close);

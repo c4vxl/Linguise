@@ -1,9 +1,15 @@
 {
   "app.name": "Linguise",
+  "window.bar.button.close": "Close",
+  "window.bar.button.minimize": "Minimize",
   "chat.info.notice": "Linguise can make mistakes. <b>Consider checking important information!</b>",
   "app.sidebar.history.title": "History",
+  "app.tooltip.new_chat": "New chat (ctrl + N)",
+  "app.tooltip.settings_open": "Open settings (ctrl + K)",
+  "app.tooltip.settings_close": "Close settings (ctrl + K or escape)",
   "chat.buttons.regenerate": "Reload",
   "chat.buttons.share": "Share",
+  "chat.bar.send": "Send",
   "chat.message.prompt.title": "You - <b>$1</b>",
   "chat.message.response.options.copy.tooltip": "Copy message",
   "chat.message.response.options.switch.tooltip": "Regenerate with a different model",
@@ -63,5 +69,7 @@
   "app.notifications.themes.error.invalid_file": "Not a theme file: $1",
   "app.notifications.themes.info.switched": "Switched to $1 theme!",
   "app.notifications.devmode.info.enabled": "Developer mode has been enabled.",
-  "app.notifications.devmode.info.disabled": "Developer mode has been disabled."
+  "app.notifications.devmode.info.disabled": "Developer mode has been disabled.",
+  "app.notifications.chat.info.copied": "Copied to clipboard!",
+  "app.notifications.chat.error.tts_model": "Failed to load the tts model."
 }

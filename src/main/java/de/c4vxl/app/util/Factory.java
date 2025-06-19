@@ -61,6 +61,12 @@ public class Factory<T extends JComponent> {
     public Factory<T> cursor(Cursor cursor) { return apply(e -> e.setCursor(cursor)); }
 
     /**
+     * Sets the tooltip text of the current element
+     * @param tooltip The tooltip text
+     */
+    public Factory<T> tooltip(String tooltip) { return this.apply(e -> e.setToolTipText(tooltip)); }
+
+    /**
      * Set the background color of the element
      * @param color The color
      */

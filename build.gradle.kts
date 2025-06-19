@@ -11,6 +11,6 @@ repositories {
 }
 
 dependencies {
-    implementation("de.c4vxl:jNN:1.0.0")
-    implementation("com.google.code.gson:gson:2.13.1")
+    implementation("de.c4vxl:jNN:1.0.0")               // Used for AI models
+    implementation("com.google.code.gson:gson:2.13.1") // Used for configuration parsing
 }

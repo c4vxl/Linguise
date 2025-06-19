@@ -1,6 +1,7 @@
 package de.c4vxl.app.lib.element.chatbar;
 
 import de.c4vxl.app.Theme;
+import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.Resource;
@@ -32,6 +33,7 @@ public class ChatBar extends JPanel {
         this.add(textField);
 
         this.add(new Factory<>(Elements.iconButton(Resource.loadIcon("media/send.png", 40, Theme.current.accent)))
+                .tooltip(Language.current.get("chat.bar.send"))
                 .onClick(textField::postActionEvent)
                 .posX(getWidth() - 45).centerY(this).get());
     }

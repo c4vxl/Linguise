@@ -6,6 +6,7 @@ import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Resource;
+import de.c4vxl.app.util.TextUtils;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
