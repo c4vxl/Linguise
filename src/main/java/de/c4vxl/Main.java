@@ -7,14 +7,13 @@ import de.c4vxl.app.language.Language;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Resource;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class Main {
     public static void main(String[] args) {
         // Info logging
         System.out.println("[INFO]: Appdata path: " + Config.APP_DIRECTORY);
-        System.out.println("[INFO]: Models path: " + Config.MODELS_DIRECTORY);
-        System.out.println("[INFO]: Themes path: " + Config.THEMES_DIRECTORY);
-        System.out.println("[INFO]: Languages path: " + Config.LANGS_DIRECTORY);
-        System.out.println("[INFO]: Histories path: " + Config.HISTORIES_DIRECTORY);
 
         // Load defaults
         loadDefaults("theme", "themes/", Config.THEMES_DIRECTORY, false);
@@ -33,6 +32,9 @@ public class Main {
      * Loads the data from the config file
      */
     private static void loadConfig() {
+        // Load environment variables
+        loadEnvs();
+
         // Load dev-mode
         boolean isDevMode = ((boolean) Config.getOrSetConfigValue("app.isdev", false));
         System.out.println("[INFO]: isDevMode: " + isDevMode);
@@ -66,6 +68,46 @@ public class Main {
             System.out.println("[INFO]: Loaded model: " + model.name);
         } else
             System.out.println("[INFO]: No model loaded!");
+    }
+
+    /**
+     * Loads the environment variables from the config
+     */
+    @SuppressWarnings("unchecked")
+    private static void loadEnvs() {
+        LinkedHashMap<String, String> env = (LinkedHashMap<String, String>) Config.getConfigValue("env", Map.class);
+        env = env == null ? new LinkedHashMap<>() : env;
+
+        // Get config
+        Config.MODELS_DIRECTORY = env.getOrDefault("models_dir", Config.MODELS_DIRECTORY);
+        Config.MODEL_FILE_EXTENSION = env.getOrDefault("models_ext", Config.MODEL_FILE_EXTENSION);
+        Config.THEMES_DIRECTORY = env.getOrDefault("themes_dir", Config.THEMES_DIRECTORY);
+        Config.THEME_FILE_EXTENSION = env.getOrDefault("themes_ext", Config.THEME_FILE_EXTENSION);
+        Config.LANGS_DIRECTORY = env.getOrDefault("langs_dir", Config.LANGS_DIRECTORY);
+        Config.LANG_FILE_EXTENSION = env.getOrDefault("langs_ext", Config.LANG_FILE_EXTENSION);
+        Config.HISTORIES_DIRECTORY = env.getOrDefault("chats_dir", Config.HISTORIES_DIRECTORY);
+        Config.HISTORY_FILE_EXTENSION = env.getOrDefault("chats_ext", Config.HISTORY_FILE_EXTENSION);
+
+        // Save config
+        env.put("models_dir", Config.MODELS_DIRECTORY);
+        env.put("models_ext", Config.MODEL_FILE_EXTENSION);
+        env.put("themes_dir", Config.THEMES_DIRECTORY);
+        env.put("themes_ext", Config.THEME_FILE_EXTENSION);
+        env.put("langs_dir", Config.LANGS_DIRECTORY);
+        env.put("langs_ext", Config.LANG_FILE_EXTENSION);
+        env.put("chats_dir", Config.HISTORIES_DIRECTORY);
+        env.put("chats_ext", Config.HISTORY_FILE_EXTENSION);
+        Config.setConfigValue("env", env);
+
+        // Log env
+        System.out.println("[INFO]: Models path: " + Config.MODELS_DIRECTORY);
+        System.out.println("[INFO]: Model file extension: " + Config.MODEL_FILE_EXTENSION);
+        System.out.println("[INFO]: Themes path: " + Config.THEMES_DIRECTORY);
+        System.out.println("[INFO]: Theme file extension: " + Config.THEME_FILE_EXTENSION);
+        System.out.println("[INFO]: Languages path: " + Config.LANGS_DIRECTORY);
+        System.out.println("[INFO]: Language file extension: " + Config.LANG_FILE_EXTENSION);
+        System.out.println("[INFO]: Histories path: " + Config.HISTORIES_DIRECTORY);
+        System.out.println("[INFO]: History file extension: " + Config.HISTORY_FILE_EXTENSION);
     }
 
     /**

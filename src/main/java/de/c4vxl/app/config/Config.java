@@ -25,6 +25,7 @@ public class Config {
     public static String MODEL_FILE_EXTENSION = ".mdl";                    // File extension for model files
     public static String THEME_FILE_EXTENSION = ".theme";                  // File extension for theme files
     public static String LANG_FILE_EXTENSION = ".lang";                    // File extension for language files
+    public static String HISTORY_FILE_EXTENSION = ".chat";                 // File extension for history files
 
     /**
      * Gets the content of the config file
