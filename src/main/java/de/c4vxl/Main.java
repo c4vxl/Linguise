@@ -7,6 +7,7 @@ import de.c4vxl.app.language.Language;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Resource;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -75,7 +76,7 @@ public class Main {
      */
     @SuppressWarnings("unchecked")
     private static void loadEnvs() {
-        LinkedHashMap<String, String> env = (LinkedHashMap<String, String>) Config.getConfigValue("env", Map.class);
+        LinkedHashMap<String, String> env = (LinkedHashMap<String, String>) Config.getConfigValue("env", HashMap.class);
         env = env == null ? new LinkedHashMap<>() : env;
 
         // Get config

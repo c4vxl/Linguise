@@ -6,10 +6,15 @@ import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Button;
 import de.c4vxl.app.lib.component.Elements;
+import de.c4vxl.app.lib.component.RoundedPanel;
 import de.c4vxl.app.model.Model;
+import de.c4vxl.app.util.Factory;
+import de.c4vxl.app.util.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Path;
 
 public class SettingsPageDev extends SettingsPage {
     public static boolean isDevMode;
@@ -20,33 +25,60 @@ public class SettingsPageDev extends SettingsPage {
                 isDevMode = !isDevMode;
                 reloadDevModeButton();
 
-                Model.current = isDevMode && Model.current == null ? Model.getFakeModel(1) : // if devmode and no model -> fake model
-                        !isDevMode && Model.current == Model.getFakeModel(1) ? null :        // if not devmode and fake model -> no model
-                        Model.current;                                                             // else keep model
+                // Reload settings
+                Config.setModel(
+                        isDevMode && Model.current == null ? Model.getFakeModel(1) :            // if devmode and no model -> fake model
+                                !isDevMode && Model.current == Model.getFakeModel(1) ? null :   // if not devmode and fake model -> no model
+                                        Model.current                                                 // else keep model
+                );
 
-                // Save to config
-                Config.setConfigValue("app.model", Model.current != null ? Model.current.path.replace(Config.MODELS_DIRECTORY + "/", "") : null);
+                // Reopen app
+                App.reopen(Theme.current, Language.current);
 
-                new App(Theme.current, Language.current).open();
-
+                // Show notification
                 App.notificationFromKey(
                         isDevMode ? "accent" : "danger",
                         300,
-                        "app.notifications.devmode.info." + (isDevMode ? "enabled" : "disabled")
-                );
+                        "app.notifications.devmode.info." + (isDevMode ? "enabled" : "disabled"));
             });
 
     @Override
     public void init() {
+        int maxWidth = getWidth() - 200;
         // Title
-        this.add(Elements.title(Language.current.get("app.settings.dev.title"), this.getWidth() - 200), BorderLayout.NORTH);
+        this.add(Elements.title(Language.current.get("app.settings.dev.title"), maxWidth), BorderLayout.NORTH);
 
-        this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.devmode.text"), this.getWidth() - 200));
-        this.textPanel.add(Box.createVerticalStrut(5));
-
+        // Devmode button
         isDevMode = (boolean) Config.getOrSetConfigValue("app.isdev", false);
+        this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.devmode.text"), maxWidth));
+        this.textPanel.add(Box.createVerticalStrut(5));
         this.textPanel.add(this.devmodeButton);
         reloadDevModeButton();
+
+        // Only display in devmode
+        if (isDevMode) {
+            this.textPanel.add(Box.createVerticalStrut(30)); // Gap
+
+            // Environment variables
+            this.textPanel.add(Elements.title(Language.current.get("app.settings.dev.env_title"), maxWidth)); // title
+            this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.models_dir", Config.MODELS_DIRECTORY), maxWidth));
+            this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.models_ext", Config.MODEL_FILE_EXTENSION), maxWidth));
+            this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.themes_dir", Config.THEMES_DIRECTORY), maxWidth));
+            this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.themes_ext", Config.THEME_FILE_EXTENSION), maxWidth));
+            this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.langs_dir", Config.LANGS_DIRECTORY), maxWidth));
+            this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.langs_ext", Config.LANG_FILE_EXTENSION), maxWidth));
+            this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.chats_dir", Config.HISTORIES_DIRECTORY), maxWidth));
+            this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.chats_ext", Config.HISTORY_FILE_EXTENSION), maxWidth));
+
+            this.textPanel.add(Elements.hollowButton().withLabel(Language.current.get("app.settings.dev.open_config")).withAction(e -> {
+                try {
+                    Desktop.getDesktop().browse(Path.of(Config.CONFIG_FILE).toUri());
+                } catch (IOException ex) {
+                    App.notificationFromKey("danger", 300, "app.notifications.global.error.file_open_fail", Path.of(Config.CONFIG_FILE).getFileName().toString());
+                    System.out.println("[ERROR]: Couldn't open config file!");
+                }
+            }));
+        }
     }
 
     private void reloadDevModeButton() {
