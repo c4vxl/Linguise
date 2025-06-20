@@ -3,11 +3,15 @@ package de.c4vxl.app.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import de.c4vxl.app.App;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
+import java.net.*;
+import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 public class FileUtils {
     /**
@@ -43,15 +47,7 @@ public class FileUtils {
      * @param fallback A fallback string if reading goes wrong
      */
     public static String readContent(String path, String fallback) {
-        StringBuilder content = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content.append(line);
-            }
-        } catch (IOException e) { return fallback; }
-
-        return content.toString();
+        return readContent(path, fallback, percentage -> {});
     }
 
     /**
@@ -113,7 +109,7 @@ public class FileUtils {
     public static String fileSize(String path) {
         File file = new File(path);
         if (!file.isFile())
-            return "0B";
+            return "---";
 
         return toReadable(file.length());
     }
@@ -132,4 +128,56 @@ public class FileUtils {
         }
         return String.format("%.1f %s", size, units[i]);
     }
+
+    /**
+     * Reads the content of a file
+     * @param path The path to the file
+     * @param fallback A fallback string if reading goes wrong
+     * @param onUpdate Pass the handler for updates. The current percentage will be passed!
+     */
+    public static String readContent(String path, String fallback, Consumer<Integer> onUpdate) {
+        File file = new File(path);
+        if (!file.isFile()) return fallback;
+        long totalBytes = file.length(), bytesRead = 0;
+
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            int ch;
+            while ((ch = reader.read()) != -1) {
+                content.append((char) ch);
+                bytesRead++;
+                onUpdate.accept((int) (100L * bytesRead / totalBytes));
+            }
+        } catch (IOException e) { return fallback; }
+
+        return content.toString();
+    }
+
+    /**
+     * Downloads a file from an url into a local file
+     * @param url The url to the file
+     * @param outPath The output path the file should be downloaded into
+     * @param onUpdate Pass the handler for updates. The current percentage will be passed!
+     */
+    public static void downloadFile(String url, String outPath, Consumer<Integer> onUpdate) {
+        try (BufferedInputStream inputStream = new BufferedInputStream(new URI(url).toURL().openStream());
+             FileOutputStream outputStream = new FileOutputStream(outPath)) {
+
+            int fileSize = new URI(url).toURL().openConnection().getContentLength();
+
+            byte[] dataBuffer = new byte[1024];
+            int bytesRead, totalBytesRead = 0;
+
+            while ((bytesRead = inputStream.read(dataBuffer, 0, 1024)) != -1) {
+                outputStream.write(dataBuffer, 0, bytesRead);
+                totalBytesRead += bytesRead;
+                onUpdate.accept((int) (100L * totalBytesRead / fileSize));
+            }
+
+        } catch (Exception e) {
+            App.notificationFromKey("danger", 200, "app.notifications.global.error.download_fail", url);
+            System.out.println("[ERROR]: Error while downloading " + url);
+        }
+    }
+
 }

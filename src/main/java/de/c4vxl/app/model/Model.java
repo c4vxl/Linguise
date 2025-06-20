@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import de.c4vxl.app.App;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
+import de.c4vxl.app.lib.element.modal.ProgressbarWindow;
 import de.c4vxl.app.util.ClassUtils;
 import de.c4vxl.app.util.FileUtils;
 import de.c4vxl.app.util.GenerationUtils;
@@ -102,22 +103,53 @@ public class Model {
         if (this.path.equals("__fake__"))
             return true;
 
-        String content = FileUtils.readContent(this.path, null); // Fallback is null
+        // Create progressbar window
+        ProgressbarWindow progressBar = new ProgressbarWindow(Language.current.get("app.models.popup.loading.reading_label"));
+        progressBar.open();
+
+        if (App.instance != null)
+            App.instance.setVisible(false);
+
+        // Read file content and show in bar
+        String content = FileUtils.readContent(this.path, null, percentage -> { // Fallback is null
+            progressBar.setValue(percentage);
+            if (percentage == 100) {
+                progressBar.setValue(0);
+                progressBar.setLabel(Language.current.get("app.models.popup.loading.interpreting_file"));
+            }
+        });
+
         if (content == null || content.isEmpty()) { // If file doesn't exist or isn't readable
             App.notificationFromKey("danger", 300, "app.notifications.models.error.empty_file", this.file.getName());
             System.out.println("[ERROR]: Not a valid model: " + path);
+            progressBar.close();
             return false;
         }
+
+        // Fake a stream while interpreting file
+        Thread progressThread = GenerationUtils.generateFakePercentageStream((int) (this.file.getTotalSpace() * 10), percentage -> {
+            progressBar.setValue(percentage);
+            if (percentage == 100)
+                progressBar.close();
+        });
+        progressThread.start();
 
         // Get pipeline
         TextGenerationPipeline pipeline = pipelineFromState(FileUtils.fromJSON(content, new TypeToken<>() {}));
         if (pipeline == null) {
             App.notificationFromKey("danger", 300, "app.notifications.models.error.invalid_pipeline", this.file.getName());
             System.out.println("[ERROR]: Invalid pipeline!");
+            progressBar.close();
+            progressThread.interrupt();
             return false;
         }
 
         this.pipeline = pipeline;
+        progressThread.interrupt();
+
+        progressBar.close();
+        if (App.instance != null)
+            App.instance.setVisible(true);
 
         return true;
     }

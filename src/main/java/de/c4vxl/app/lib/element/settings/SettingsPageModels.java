@@ -6,6 +6,8 @@ import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.lib.component.RoundedPanel;
+import de.c4vxl.app.lib.element.modal.ProgressbarWindow;
+import de.c4vxl.app.lib.element.modal.TextPromptWindow;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.FileUtils;
@@ -42,8 +44,31 @@ public class SettingsPageModels extends SettingsPage {
                     reload();
                 }));
         buttonPanel.add(Elements.hollowButton()
-                .withLabel(Language.current.get("app.settings.models.button.1"))
-                .withAction(e -> System.out.println("Loading custom model [url]...")));
+                .withLabel(Language.current.get("app.settings.models.button.2"))
+                .withAction(e -> {
+                    System.out.println("[ACTION]: Loading custom model [url]");
+
+                    new TextPromptWindow(
+                            Language.current.get("app.settings.models.popup.url.title"),
+                            Language.current.get("app.settings.models.popup.url.subtitle"),
+                            (url) -> {
+                                String name = Path.of(url).getFileName().toString().replace(Config.MODEL_FILE_EXTENSION, "")
+                                        + Config.MODEL_FILE_EXTENSION;
+
+                                System.out.println("[ACTION]: Downloading model: " + name);
+
+                                // Download file
+                                ProgressbarWindow progressBar = new ProgressbarWindow(Language.current.get("app.settings.models.popup.download.label"));
+                                progressBar.open();
+                                FileUtils.downloadFile(url, Config.MODELS_DIRECTORY + "/" + name, percentage -> {
+                                    progressBar.setValue(percentage);
+
+                                    if (percentage == 100)
+                                        progressBar.close();
+                                });
+                            }
+                    ).open();
+                }));
 
         reload();
     }

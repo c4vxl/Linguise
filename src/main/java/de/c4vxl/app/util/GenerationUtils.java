@@ -27,4 +27,24 @@ public class GenerationUtils {
             onDone.run();
         });
     }
+
+    /**
+     * Generates a fake progress bar stream
+     * @param totalTime The total time it should take (in ms)
+     * @param onUpdate The update handler
+     */
+    public static Thread generateFakePercentageStream(int totalTime, Consumer<Integer> onUpdate) {
+        return new Thread(() -> {
+            for (int i = 0; i < 100; i++) {
+                onUpdate.accept(i);
+
+                // Sleep
+                int sleepTime = (int) (totalTime * (AnimationUtils.easeInOutCubic(i / 100.0) -
+                        AnimationUtils.easeInOutCubic((i + 1) / 100.0)));
+                try { Thread.sleep(sleepTime); }
+                catch (InterruptedException ignored) { }
+            }
+        });
+    }
+
 }
