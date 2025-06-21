@@ -39,11 +39,6 @@ public class SettingsPageLanguage extends SettingsPage {
                     reload();
                 }));
 
-        // TODO: Implement redirect
-        buttonPanel.add(Elements.hollowButton()
-                .withLabel(Language.current.get("app.settings.language.button.2"))
-                .withAction(e -> System.out.println("Redirecting to contribution...")));
-
         reload();
     }
 
