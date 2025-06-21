@@ -51,7 +51,7 @@ public class Sidebar extends JPanel {
                 )).font(Theme.current.font.deriveFont(Font.BOLD)).get());
 
 
-        this.history = new Factory<>(new JPanel()).size(getWidth() - 40, getHeight() - 160).pos(10, 150)
+        this.history = new Factory<>(new JPanel()).size(getWidth() - 60, getHeight() - 160).pos(10, 150)
                 .opaque(false).get();
 
         this.hPane = new ScrollPane(this.history);

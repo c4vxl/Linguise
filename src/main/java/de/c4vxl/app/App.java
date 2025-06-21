@@ -254,6 +254,7 @@ public class App extends Window {
 
         // Start handler
         this.chatBar.startHandling();
+        this.chatOptionButtons.startGeneration();
         startChat();
 
         // Display prompt
@@ -266,6 +267,7 @@ public class App extends Window {
             this.messagePanel.completeLastResponse(model.name, Duration.ofNanos(System.nanoTime() - start).getSeconds());
             this.chat = this.messagePanel.getName();
             this.sidebar.reload();
+            this.chatOptionButtons.stopGeneration();
             this.chatBar.stopHandling();
         });
         generationThread.start();

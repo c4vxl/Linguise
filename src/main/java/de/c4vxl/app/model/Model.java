@@ -43,13 +43,17 @@ public class Model {
         // Set generator
         this.generator = generator != null ? generator : (prompt, handler, onDone) -> new Thread(() -> {
             ArrayList<Integer> tokens = new ArrayList<>();
-            pipeline.forward(prompt, pipeline.newTokens, (token, idx) -> {
-                if (token == pipeline.tokenizer.eosTokenID()) return; // make sure to stop on eos
+            try {
+                pipeline.forward(prompt, pipeline.newTokens, (token, idx) -> {
+                    if (token == pipeline.tokenizer.eosTokenID()) return; // make sure to stop on eos
 
-                tokens.add(token);
-                handler.accept(pipeline.tokenizer.decode_(tokens.toArray(Integer[]::new)));
-            });
-            onDone.run();
+                    tokens.add(token);
+                    handler.accept(pipeline.tokenizer.decode_(tokens.toArray(Integer[]::new)));
+                });
+            } catch (Exception ignored) {}
+            finally {
+                onDone.run();
+            }
         });
     }
 

@@ -103,6 +103,23 @@ public class FileUtils {
     }
 
     /**
+     * Opens a directory dialog
+     * @param startPath The path to open initially
+     */
+    public static File openDirDialog(String startPath) {
+        JFileChooser fileChooser = new JFileChooser(startPath);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            System.out.println("[ACTION]: Got dir from user: " + file.getAbsolutePath());
+            return file;
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the size of a file in a human-readable format
      * @param path The path to the file
      */

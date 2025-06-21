@@ -61,7 +61,6 @@ public class SettingsPageModels extends SettingsPage {
                                 ProgressbarWindow progressBar = new ProgressbarWindow(Language.current.get("app.settings.models.popup.download.label"));
                                 SwingUtilities.invokeLater(progressBar::open);
                                 FileUtils.downloadFile(url, Config.MODELS_DIRECTORY + "/" + name, percentage -> {
-                                    System.out.println(percentage);
                                     progressBar.setValue(percentage);
 
                                     if (percentage == 100) {

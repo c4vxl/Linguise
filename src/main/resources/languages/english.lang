@@ -7,13 +7,14 @@
   "app.tooltip.new_chat": "New chat (ctrl + N)",
   "app.tooltip.settings_open": "Open settings (ctrl + K)",
   "app.tooltip.settings_close": "Close settings (ctrl + K or escape)",
-  "chat.buttons.regenerate": "Reload",
+  "chat.buttons.regenerate": "Regenerate",
   "chat.buttons.share": "Share",
+  "chat.buttons.stop_generation": "Stop generating",
   "chat.bar.send": "Send",
   "app.global.submit": "Submit",
   "chat.message.prompt.title": "You - <b>$1</b>",
   "chat.message.response.options.copy.tooltip": "Copy message",
-  "chat.message.response.options.switch.tooltip": "Regenerate with a different model",
+  "chat.message.response.options.regenerate.tooltip": "Regenerate with a different model",
   "chat.message.response.options.speak.tooltip": "Speak out loud",
   "chat.message.response.complete.info": "$1 · Took $2 sec to generate",
   "chat.model.dropdown.expanded": "Select a model",
@@ -80,7 +81,10 @@
   "app.notifications.devmode.info.enabled": "Developer mode has been enabled.",
   "app.notifications.devmode.info.disabled": "Developer mode has been disabled.",
   "app.notifications.chat.info.copied": "Copied to clipboard!",
+  "app.notifications.chat.info.deleted": "Deleted chat '$1'",
+  "app.notifications.chat.info.export_successful": "Successfully exported chat '$1'",
   "app.notifications.chat.error.tts_model": "Failed to load the tts model.",
   "app.notifications.chat.error.load_failed": "Failed to load part of conversation: $1",
-  "app.notifications.chat.info.deleted": "Deleted chat '$1'"
+  "app.notifications.chat.error.export_dir_invalid": "An error occurred while copying chat: Directory not found!",
+  "app.notifications.chat.error.copy_failed": "Exporting the chat failed!"
 }

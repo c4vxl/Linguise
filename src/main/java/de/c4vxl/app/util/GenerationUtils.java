@@ -15,16 +15,17 @@ public class GenerationUtils {
 
         return new Thread(() -> {
             String current = "";
-            for (String part : parts) {
-                current += part;
-                handler.accept(current);
+            try {
+                for (String part : parts) {
+                    current += part;
+                    handler.accept(current);
 
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException e) { return; }
-            }
-
-            onDone.run();
+                    try {
+                        Thread.sleep(delay);
+                    } catch (InterruptedException e) { return; }
+                }
+            } catch (Exception ignored) {}
+            finally { onDone.run(); }
         });
     }
 

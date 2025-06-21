@@ -10,6 +10,7 @@ import de.c4vxl.app.util.FileUtils;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -122,7 +123,8 @@ public class Config {
     public static String[] getLocalChats() {
         return Arrays.stream(listFiles(Config.HISTORIES_DIRECTORY, Config.HISTORY_FILE_EXTENSION))
                 .map(path -> Path.of(path).getFileName().toString())
-                .map(path -> path.substring(0, path.length() - Config.HISTORY_FILE_EXTENSION.length())).toArray(String[]::new);
+                .map(path -> path.substring(0, path.length() - Config.HISTORY_FILE_EXTENSION.length()))
+                .sorted(Comparator.reverseOrder()).toArray(String[]::new);
     }
 
     /**

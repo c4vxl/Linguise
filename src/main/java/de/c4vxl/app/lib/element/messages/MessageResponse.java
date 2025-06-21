@@ -83,6 +83,7 @@ public class MessageResponse extends RoundedPanel {
         return label;
     }
 
+    @SuppressWarnings("SuspiciousListRemoveInLoop")
     private JPanel createBottomPanel(String info) {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setOpaque(false);
@@ -105,8 +106,21 @@ public class MessageResponse extends RoundedPanel {
             System.out.println("[ACTION]: Copy response to clipboard.");
         }));
 
-        buttonPanel.add(createButton("media/change.png", 18, Language.current.get("chat.message.response.options.switch.tooltip"), () -> {
-            System.out.println("[ACTION]: Change");
+        buttonPanel.add(createButton("media/reload.png", 18, Language.current.get("chat.message.response.options.regenerate.tooltip"), () -> {
+            System.out.println("[ACTION]: Regenerating message");
+
+            // Get message panel
+            if (App.instance == null) return;
+            MessagePanel panel = App.instance.messagePanel;
+
+            // Remove messages up to prompt
+            int promptIndex = panel.messages.indexOf(this) - 1;
+            String prompt = ((MessagePrompt) panel.messages.get(promptIndex)).getText();
+            while (panel.messages.size() > promptIndex)
+                panel.messages.removeLast();
+
+            // Regenerate
+            App.instance._handle_chat_bar(prompt);
         }));
         buttonPanel.add(createButton("media/sound.png", 25, Language.current.get("chat.message.response.options.speak.tooltip"), () -> {
             TextUtils.narrateText(getText());
