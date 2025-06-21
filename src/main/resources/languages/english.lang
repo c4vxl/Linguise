@@ -4,6 +4,7 @@
   "window.bar.button.minimize": "Minimize",
   "chat.info.notice": "Linguise can make mistakes. <b>Consider checking important information!</b>",
   "app.sidebar.history.title": "History",
+  "app.sidebar.history.no_elements": "No past chats.",
   "app.tooltip.new_chat": "New chat (ctrl + N)",
   "app.tooltip.settings_open": "Open settings (ctrl + K)",
   "app.tooltip.settings_close": "Close settings (ctrl + K or escape)",

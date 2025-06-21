@@ -71,6 +71,12 @@ public class Sidebar extends JPanel {
             this.history.add(createEntry(name, name.equals(App.instance.chat)));
         }
 
+        if (histories.length == 0) {
+            this.history.add(Box.createVerticalStrut(550));
+            this.history.add(Elements.text("<p style='text-align: center; width: " + (this.history.getWidth() - 35) + "px'>" +
+                    Language.current.get("app.sidebar.history.no_elements") + "</p>", -1));
+        }
+
         this.history.setPreferredSize(new Dimension(this.history.getWidth(), 55 * histories.length));
 
         this.repaint();
