@@ -14,6 +14,22 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+        // Parse arguments
+        for (String arg : args) {
+            arg = arg.toLowerCase();
+            if (arg.startsWith("--app-dir=")) {
+                System.out.println("[INFO]: Overwriting Config.APP_DIRECTORY due to program arguments!");
+                Config.APP_DIRECTORY = arg.replace("--app-dir=", "");
+                Config.reloadArgs();
+            }
+
+            if (arg.startsWith("--help")) {
+                System.out.println("========================= Arguments =========================");
+                System.out.println("[HELP]: --app-dir=<dir>   -   Set the directory the app will store data in.");
+                System.exit(0);
+            }
+        }
+
         // Info logging
         System.out.println("[INFO]: Appdata path: " + Config.APP_DIRECTORY);
 

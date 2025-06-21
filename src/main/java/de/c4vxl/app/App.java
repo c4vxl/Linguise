@@ -60,6 +60,7 @@ public class App extends Window {
                 .borderRadius(20)
                 .layout(null)
                 .withButtons();
+        this.setIconImage(Resource.loadIcon("media/Logo small.png", 300, Theme.current.accent).getImage());
 
         this.welcomeLogo = Elements.iconButton(Resource.loadIcon("media/Logo large.png", 400, Theme.current.accent));
 

@@ -1,19 +1,17 @@
 package de.c4vxl.app.util;
 
+import com.google.gson.reflect.TypeToken;
 import de.c4vxl.app.Theme;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Resource {
     /**
@@ -112,15 +110,30 @@ public class Resource {
     }
 
     /**
+     * Returns the content of a resource file as a string
+     * @param path The path to the resource
+     */
+    public static String readResource(String path) {
+        InputStream stream = Resource.class.getClassLoader().getResourceAsStream(path);
+        if (stream == null) return null;
+
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+            int ch;
+            while ((ch = reader.read()) != -1) content.append((char) ch);
+        } catch (IOException e) { return null; }
+
+        return content.toString();
+    }
+
+    /**
      * Get a list of all resources in a path
      * @param path The path/directory
      */
     public static String[] listResources(String path) {
-        try {
-            return Arrays.stream(Objects.requireNonNull(new File(Objects.requireNonNull(Resource.class.getClassLoader().getResource(path)).toURI())
-                    .listFiles())).map(File::getName).toArray(String[]::new);
-        } catch (URISyntaxException e) {
-            return new String[0];
-        }
+        HashMap<String, ArrayList<String>> data = FileUtils.fromJSON(Resource.readResource("resources.json"), new TypeToken<>() {});
+        if (data == null) return new String[0];
+
+        return data.getOrDefault(path, new ArrayList<>()).toArray(String[]::new);
     }
 }

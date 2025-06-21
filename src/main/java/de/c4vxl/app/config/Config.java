@@ -19,7 +19,7 @@ public class Config {
     public static String GITHUB_URL = "https://github.com/c4vxl/Linguise/";
 
     // Global paths
-    public static String APP_DIRECTORY = "./appdata";                      // Path to the app's configuration directory
+    public static String APP_DIRECTORY = "./linguise-data";                // Path to the app's configuration directory
     public static String MODELS_DIRECTORY = APP_DIRECTORY + "/models";     // Path to the models
     public static String THEMES_DIRECTORY = APP_DIRECTORY + "/themes";     // Path to the themes
     public static String LANGS_DIRECTORY = APP_DIRECTORY + "/langs";       // Path to the languages
@@ -29,6 +29,21 @@ public class Config {
     public static String THEME_FILE_EXTENSION = ".theme";                  // File extension for theme files
     public static String LANG_FILE_EXTENSION = ".lang";                    // File extension for language files
     public static String HISTORY_FILE_EXTENSION = ".chat";                 // File extension for history files
+
+    /**
+     * Reloads the default arguments
+     */
+    public static void reloadArgs() {
+        Config.MODELS_DIRECTORY = APP_DIRECTORY + "/models";
+        Config.THEMES_DIRECTORY = APP_DIRECTORY + "/themes";
+        Config.LANGS_DIRECTORY = APP_DIRECTORY + "/langs";
+        Config.HISTORIES_DIRECTORY = APP_DIRECTORY + "/chats";
+        Config.CONFIG_FILE = APP_DIRECTORY + "/app.lconf";
+        Config.MODEL_FILE_EXTENSION = ".mdl";
+        Config.THEME_FILE_EXTENSION = ".theme";
+        Config.LANG_FILE_EXTENSION = ".lang";
+        Config.HISTORY_FILE_EXTENSION = ".chat";
+    }
 
     /**
      * Gets the content of the config file
