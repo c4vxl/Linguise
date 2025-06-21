@@ -51,6 +51,11 @@ public class SettingsPageTheme extends SettingsPage {
         this.reload();
     }
 
+    @Override
+    public Integer calculatePanelHeight(JPanel panel) {
+        return Arrays.stream(panel.getComponents()).map(x -> Math.max(x.getHeight(), x.getPreferredSize().height) + 5).reduce(Integer::sum).orElse(0) / 5;
+    }
+
     /**
      * Reloads all themes
      */

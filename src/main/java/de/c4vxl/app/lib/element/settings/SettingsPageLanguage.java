@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class SettingsPageLanguage extends SettingsPage {
     @Override
@@ -40,6 +41,11 @@ public class SettingsPageLanguage extends SettingsPage {
                 }));
 
         reload();
+    }
+
+    @Override
+    public Integer calculatePanelHeight(JPanel panel) {
+        return Arrays.stream(panel.getComponents()).map(x -> Math.max(x.getHeight(), x.getPreferredSize().height) + 5).reduce(Integer::sum).orElse(0) / 3;
     }
 
     /**
