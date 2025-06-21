@@ -83,7 +83,7 @@ public class MessageResponse extends RoundedPanel {
         return label;
     }
 
-    @SuppressWarnings("SuspiciousListRemoveInLoop")
+    @SuppressWarnings({"SuspiciousListRemoveInLoop", "SuspiciousMethodCalls"})
     private JPanel createBottomPanel(String info) {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setOpaque(false);
@@ -118,6 +118,8 @@ public class MessageResponse extends RoundedPanel {
             String prompt = ((MessagePrompt) panel.messages.get(promptIndex)).getText();
             while (panel.messages.size() > promptIndex)
                 panel.messages.removeLast();
+            while (panel.chat.size() > (promptIndex + 2) / 2)
+                panel.chat.remove(panel.chat.keySet().stream().sorted().toArray()[panel.chat.size() - 1]);
 
             // Regenerate
             App.instance._handle_chat_bar(prompt);

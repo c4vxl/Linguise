@@ -45,6 +45,11 @@ public class ChatOptionButtons extends JPanel {
 
         });
 
+        // Make button take up full width
+        button.setSize(this.getWidth() - 30, button.getHeight());
+        button.setPreferredSize(button.getSize());
+
+        // Change colors
         button.setForeground(Theme.current.danger);
         button.background = Theme.current.danger;
         button.pressed = Theme.current.danger.darker();

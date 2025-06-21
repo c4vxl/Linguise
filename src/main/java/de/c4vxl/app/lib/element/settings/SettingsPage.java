@@ -13,7 +13,7 @@ public abstract class SettingsPage extends JPanel {
     }
 
     public Integer calculateTextPanelHeight(JPanel panel) {
-        return Arrays.stream(panel.getComponents()).map(x -> Math.max(x.getHeight(), x.getPreferredSize().height) + 5).reduce(Integer::sum).orElse(0);
+        return Arrays.stream(panel.getComponents()).map(x -> x.getHeight() + 5).reduce(Integer::sum).orElse(0);
     }
 
     public JPanel buttonPanel = new Factory<>(new JPanel(new FlowLayout(FlowLayout.LEFT))).opaque(false).get();

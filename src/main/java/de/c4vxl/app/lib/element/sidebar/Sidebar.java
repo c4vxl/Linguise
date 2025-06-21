@@ -79,6 +79,10 @@ public class Sidebar extends JPanel {
 
         this.history.setPreferredSize(new Dimension(this.history.getWidth(), 55 * histories.length));
 
+        // Update z-index
+        if (this.getParent() != null)
+            this.getParent().setComponentZOrder(this, 0);
+
         this.repaint();
         this.revalidate();
     }
@@ -91,7 +95,10 @@ public class Sidebar extends JPanel {
                 .hoverAnimation(isSelected ? Theme.current.background_1 : Theme.current.background, isSelected ? Theme.current.background_1 : Theme.current.background_3, false)
                 .layout(null).cursor(Cursor.HAND_CURSOR)
                 .border(BorderFactory.createEmptyBorder(0, 10, 0, 0))
-                .onClick(() -> new Thread(() -> App.instance.setChat(name)).start())
+                .onClick(() -> new Thread(() -> {
+                    App.instance.startChat();
+                    SwingUtilities.invokeLater(() -> App.instance.setChat(name));
+                }).start())
                 .get();
 
         JLabel deleteButton = new Factory<>(Elements.iconButton(Resource.loadIcon("media/trash.png", 25, Theme.current.danger)))
