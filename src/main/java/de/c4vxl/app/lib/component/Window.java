@@ -149,6 +149,12 @@ public class Window extends JFrame {
      */
     public Window open() {
         this.setVisible(true);
+        this.repaint();
+        this.revalidate();
+        SwingUtilities.invokeLater(() -> {
+            this.repaint();
+            this.revalidate();
+        });
         return this;
     }
 

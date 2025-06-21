@@ -35,6 +35,23 @@ public class ProgressbarWindow extends Window {
 
         this.progressBar.setLocation(10, 140 + 20 + 10);
         this.add(this.progressBar);
+
+        reload();
+    }
+
+    /**
+     * Reloads and repaints
+     */
+    public void reload() {
+        this.label.revalidate();
+        this.label.repaint();
+
+        this.progressBar.revalidate();
+        this.progressBar.repaint();
+
+        this.revalidate();
+        this.repaint();
+
     }
 
     /**
@@ -45,6 +62,7 @@ public class ProgressbarWindow extends Window {
         this.label.setText(label);
         this.label.setSize(this.label.getPreferredSize());
         new Factory<>(this.label).centerX(this);
+        reload();
         return this;
     }
 
@@ -54,13 +72,7 @@ public class ProgressbarWindow extends Window {
      */
     public ProgressbarWindow setValue(int percent) {
         this.progressBar.setSize(((this.getWidth() - 20) / 100) * percent, this.progressBar.getHeight());
+        reload();
         return this;
-    }
-
-    public static void main(String[] args) {
-        Theme.current = Theme.fromFile("appdata/themes/moonlight.theme");
-        new ProgressbarWindow("hey")
-                .setValue(25)
-                .open();
     }
 }

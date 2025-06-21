@@ -12,6 +12,7 @@ import de.c4vxl.models.type.TextGenerationModel;
 import de.c4vxl.pipeline.TextGenerationPipeline;
 import de.c4vxl.tokenizers.type.Tokenizer;
 
+import javax.swing.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -105,7 +106,7 @@ public class Model {
 
         // Create progressbar window
         ProgressbarWindow progressBar = new ProgressbarWindow(Language.current.get("app.models.popup.loading.reading_label"));
-        progressBar.open();
+        SwingUtilities.invokeLater(progressBar::open);
 
         if (App.instance != null)
             App.instance.setVisible(false);
@@ -122,15 +123,15 @@ public class Model {
         if (content == null || content.isEmpty()) { // If file doesn't exist or isn't readable
             App.notificationFromKey("danger", 300, "app.notifications.models.error.empty_file", this.file.getName());
             System.out.println("[ERROR]: Not a valid model: " + path);
-            progressBar.close();
+            SwingUtilities.invokeLater(progressBar::close);
             return false;
         }
 
         // Fake a stream while interpreting file
-        Thread progressThread = GenerationUtils.generateFakePercentageStream((int) (this.file.getTotalSpace() * 10), percentage -> {
+        Thread progressThread = GenerationUtils.generateFakePercentageStream((int) (Math.min(this.file.getTotalSpace(), 1000) * 0.001), percentage -> {
             progressBar.setValue(percentage);
             if (percentage == 100)
-                progressBar.close();
+                SwingUtilities.invokeLater(progressBar::close);
         });
         progressThread.start();
 
@@ -139,7 +140,7 @@ public class Model {
         if (pipeline == null) {
             App.notificationFromKey("danger", 300, "app.notifications.models.error.invalid_pipeline", this.file.getName());
             System.out.println("[ERROR]: Invalid pipeline!");
-            progressBar.close();
+            SwingUtilities.invokeLater(progressBar::close);
             progressThread.interrupt();
             return false;
         }
@@ -147,7 +148,7 @@ public class Model {
         this.pipeline = pipeline;
         progressThread.interrupt();
 
-        progressBar.close();
+        SwingUtilities.invokeLater(progressBar::close);
         if (App.instance != null)
             App.instance.setVisible(true);
 

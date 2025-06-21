@@ -148,7 +148,12 @@ public class FileUtils {
                 bytesRead++;
                 onUpdate.accept((int) (100L * bytesRead / totalBytes));
             }
-        } catch (IOException e) { return fallback; }
+        } catch (IOException e) {
+            onUpdate.accept(100);
+            return fallback;
+        }
+
+        onUpdate.accept(100);
 
         return content.toString();
     }
@@ -178,6 +183,8 @@ public class FileUtils {
             App.notificationFromKey("danger", 200, "app.notifications.global.error.download_fail", url);
             System.out.println("[ERROR]: Error while downloading " + url);
         }
+
+        onUpdate.accept(100);
     }
 
 }

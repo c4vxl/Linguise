@@ -59,12 +59,15 @@ public class SettingsPageModels extends SettingsPage {
 
                                 // Download file
                                 ProgressbarWindow progressBar = new ProgressbarWindow(Language.current.get("app.settings.models.popup.download.label"));
-                                progressBar.open();
+                                SwingUtilities.invokeLater(progressBar::open);
                                 FileUtils.downloadFile(url, Config.MODELS_DIRECTORY + "/" + name, percentage -> {
+                                    System.out.println(percentage);
                                     progressBar.setValue(percentage);
 
-                                    if (percentage == 100)
-                                        progressBar.close();
+                                    if (percentage == 100) {
+                                        SwingUtilities.invokeLater(progressBar::close);
+                                        reload(); // reload
+                                    }
                                 });
                             }
                     ).open();
