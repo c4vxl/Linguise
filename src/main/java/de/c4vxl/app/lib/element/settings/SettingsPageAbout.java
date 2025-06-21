@@ -1,5 +1,6 @@
 package de.c4vxl.app.lib.element.settings;
 
+import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 
@@ -23,7 +24,7 @@ public class SettingsPageAbout extends SettingsPage {
                 .withLabel(Language.current.get("app.settings.about.button.1"))
                 .withAction(e -> {
                     System.out.println("[ACTION]: Opening GitHub");
-                    try { Desktop.getDesktop().browse(new URI("https://github.com/")); }
+                    try { Desktop.getDesktop().browse(new URI(Config.GITHUB_URL)); }
                     catch (IOException | URISyntaxException ex) { throw new RuntimeException(ex); }
                 }));
     }

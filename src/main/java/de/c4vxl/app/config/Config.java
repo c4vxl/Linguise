@@ -16,6 +16,8 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public class Config {
+    public static String GITHUB_URL = "https://github.com/c4vxl/Linguise/";
+
     // Global paths
     public static String APP_DIRECTORY = "./appdata";                      // Path to the app's configuration directory
     public static String MODELS_DIRECTORY = APP_DIRECTORY + "/models";     // Path to the models

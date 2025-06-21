@@ -59,6 +59,7 @@
   "app.settings.dev.env.chats_dir": "Histories directory: <b>$1</b>",
   "app.settings.dev.env.chats_ext": "History file-extension: <b>$1</b>",
   "app.settings.dev.env.date_format": "Date format: <b>$1</b>",
+  "app.settings.dev.env.matmul_type": "Matrix multiplication type: <b>$1</b>",
   "app.settings.dev.button.open_data_dir": "Open data folder",
   "app.settings.dev.button.edit_config": "Edit config file",
   "app.notifications.global.error.copy_failed": "Failed to copy $1",

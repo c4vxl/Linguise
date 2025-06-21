@@ -8,6 +8,7 @@ import de.c4vxl.app.lib.component.Button;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.TextUtils;
+import de.c4vxl.jNN;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,6 +78,7 @@ public class SettingsPageDev extends SettingsPage {
             this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.chats_dir", Config.HISTORIES_DIRECTORY), maxWidth));
             this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.chats_ext", Config.HISTORY_FILE_EXTENSION), maxWidth));
             this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.date_format", TextUtils.DATE_FORMAT), maxWidth));
+            this.textPanel.add(Elements.text(Language.current.get("app.settings.dev.env.matmul_type", String.valueOf(jNN.MATMUL_TYPE)), maxWidth));
             this.textPanel.add(Box.createVerticalStrut(10));
 
             this.buttonPanel.add(Elements.hollowButton().withLabel(Language.current.get("app.settings.dev.button.edit_config")).withAction(e -> {

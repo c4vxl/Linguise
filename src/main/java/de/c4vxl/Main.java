@@ -89,6 +89,7 @@ public class Main {
         Config.HISTORIES_DIRECTORY = env.getOrDefault("chats_dir", Config.HISTORIES_DIRECTORY);
         Config.HISTORY_FILE_EXTENSION = env.getOrDefault("chats_ext", Config.HISTORY_FILE_EXTENSION);
         TextUtils.DATE_FORMAT = env.getOrDefault("date_format", TextUtils.DATE_FORMAT);
+        jNN.MATMUL_TYPE = Integer.parseInt(env.getOrDefault("matmul_type", String.valueOf(jNN.MATMUL_TYPE)));
 
         // Save config
         env.put("models_dir", Config.MODELS_DIRECTORY);
@@ -100,6 +101,7 @@ public class Main {
         env.put("chats_dir", Config.HISTORIES_DIRECTORY);
         env.put("chats_ext", Config.HISTORY_FILE_EXTENSION);
         env.put("date_format", TextUtils.DATE_FORMAT);
+        env.put("matmul_type", String.valueOf(jNN.MATMUL_TYPE));
         Config.setConfigValue("env", env);
 
         // Log env
@@ -113,6 +115,7 @@ public class Main {
         System.out.println("[ENV]: Histories path: " + Config.HISTORIES_DIRECTORY);
         System.out.println("[ENV]: History file extension: " + Config.HISTORY_FILE_EXTENSION);
         System.out.println("[ENV]: Date format: " + TextUtils.DATE_FORMAT);
+        System.out.println("[ENV]: Matmul type: " + jNN.MATMUL_TYPE);
     }
 
     /**
