@@ -7,6 +7,7 @@ import de.c4vxl.app.language.Language;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.FileUtils;
 
+import javax.swing.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -189,8 +190,17 @@ public class Config {
         Config.setConfigValue("app.model", model == null ? null : model.path.replace(Config.MODELS_DIRECTORY + "/", ""));
 
         // Initialize model
-        if (model != null)
-            model.initialize();
+        if (model != null) {
+            new Thread(() -> {
+                if (App.instance != null)
+                    SwingUtilities.invokeLater(App.instance::close);
+
+                model.initialize();
+
+                if (App.instance != null)
+                    SwingUtilities.invokeLater(App.instance::open);
+            }).start();
+        }
 
         return model;
     }

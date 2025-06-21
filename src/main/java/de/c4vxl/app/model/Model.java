@@ -112,9 +112,6 @@ public class Model {
         ProgressbarWindow progressBar = new ProgressbarWindow(Language.current.get("app.models.popup.loading.reading_label"));
         SwingUtilities.invokeLater(progressBar::open);
 
-        if (App.instance != null)
-            App.instance.setVisible(false);
-
         // Read file content and show in bar
         String content = FileUtils.readContent(this.path, null, percentage -> { // Fallback is null
             progressBar.setValue(percentage);
@@ -153,8 +150,6 @@ public class Model {
         progressThread.interrupt();
 
         SwingUtilities.invokeLater(progressBar::close);
-        if (App.instance != null)
-            App.instance.setVisible(true);
 
         return true;
     }

@@ -160,10 +160,15 @@ public class FileUtils {
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             int ch;
+            int last = -1;
             while ((ch = reader.read()) != -1) {
                 content.append((char) ch);
                 bytesRead++;
-                onUpdate.accept((int) (100L * bytesRead / totalBytes));
+                int next = (int) (100L * bytesRead / totalBytes);
+                if (last != next) {
+                    last = next;
+                    onUpdate.accept(next);
+                }
             }
         } catch (IOException e) {
             onUpdate.accept(100);
@@ -189,11 +194,16 @@ public class FileUtils {
 
             byte[] dataBuffer = new byte[1024];
             int bytesRead, totalBytesRead = 0;
+            int last = -1;
 
             while ((bytesRead = inputStream.read(dataBuffer, 0, 1024)) != -1) {
                 outputStream.write(dataBuffer, 0, bytesRead);
                 totalBytesRead += bytesRead;
-                onUpdate.accept((int) (100L * totalBytesRead / fileSize));
+                int next = (int) (100L * totalBytesRead / fileSize);
+                if (last != next) {
+                    last = next;
+                    onUpdate.accept(next);
+                }
             }
 
         } catch (Exception e) {
