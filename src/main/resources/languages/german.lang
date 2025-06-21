@@ -45,6 +45,7 @@
   "app.settings.language.title": "Sprachen",
   "app.settings.language.name.unknown": "unbekannt",
   "app.settings.language.button.1": "Lade eigenes Modell",
+  "app.settings.language.button.2": "Neuladen",
   "app.settings.tabs.dev": "Developer einstellungen",
   "app.settings.dev.title": "Developer einstellungen",
   "app.settings.dev.devmode.text": "Developer Modus",

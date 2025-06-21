@@ -45,6 +45,7 @@
   "app.settings.language.title": "Languages",
   "app.settings.language.name.unknown": "unknown",
   "app.settings.language.button.1": "Load custom language",
+  "app.settings.language.button.2": "Reload languages",
   "app.settings.tabs.dev": "Developer settings",
   "app.settings.dev.title": "Developer settings",
   "app.settings.dev.devmode.text": "Developer mode",

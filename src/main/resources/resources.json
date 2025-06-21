@@ -1,4 +1,4 @@
 {
-  "themes/": [ "coralbloom.theme", "dark.theme", "deepabyss.theme", "moonlight.theme", "oceanlight.theme", "paledawn.theme" ],
+  "themes/": [ "dark.theme", "deepabyss.theme", "moonlight.theme", "coralbloom.theme", "oceanlight.theme", "paledawn.theme" ],
   "languages/": [ "english.lang", "german.lang" ]
 }

@@ -134,6 +134,6 @@ public class Resource {
         HashMap<String, ArrayList<String>> data = FileUtils.fromJSON(Resource.readResource("resources.json"), new TypeToken<>() {});
         if (data == null) return new String[0];
 
-        return data.getOrDefault(path, new ArrayList<>()).toArray(String[]::new);
+        return data.getOrDefault(path, new ArrayList<>()).stream().sorted().toArray(String[]::new);
     }
 }
