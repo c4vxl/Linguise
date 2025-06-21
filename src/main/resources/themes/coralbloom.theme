@@ -1,0 +1,15 @@
+{
+  "name": "Coral Bloom",
+  "accent": "#FF6B6B",
+  "accent_1": "#FF8E8E",
+  "accent_2": "#FFC4B3",
+  "background": "#FFF8F3",
+  "background_1": "#FFEDE6",
+  "background_2": "#FFDBCF",
+  "background_3": "#FFD0C4",
+  "text": "#2A1F1F",
+  "text_1": "#4F3E3E",
+  "danger": "#C92424",
+  "font": "Inter",
+  "font_2": "Roboto"
+}

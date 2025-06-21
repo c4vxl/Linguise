@@ -1,0 +1,15 @@
+{
+  "name": "Deep Abyss",
+  "accent": "#3A7CA5",
+  "accent_1": "#579ACF",
+  "accent_2": "#7AB6F2",
+  "background": "#0B1C2C",
+  "background_1": "#112D3C",
+  "background_2": "#163B4F",
+  "background_3": "#1D4A61",
+  "text": "#DCE7F2",
+  "text_1": "#B9C8D9",
+  "danger": "#D44848",
+  "font": "Inter",
+  "font_2": "Roboto"
+}

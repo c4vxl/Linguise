@@ -1,0 +1,15 @@
+{
+  "name": "Pale Dawn",
+  "accent": "#A3B18A",
+  "accent_1": "#BCCF9C",
+  "accent_2": "#DCEFCB",
+  "background": "#FAFAF7",
+  "background_1": "#F0F0EB",
+  "background_2": "#E2E2DC",
+  "background_3": "#D6D6D0",
+  "text": "#2E2E2E",
+  "text_1": "#C3CEAE",
+  "danger": "#D76C6C",
+  "font": "Inter",
+  "font_2": "Roboto"
+}

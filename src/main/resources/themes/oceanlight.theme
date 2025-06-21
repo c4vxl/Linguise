@@ -1,0 +1,15 @@
+{
+  "name": "Ocean Light",
+  "accent": "#3CAEA3",
+  "accent_1": "#47C7B5",
+  "accent_2": "#B2F7EF",
+  "background": "#F4FAFB",
+  "background_1": "#E0F4F5",
+  "background_2": "#CDEBEC",
+  "background_3": "#B7DFDF",
+  "text": "#1E2D2F",
+  "text_1": "#3B4C4E",
+  "danger": "#E56B6F",
+  "font": "Inter",
+  "font_2": "Roboto"
+}
