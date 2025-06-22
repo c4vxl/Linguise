@@ -8,6 +8,7 @@ import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Line;
 import de.c4vxl.app.lib.component.ScrollPane;
 import de.c4vxl.app.util.FileUtils;
+import de.c4vxl.app.util.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -189,8 +190,7 @@ public class MessagePanel extends JPanel {
         // Generate prompt if none was found
         if (prompt.isEmpty()) {
             prompt = this.getLastPrompt().getText();
-            if (prompt.length() > 30)
-                prompt = prompt.substring(0, 20);
+            prompt = TextUtils.cutString(prompt, "...", Theme.current.font, App.instance.sidebar.history.getWidth());
             prompt = System.currentTimeMillis() + "-" + prompt;
         }
 
