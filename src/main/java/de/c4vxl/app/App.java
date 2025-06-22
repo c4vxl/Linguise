@@ -283,10 +283,16 @@ public class App extends Window {
         if (theme == null || language == null)
             return;
 
-        if (App.instance != null)
-            App.instance.close();
+        App old = App.instance;
 
         new App(theme, language).open();
+
+        if (old == null) return;
+
+        SwingUtilities.invokeLater(() -> {
+            old.close();
+            old.dispose();
+        });
     }
 
     /**
