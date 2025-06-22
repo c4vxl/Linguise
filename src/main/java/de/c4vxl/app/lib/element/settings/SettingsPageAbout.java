@@ -4,6 +4,7 @@ import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
@@ -17,7 +18,11 @@ public class SettingsPageAbout extends SettingsPage {
         this.add(Elements.title(Language.current.get("app.settings.about.title"), maxTextWidth), BorderLayout.PAGE_START);
 
         // Content
-        this.textPanel.add(Elements.text(Language.current.get("app.settings.about.1"), maxTextWidth));
+        this.textPanel.add(Elements.text("<p style='text-align: justify'>" + Language.current.get("app.settings.about.1") + "</p>", maxTextWidth));
+        this.textPanel.add(Box.createVerticalStrut(10));
+        this.textPanel.add(Elements.text("<p style='text-align: justify'>" + Language.current.get("app.settings.about.2") + "</p>", maxTextWidth));
+        this.textPanel.add(Box.createVerticalStrut(10));
+        this.textPanel.add(Elements.text("<p style='text-align: justify'>" + Language.current.get("app.settings.about.3") + "</p>", maxTextWidth));
 
         // Buttons
         buttonPanel.add(Elements.hollowButton()
