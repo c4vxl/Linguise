@@ -42,6 +42,11 @@ public class Model {
 
         // Set generator
         this.generator = generator != null ? generator : (prompt, handler, onDone) -> new Thread(() -> {
+            if (Thread.currentThread().isInterrupted()) {
+                onDone.run();
+                return;
+            }
+
             ArrayList<Integer> tokens = new ArrayList<>();
             try {
                 pipeline.forward(prompt, pipeline.newTokens, (token, idx) -> {
