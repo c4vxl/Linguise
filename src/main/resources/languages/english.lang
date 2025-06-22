@@ -13,6 +13,8 @@
   "chat.buttons.stop_generation": "Stop generating",
   "chat.bar.send": "Send",
   "app.global.submit": "Submit",
+  "app.global.filedialog.title": "Select a '$1' file",
+  "app.global.dirdialog.title": "Select a directory",
   "chat.message.prompt.title": "You - <b>$1</b>",
   "chat.message.response.options.copy.tooltip": "Copy message",
   "chat.message.response.options.regenerate.tooltip": "Regenerate with a different model",
