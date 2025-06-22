@@ -95,9 +95,11 @@ public class FileUtils {
 
         dialog.setVisible(true);
 
-        if (dialog.getFile() != null) {
-            System.out.println("[ACTION]: Got file from user: " + dialog.getFile());
-            return new File(dialog.getFile());
+        File[] files = dialog.getFiles();
+        if (files.length != 0) {
+            File file = files[0];
+            System.out.println("[ACTION]: Got file from user: " + file.getAbsolutePath());
+            return file;
         }
 
         return null;
@@ -114,9 +116,11 @@ public class FileUtils {
 
         dialog.setVisible(true);
 
-        if (dialog.getFile() != null) {
-            System.out.println("[ACTION]: Got dir from user: " + dialog.getFile());
-            return new File(dialog.getFile());
+        File[] files = dialog.getFiles();
+        if (files.length != 0) {
+            File file = files[0];
+            System.out.println("[ACTION]: Got dir from user: " + file.getAbsolutePath());
+            return file;
         }
 
         return null;
