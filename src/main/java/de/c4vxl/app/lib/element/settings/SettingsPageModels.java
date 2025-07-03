@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class SettingsPageModels extends SettingsPage {
     @Override
@@ -52,7 +53,7 @@ public class SettingsPageModels extends SettingsPage {
                             Language.current.get("app.settings.models.popup.url.title"),
                             Language.current.get("app.settings.models.popup.url.subtitle"),
                             (url) -> {
-                                String name = Path.of(url).getFileName().toString().replace(Config.MODEL_FILE_EXTENSION, "")
+                                String name = Arrays.stream(url.split("/")).toList().getLast().replace(Config.MODEL_FILE_EXTENSION, "")
                                         + Config.MODEL_FILE_EXTENSION;
 
                                 System.out.println("[ACTION]: Downloading model: " + name);
