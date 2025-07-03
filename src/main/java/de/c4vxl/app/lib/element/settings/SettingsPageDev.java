@@ -15,6 +15,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class SettingsPageDev extends SettingsPage {
     public static boolean isDevMode;
@@ -104,5 +105,10 @@ public class SettingsPageDev extends SettingsPage {
 
         devmodeButton.repaint();
         devmodeButton.revalidate();
+    }
+
+    @Override
+    public Integer calculateTextPanelHeight(JPanel panel) {
+        return Arrays.stream(panel.getComponents()).map(x -> x.getHeight() + 5).reduce(Integer::sum).orElse(0);
     }
 }
