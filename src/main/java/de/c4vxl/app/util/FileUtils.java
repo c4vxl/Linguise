@@ -4,11 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import de.c4vxl.app.App;
+import de.c4vxl.app.language.Language;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.io.*;
-import java.net.*;
+import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -88,15 +89,15 @@ public class FileUtils {
      * @param acceptedFileExtensions The possible extensions of the type
      */
     public static File openFileDialog(String startPath, String fileTypeName, String[] acceptedFileExtensions) {
-        JFileChooser fileChooser = new JFileChooser(startPath);
-        fileChooser.setFileFilter(new FileNameExtensionFilter(
-                fileTypeName, Arrays.stream(acceptedFileExtensions).map(x -> x.replace(".", "")).toArray(String[]::new)
-        ));
+        FileDialog dialog = new FileDialog((Frame) null, Language.current.get("app.global.filedialog.title", fileTypeName));
+        dialog.setFilenameFilter((dir, name) -> Arrays.stream(acceptedFileExtensions).anyMatch(name::endsWith));
+        dialog.setDirectory(startPath);
 
-        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            System.out.println("[ACTION]: Got file from user: " + file.getAbsolutePath());
-            return file;
+        dialog.setVisible(true);
+
+        if (dialog.getFile() != null) {
+            System.out.println("[ACTION]: Got file from user: " + dialog.getFile());
+            return new File(dialog.getFile());
         }
 
         return null;
@@ -107,13 +108,15 @@ public class FileUtils {
      * @param startPath The path to open initially
      */
     public static File openDirDialog(String startPath) {
-        JFileChooser fileChooser = new JFileChooser(startPath);
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        FileDialog dialog = new FileDialog((Frame) null, Language.current.get("app.global.dirdialog.title"));
+        dialog.setFilenameFilter((dir, name) -> Files.isDirectory(Path.of(dir.getAbsolutePath(), name)));
+        dialog.setDirectory(startPath);
 
-        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            System.out.println("[ACTION]: Got dir from user: " + file.getAbsolutePath());
-            return file;
+        dialog.setVisible(true);
+
+        if (dialog.getFile() != null) {
+            System.out.println("[ACTION]: Got dir from user: " + dialog.getFile());
+            return new File(dialog.getFile());
         }
 
         return null;
@@ -213,5 +216,4 @@ public class FileUtils {
 
         onUpdate.accept(100);
     }
-
 }
