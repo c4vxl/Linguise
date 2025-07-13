@@ -264,7 +264,13 @@ public class App extends Window {
         // Generate response
         this.messagePanel.createResponse();
         long start = System.nanoTime();
-        generationThread = model.generate(message, this.messagePanel::updateLastResponse, () -> {
+        String[] total = new String[1];
+        generationThread = model.generate(message, (generated) -> {
+            this.messagePanel.updateLastResponse(generated);
+            total[0] = generated;
+        }, () -> {
+            System.out.println(total[0]);
+            this.messagePanel.updateLastResponse(total[0]);
             this.messagePanel.completeLastResponse(model.name, Duration.ofNanos(System.nanoTime() - start).getSeconds());
             this.chat = this.messagePanel.getName();
             this.sidebar.reload();
