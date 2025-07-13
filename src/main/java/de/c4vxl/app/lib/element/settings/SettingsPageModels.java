@@ -107,7 +107,7 @@ public class SettingsPageModels extends SettingsPage {
     private JPanel createEntry(Model model) {
         // Main panel
         boolean isHighlighted = model.name.equals(Model.current == null ? "" : Model.current.name);
-        Factory<RoundedPanel> panelFactory = new Factory<>(new RoundedPanel(10)).layout(null).size(getWidth() - 90, 60)
+        Factory<RoundedPanel> panelFactory = new Factory<>(new RoundedPanel(10)).layout(null).size(getWidth() - 20, 60)
                 .opaque(false);
 
         boolean isFakeModel = model == Model.fakeModel;

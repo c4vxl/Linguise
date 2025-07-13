@@ -20,7 +20,7 @@ public abstract class SettingsPage extends JPanel {
     public JPanel panel = new Factory<>(new JPanel() {
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(this.getParent().getParent().getParent().getWidth() - 70, calculatePanelHeight(this));
+            return new Dimension(this.getParent().getParent().getParent().getWidth() - 15, calculatePanelHeight(this));
         }
     }).opaque(false).get();
     public ScrollPane pane = new ScrollPane(this.panel);
@@ -28,12 +28,12 @@ public abstract class SettingsPage extends JPanel {
     public JPanel textPanel = new Factory<>(new JPanel() {
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(this.getParent().getParent().getParent().getWidth() - 70, calculateTextPanelHeight(this));
+            return new Dimension(this.getParent().getParent().getParent().getWidth() - 15, calculateTextPanelHeight(this));
         }
     }).opaque(false).apply(x -> x.setLayout(new BoxLayout(x, BoxLayout.Y_AXIS))).get();
 
     public SettingsPage() {
-        this.setBorder(BorderFactory.createEmptyBorder(30, 20, 10, 20));
+        this.setBorder(BorderFactory.createEmptyBorder(30, 10, 10, 5));
         this.setLayout(new BorderLayout());
         this.setOpaque(false);
     }
