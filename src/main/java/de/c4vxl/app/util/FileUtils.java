@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import de.c4vxl.app.App;
 import de.c4vxl.app.language.Language;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.URI;
@@ -110,15 +111,12 @@ public class FileUtils {
      * @param startPath The path to open initially
      */
     public static File openDirDialog(String startPath) {
-        FileDialog dialog = new FileDialog((Frame) null, Language.current.get("app.global.dirdialog.title"));
-        dialog.setFilenameFilter((dir, name) -> Files.isDirectory(Path.of(dir.getAbsolutePath(), name)));
-        dialog.setDirectory(startPath);
+        // Using JFileChooser because FileDialog doesn't support directory selections
+        JFileChooser dialog = new JFileChooser(new File(startPath));
+        dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        dialog.setVisible(true);
-
-        File[] files = dialog.getFiles();
-        if (files.length != 0) {
-            File file = files[0];
+        if (dialog.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File file = dialog.getSelectedFile();
             System.out.println("[ACTION]: Got dir from user: " + file.getAbsolutePath());
             return file;
         }
