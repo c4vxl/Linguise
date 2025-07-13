@@ -269,9 +269,12 @@ public class App extends Window {
             this.messagePanel.updateLastResponse(generated);
             total[0] = generated;
         }, () -> {
-            System.out.println(total[0]);
-            this.messagePanel.updateLastResponse(total[0]);
-            this.messagePanel.completeLastResponse(model.name, Duration.ofNanos(System.nanoTime() - start).getSeconds());
+            if (total[0] != null)
+                this.messagePanel.updateLastResponse(total[0]);
+
+            try { this.messagePanel.completeLastResponse(model.name, Duration.ofNanos(System.nanoTime() - start).getSeconds()); }
+            catch (Exception ignored) {}
+
             this.chat = this.messagePanel.getName();
             this.sidebar.reload();
             this.chatOptionButtons.stopGeneration();

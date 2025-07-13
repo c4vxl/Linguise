@@ -39,10 +39,9 @@ public class ChatOptionButtons extends JPanel {
         Button button = createButton(null, Language.current.get("chat.buttons.stop_generation"), () -> {
             System.out.println("[ACTION]: Stop generation");
 
-            if (App.instance.generationThread != null)
+            if (App.instance.generationThread != null) {
                 App.instance.generationThread.interrupt();
-
-
+            }
         });
 
         // Make button take up full width

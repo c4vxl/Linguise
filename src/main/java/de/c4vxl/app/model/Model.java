@@ -42,14 +42,13 @@ public class Model {
 
         // Set generator
         this.generator = generator != null ? generator : (prompt, handler, onDone) -> new Thread(() -> {
-            if (Thread.currentThread().isInterrupted()) {
-                onDone.run();
-                return;
-            }
-
             ArrayList<Integer> tokens = new ArrayList<>();
             try {
                 pipeline.forward(prompt, pipeline.newTokens, (token, idx) -> {
+                    // Terminate current forward pass by throwing an exception
+                    if (Thread.currentThread().isInterrupted())
+                        throw new RuntimeException();
+
                     if (token == pipeline.tokenizer.eosTokenID()) return; // make sure to stop on eos
 
                     tokens.add(token);
