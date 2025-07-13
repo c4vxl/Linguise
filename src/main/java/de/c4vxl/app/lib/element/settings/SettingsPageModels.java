@@ -82,7 +82,9 @@ public class SettingsPageModels extends SettingsPage {
     public void reload() {
         // Add entries
         this.panel.removeAll();
+        System.out.println("[UPDATE]: Reloading SettingsPageModels");
         Model[] models = Config.getLocalModels();
+        System.out.println("[UPDATE]: Found models: " + String.join(", ", Arrays.stream(models).map(x -> x.name).toArray(String[]::new)));
         if (models.length != 0)
             for (Model model : models)
                 this.panel.add(createEntry(model));

@@ -6,6 +6,7 @@ import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.lib.component.RoundedPanel;
+import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.FileUtils;
 
@@ -61,7 +62,11 @@ public class SettingsPageLanguage extends SettingsPage {
     public void reload() {
         // Add "normal" entries
         this.panel.removeAll();
-        for (Language language : Config.getLocalLangs()) {
+        System.out.println("[UPDATE]: Reloading SettingsPageLanguage");
+        Language[] languages = Config.getLocalLangs();
+        System.out.println("[UPDATE]: Found languages: " + String.join(", ", Arrays.stream(languages).map(x -> x.name).toArray(String[]::new)));
+
+        for (Language language : languages) {
             this.panel.add(createEntry(language.name, Language.current.name.equals(language.name), () -> {
                 if (Language.current.name.equals(language.name)) return;
                 Config.setLanguage(language);
