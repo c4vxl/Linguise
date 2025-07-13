@@ -26,7 +26,7 @@ public class Settings extends RoundedPanel {
             Language.current.get("app.settings.tabs.language"),
             Language.current.get("app.settings.tabs.dev"),
     };
-    private SettingsPage[] pages = new SettingsPage[]{ new SettingsPageAbout(), new SettingsPageModels(), new SettingsPageTheme(), new SettingsPageLanguage(), new SettingsPageDev() };
+    private SettingsPage[] pages = new SettingsPage[]{ new SettingsPageAbout(), new SettingsPageModels(), new SettingsPageTheme(), new SettingsPageLanguage(), new SettingsPageDev(), new SettingsPageKeyboardShortcuts() };
 
     public Settings(App app, int width, int height) {
         super(15);
@@ -61,7 +61,9 @@ public class Settings extends RoundedPanel {
         for (int i = 0; i < pageNames.length; i++) {
             if (i > 9) continue;
             int finalI = i;
-            factory.registerKeyboardShortcut("action_settings_tab_" + pageNames[i], "control " + (i + 1), () -> openPage(finalI));
+
+            String name = SettingsPageKeyboardShortcuts.getKeyboardShortcut("switch_tab").replace("$", "" + (i + 1));
+            factory.registerKeyboardShortcut("action_settings_tab_" + pageNames[i], name, () -> openPage(finalI));
         }
 
         openPage(0);
@@ -84,7 +86,7 @@ public class Settings extends RoundedPanel {
         this.sideBar.add(Box.createVerticalGlue());
 
 
-        titleLabel.setText(Language.current.get("app.settings.title", pageNames[currentPage]));
+        titleLabel.setText(Language.current.get("app.settings.title", pageNames.length > currentPage ? pageNames[currentPage] : titleLabel.getText()));
         titleLabel.setSize(titleLabel.getPreferredSize());
         titleLabel.setLocation((getWidth() - SIDEBAR_WIDTH - titleLabel.getWidth()) / 2 + SIDEBAR_WIDTH, (40 - titleLabel.getHeight()) / 2);
 

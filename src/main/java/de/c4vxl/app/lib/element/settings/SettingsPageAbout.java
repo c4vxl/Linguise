@@ -1,5 +1,6 @@
 package de.c4vxl.app.lib.element.settings;
 
+import de.c4vxl.app.App;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
@@ -14,7 +15,7 @@ public class SettingsPageAbout extends SettingsPage {
     @Override
     public void init() {
         // Title
-        int maxTextWidth = this.getWidth() - 200;
+        int maxTextWidth = this.getWidth() - 20;
         this.add(Elements.title(Language.current.get("app.settings.about.title"), maxTextWidth), BorderLayout.PAGE_START);
 
         // Content
@@ -31,6 +32,13 @@ public class SettingsPageAbout extends SettingsPage {
                     System.out.println("[ACTION]: Opening GitHub");
                     try { Desktop.getDesktop().browse(new URI(Config.GITHUB_URL)); }
                     catch (IOException | URISyntaxException ex) { throw new RuntimeException(ex); }
+                }));
+
+        buttonPanel.add(Elements.hollowButton()
+                .withLabel(Language.current.get("app.settings.about.button.2"))
+                .withAction(e -> {
+                    System.out.println("[ACTION]: Opening keyboard-shortcut overview");
+                    App.instance.settings.openPage(5);
                 }));
     }
 }

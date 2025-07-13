@@ -4,6 +4,7 @@ import de.c4vxl.app.App;
 import de.c4vxl.app.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
+import de.c4vxl.app.lib.element.settings.SettingsPageKeyboardShortcuts;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Resource;
 import de.c4vxl.app.util.TextUtils;
@@ -30,6 +31,13 @@ public class Main {
             }
         }
 
+        start();
+    }
+
+    /**
+     * Load configs and start a new instance of App
+     */
+    public static void start() {
         // Info logging
         System.out.println("[INFO]: Appdata path: " + Config.APP_DIRECTORY);
 
@@ -106,6 +114,7 @@ public class Main {
         Config.HISTORY_FILE_EXTENSION = env.getOrDefault("chats_ext", Config.HISTORY_FILE_EXTENSION);
         TextUtils.DATE_FORMAT = env.getOrDefault("date_format", TextUtils.DATE_FORMAT);
         jNN.MATMUL_TYPE = Integer.parseInt(env.getOrDefault("matmul_type", String.valueOf(jNN.MATMUL_TYPE)));
+        SettingsPageKeyboardShortcuts.KEYBOARD_SHORTCUTS = new LinkedHashMap<>((Map<String, String>) Config.getOrSetConfigValue("keyboard_shortcuts", SettingsPageKeyboardShortcuts.KEYBOARD_SHORTCUTS));
 
         // Save config
         env.put("models_dir", Config.MODELS_DIRECTORY);
@@ -132,6 +141,7 @@ public class Main {
         System.out.println("[ENV]: History file extension: " + Config.HISTORY_FILE_EXTENSION);
         System.out.println("[ENV]: Date format: " + TextUtils.DATE_FORMAT);
         System.out.println("[ENV]: Matmul type: " + jNN.MATMUL_TYPE);
+        System.out.println("[VAR]: Keyboard shortcuts: " + SettingsPageKeyboardShortcuts.KEYBOARD_SHORTCUTS);
     }
 
     /**

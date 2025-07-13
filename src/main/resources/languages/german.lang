@@ -33,6 +33,7 @@
   "app.settings.about.2": "Linguise wurde mit Blick auf Flexibilität entwickelt und bietet Nutzern die Möglichkeit, benutzerdefinierte Sprachen, Designs und vor allem KI-Modelle zu laden.",
   "app.settings.about.3": "Im Gegensatz zu anderen KI-Plattformen, die auf Frameworks von Drittanbietern basieren, funktioniert Linguise mit <b>jNN</b>, einer leichten, aber leistungsfähigen neuronalen Netzwerk-Engine, die speziell für dieses Projekt entwickelt wurde.",
   "app.settings.about.button.1": "Projekt auf GitHub besuchen",
+  "app.settings.about.button.2": "Keyboard shortcuts anzeigen",
   "app.settings.tabs.models": "Modelle",
   "app.settings.models.title": "Modelle",
   "app.settings.models.no_models": "Keine Modelle gefunden.",
@@ -92,5 +93,14 @@
   "app.notifications.chat.error.tts_model": "Fehler beim Laden des tts Modells!",
   "app.notifications.chat.error.load_failed": "Fehler beim Laden eines Teils des Chats: $1",
   "app.notifications.chat.error.export_dir_invalid": "Ein Fehler ist beim kopieren entstanden: Ordner nicht gefunden!",
-  "app.notifications.chat.error.copy_failed": "Fehler beim exportieren des Chats!"
+  "app.notifications.chat.error.copy_failed": "Fehler beim exportieren des Chats!",
+  "app.settings.tabs.keyboard": "Keyboard shortcuts",
+  "app.settings.keyboard.overview": "Diese Übersicht anzeigen",
+  "app.settings.keyboard.settings_toggle": "Einstellungen öffnen",
+  "app.settings.keyboard.settings_escape": "Einstellungen schließen",
+  "app.settings.keyboard.switch_tab": "Tab wechseln",
+  "app.settings.keyboard.chat_new": "Neuen Chat öffnen",
+  "app.settings.keyboard.models_dropdown": "Modell wechseln",
+  "app.settings.keyboard.button.1": "Editieren",
+  "app.settings.keyboard.button.2": "Konfiguration neu laden"
 }

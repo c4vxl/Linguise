@@ -11,6 +11,7 @@ import de.c4vxl.app.lib.element.chatbar.ChatOptionButtons;
 import de.c4vxl.app.lib.element.messages.MessagePanel;
 import de.c4vxl.app.lib.element.model.ModelDropdown;
 import de.c4vxl.app.lib.element.settings.Settings;
+import de.c4vxl.app.lib.element.settings.SettingsPageKeyboardShortcuts;
 import de.c4vxl.app.lib.element.sidebar.Sidebar;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.AnimationUtils;
@@ -65,9 +66,13 @@ public class App extends Window {
         this.welcomeLogo = Elements.iconButton(Resource.loadIcon("media/Logo large.png", 400, Theme.current.accent));
 
         // Keyboard shortcuts
-        this.registerKeyboardShortcut("action_chat_new", "control N", this::reset);
-        this.registerKeyboardShortcut("action_settings_close", "ESCAPE", this::closeSettings);
-        this.registerKeyboardShortcut("action_settings_toggle", "control K", () -> {
+        this.registerKeyboardShortcut("action_settings_keyboard_shortcuts", SettingsPageKeyboardShortcuts.getKeyboardShortcut("overview"), () -> {
+            this.openSettings();
+            this.settings.openPage(5);
+        });
+        this.registerKeyboardShortcut("action_chat_new", SettingsPageKeyboardShortcuts.getKeyboardShortcut("chat_new"), this::reset);
+        this.registerKeyboardShortcut("action_settings_close", SettingsPageKeyboardShortcuts.getKeyboardShortcut("settings_escape"), this::closeSettings);
+        this.registerKeyboardShortcut("action_settings_toggle", SettingsPageKeyboardShortcuts.getKeyboardShortcut("settings_toggle"), () -> {
             if (isInSettings) this.closeSettings();
             else this.openSettings();
         });

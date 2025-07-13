@@ -33,6 +33,7 @@
   "app.settings.about.2": "Designed with flexibility in mind, Linguise empowers users with the option to load custom languages, themes and most importantly AI models.",
   "app.settings.about.3": "Unlike other AI platforms that rely on third-party frameworks, Linguise is powered by <b>jNN</b>, a lightweight yet capable neural networking engine developed specifically for this project.",
   "app.settings.about.button.1": "Visit project on GitHub",
+  "app.settings.about.button.2": "View keyboard shortcuts",
   "app.settings.tabs.models": "Models",
   "app.settings.models.title": "Models",
   "app.settings.models.no_models": "No models found.",
@@ -92,5 +93,14 @@
   "app.notifications.chat.error.tts_model": "Failed to load the tts model.",
   "app.notifications.chat.error.load_failed": "Failed to load part of conversation: $1",
   "app.notifications.chat.error.export_dir_invalid": "An error occurred while copying chat: Directory not found!",
-  "app.notifications.chat.error.copy_failed": "Exporting the chat failed!"
+  "app.notifications.chat.error.copy_failed": "Exporting the chat failed!",
+  "app.settings.tabs.keyboard": "Keyboard shortcuts",
+  "app.settings.keyboard.overview": "Open this overview",
+  "app.settings.keyboard.settings_toggle": "Open Settings",
+  "app.settings.keyboard.settings_escape": "Close Settings",
+  "app.settings.keyboard.switch_tab": "Switch tab",
+  "app.settings.keyboard.chat_new": "Start new chat",
+  "app.settings.keyboard.models_dropdown": "Open model chooser",
+  "app.settings.keyboard.button.1": "Edit in config",
+  "app.settings.keyboard.button.2": "Reload config"
 }

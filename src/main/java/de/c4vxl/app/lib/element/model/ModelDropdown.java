@@ -5,6 +5,7 @@ import de.c4vxl.app.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Dropdown;
+import de.c4vxl.app.lib.element.settings.SettingsPageKeyboardShortcuts;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.TextUtils;
@@ -18,7 +19,7 @@ public class ModelDropdown extends Dropdown {
 
         this.expandedTitle = Language.current.get("chat.model.dropdown.expanded");
 
-        new Factory<>(this).registerKeyboardShortcut("action_model_dropdown_toggle", "control M", () -> {
+        new Factory<>(this).registerKeyboardShortcut("action_model_dropdown_toggle", SettingsPageKeyboardShortcuts.getKeyboardShortcut("models_dropdown"), () -> {
             if (this.isExpanded) this.collapse();
             else this.expand();
         });
