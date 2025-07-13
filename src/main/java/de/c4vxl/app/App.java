@@ -120,6 +120,8 @@ public class App extends Window {
 
         this.repaint();
         this.revalidate();
+
+        this.settings.openPage(this.settings.currentPage);
     }
 
     /**

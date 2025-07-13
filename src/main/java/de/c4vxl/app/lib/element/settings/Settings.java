@@ -18,13 +18,14 @@ public class Settings extends RoundedPanel {
 
     public JLabel titleLabel = Elements.text(Language.current.get("app.settings.title", ""), -1);
 
-    private int currentPage = 0;
+    public int currentPage = 0;
     private String[] pageNames = new String[]{
             Language.current.get("app.settings.tabs.about"),
             Language.current.get("app.settings.tabs.models"),
             Language.current.get("app.settings.tabs.themes"),
             Language.current.get("app.settings.tabs.language"),
             Language.current.get("app.settings.tabs.dev"),
+            "!" + Language.current.get("app.settings.tabs.keyboard"),
     };
     private SettingsPage[] pages = new SettingsPage[]{ new SettingsPageAbout(), new SettingsPageModels(), new SettingsPageTheme(), new SettingsPageLanguage(), new SettingsPageDev(), new SettingsPageKeyboardShortcuts() };
 
@@ -75,6 +76,9 @@ public class Settings extends RoundedPanel {
         this.sideBar.add(Box.createVerticalGlue());
 
         for (int i = 0; i < pageNames.length; i++) {
+            if (pageNames[i].startsWith("!"))
+                continue;
+
             int finalI = i;
             JPanel panel = new Factory<>(Dropdown.createDefaultItem(pageNames[i], () -> openPage(finalI), currentPage == i))
                     .size(SIDEBAR_WIDTH - 20, 50).get();
@@ -86,7 +90,7 @@ public class Settings extends RoundedPanel {
         this.sideBar.add(Box.createVerticalGlue());
 
 
-        titleLabel.setText(Language.current.get("app.settings.title", pageNames.length > currentPage ? pageNames[currentPage] : titleLabel.getText()));
+        titleLabel.setText(Language.current.get("app.settings.title", pageNames[currentPage].replace("!", "")));
         titleLabel.setSize(titleLabel.getPreferredSize());
         titleLabel.setLocation((getWidth() - SIDEBAR_WIDTH - titleLabel.getWidth()) / 2 + SIDEBAR_WIDTH, (40 - titleLabel.getHeight()) / 2);
 
