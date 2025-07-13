@@ -223,7 +223,7 @@ public class App extends Window {
                 SwingUtilities.invokeLater(() -> {
                     if (!window.isVisible()) return;
                     Point windowLocation = window.getLocationOnScreen();
-                    int wx = event.getXOnScreen() - windowLocation.x, wy = event.getYOnScreen() - windowLocation.y;
+                    int wx = event.getXOnScreen() - windowLocation.x;
                     if (wx < 300) {
                         if (sidebar.getX() != -300) return;
 
