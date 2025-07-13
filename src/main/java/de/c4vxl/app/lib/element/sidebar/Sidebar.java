@@ -44,7 +44,7 @@ public class Sidebar extends JPanel {
         // history label
         this.add(new Factory<>(Elements.text(Language.current.get("app.sidebar.history.title"), -1))
                 .size(999, 20)
-                .pos(20, 120).foreground(Theme.current.text_1)
+                .pos(13, 120).foreground(Theme.current.text_1)
                 .border(BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current.text_1),
                         BorderFactory.createEmptyBorder(0, 5, 0, 0)
@@ -90,8 +90,8 @@ public class Sidebar extends JPanel {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public JPanel createEntry(String name, boolean isSelected) {
         String displayName = MessagePanel.getDisplayNameFromFile(name);
-        JPanel panel = new Factory<>(new RoundedPanel(10))
-                .size(this.history.getWidth(), 50)
+        JPanel panel = new Factory<>(new RoundedPanel(15))
+                .size(getWidth() - 25, 50)
                 .hoverAnimation(isSelected ? Theme.current.background_1 : Theme.current.background, isSelected ? Theme.current.background_1 : Theme.current.background_3, false)
                 .layout(null).cursor(Cursor.HAND_CURSOR)
                 .border(BorderFactory.createEmptyBorder(0, 10, 0, 0))
