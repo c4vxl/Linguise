@@ -1,13 +1,14 @@
 package de.c4vxl;
 
 import de.c4vxl.app.App;
-import de.c4vxl.app.Theme;
+import de.c4vxl.app.theme.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.element.settings.SettingsPageKeyboardShortcuts;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.Resource;
 import de.c4vxl.app.util.TextUtils;
+import de.c4vxl.core.tensor.grad.GradContext;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -30,6 +31,9 @@ public class Main {
                 System.exit(0);
             }
         }
+
+        jNN.DEFAULT_REQUIRE_GRADIENT = false;
+        GradContext.setNoGrad(true);
 
         start();
     }
