@@ -2,7 +2,7 @@ package de.c4vxl.app.config;
 
 import com.google.gson.reflect.TypeToken;
 import de.c4vxl.app.App;
-import de.c4vxl.app.Theme;
+import de.c4vxl.app.theme.Theme;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.model.Model;
 import de.c4vxl.app.util.FileUtils;

@@ -14,6 +14,7 @@ import de.c4vxl.app.lib.element.settings.Settings;
 import de.c4vxl.app.lib.element.settings.SettingsPageKeyboardShortcuts;
 import de.c4vxl.app.lib.element.sidebar.Sidebar;
 import de.c4vxl.app.model.Model;
+import de.c4vxl.app.theme.Theme;
 import de.c4vxl.app.util.AnimationUtils;
 import de.c4vxl.app.util.Factory;
 import de.c4vxl.app.util.ModalUtils;

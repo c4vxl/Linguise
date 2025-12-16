@@ -1,6 +1,6 @@
 package de.c4vxl.app.lib.element.modal;
 
-import de.c4vxl.app.Theme;
+import de.c4vxl.app.theme.Theme;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.lib.component.Window;
 import de.c4vxl.app.util.Factory;

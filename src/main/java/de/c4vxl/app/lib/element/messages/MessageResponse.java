@@ -1,7 +1,7 @@
 package de.c4vxl.app.lib.element.messages;
 
 import de.c4vxl.app.App;
-import de.c4vxl.app.Theme;
+import de.c4vxl.app.theme.Theme;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
 import de.c4vxl.app.lib.component.RoundedPanel;

@@ -1,6 +1,6 @@
 package de.c4vxl.app.lib.component;
 
-import de.c4vxl.app.Theme;
+import de.c4vxl.app.theme.Theme;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;

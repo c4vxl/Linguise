@@ -1,7 +1,7 @@
 package de.c4vxl.app.util;
 
 import com.google.gson.reflect.TypeToken;
-import de.c4vxl.app.Theme;
+import de.c4vxl.app.theme.Theme;
 
 import javax.swing.*;
 import java.awt.*;

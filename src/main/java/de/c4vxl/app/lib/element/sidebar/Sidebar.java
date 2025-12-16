@@ -1,7 +1,7 @@
 package de.c4vxl.app.lib.element.sidebar;
 
 import de.c4vxl.app.App;
-import de.c4vxl.app.Theme;
+import de.c4vxl.app.theme.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
 import de.c4vxl.app.lib.component.Elements;
