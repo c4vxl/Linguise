@@ -80,7 +80,7 @@ public class Theme {
      */
     public static Theme fromResource(String name) {
         String filename = "themes/" + name + ".theme";
-        return interpret(filename, Resource.readResource(filename));
+        return interpret(name + ".theme", Resource.readResource(filename));
     }
 
     /**

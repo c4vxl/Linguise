@@ -105,6 +105,7 @@ public class Onboarding extends Window {
                     String finalLanguage = language;
                     dropdown.addItem(Dropdown.createDefaultItem(language, () -> {
                         Language.current = Language.fromResource(finalLanguage.toLowerCase());
+                        Config.setConfigValue("app.lang", finalLanguage + ".lang");
                         page(1);
                     }, false));
                 }
@@ -130,10 +131,10 @@ public class Onboarding extends Window {
                         Theme.fromResource("moonlight"),
                         Theme.fromResource("coralbloom"),
                 }) {
-
                     panel.add(new Factory<>(SettingsPageTheme.entry(theme, () -> {
                         if (Theme.current.name.equals(theme.name)) return;
                         Config.setTheme(theme);
+                        Config.setConfigValue("app.theme", theme.getFileName());
                         page(2);
                     }))
                             .pos(150 + i * 140, 110)
