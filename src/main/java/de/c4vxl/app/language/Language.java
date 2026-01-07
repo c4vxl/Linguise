@@ -3,9 +3,15 @@ package de.c4vxl.app.language;
 import com.google.gson.reflect.TypeToken;
 import de.c4vxl.app.App;
 import de.c4vxl.app.config.Config;
+import de.c4vxl.app.theme.Theme;
 import de.c4vxl.app.util.FileUtils;
+import de.c4vxl.app.util.Resource;
 
+import java.awt.*;
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -59,8 +65,28 @@ public class Language {
             return getFallback();
         }
 
+        return interpret(path, FileUtils.readContent(path, "{}"));
+    }
+
+    /**
+     * Loads a Language from jar-packed resources
+     * @param name The name of the language
+     */
+    public static Language fromResource(String name) {
+        String filename = "languages/" + name + ".lang";
+        return interpret(filename, Resource.readResource(filename));
+    }
+
+    /**
+     * Interprets a language from it's json
+     * @param path The file the json comes from
+     * @param string The json in string representation
+     */
+    private static Language interpret(String path, String string) {
+        File file = new File(path);
+
         // Load translations
-        HashMap<String, String> translations = FileUtils.fromJSON(FileUtils.readContent(path, "{}"), new TypeToken<>() {});
+        HashMap<String, String> translations = FileUtils.fromJSON(string, new TypeToken<>() {});
 
         // Handle empty language file
         if (translations.isEmpty()) {

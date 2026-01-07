@@ -1,6 +1,7 @@
 package de.c4vxl;
 
 import de.c4vxl.app.App;
+import de.c4vxl.app.onboarding.Onboarding;
 import de.c4vxl.app.theme.Theme;
 import de.c4vxl.app.config.Config;
 import de.c4vxl.app.language.Language;
@@ -53,7 +54,22 @@ public class Main {
         System.out.println("[STARTUP]: Loading config...");
         loadConfig();
 
+        // Run onboarding
+        if (Config.getOrSetConfigValue("app.onboarding", false) == Boolean.FALSE) {
+            System.out.println("[STARTUP]: Opening Onboarding...");
+            Onboarding onboarding = new Onboarding(Language.current, Theme.current);
+            onboarding.open();
+            return;
+        }
+
         // Open app
+        open();
+    }
+
+    /**
+     * Opens the app
+     */
+    public static void open() {
         System.out.println("[STARTUP]: Opening App...");
         new App(Theme.current, Language.current).open();
     }

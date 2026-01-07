@@ -67,7 +67,7 @@ public class SettingsPageTheme extends SettingsPage {
         // Add entries
         this.panel.removeAll();
         for (Theme theme : themes) {
-            this.panel.add(createEntry(theme.name, theme.background_1, theme.background_3, theme.name.equals(Theme.current.name), () -> {
+            this.panel.add(entry(theme, () -> {
                 if (Theme.current.name.equals(theme.name)) return;
                 Config.setTheme(theme);
                 App.reopen(theme, Language.current);
@@ -79,6 +79,10 @@ public class SettingsPageTheme extends SettingsPage {
         this.revalidate();
     }
 
+    public static JPanel entry(Theme theme, Runnable onClick) {
+        return createEntry(theme.name, theme.background_1, theme.background_3, theme.name.equals(Theme.current.name), onClick);
+    }
+
     /**
      * Creates the element/button for a theme
      * @param name The name of the theme
@@ -86,7 +90,7 @@ public class SettingsPageTheme extends SettingsPage {
      * @param c2 The last color of the theme
      * @param isHighlighted Is the element highlighted/is it the currently selected theme
      */
-    private JPanel createEntry(String name, Color c1, Color c2, boolean isHighlighted, Runnable onClick) {
+    public static JPanel createEntry(String name, Color c1, Color c2, boolean isHighlighted, Runnable onClick) {
         JPanel panel = new Factory<>(new RoundedPanel(10)).layout(null).size(130, 190).opaque(false).cursor(Cursor.HAND_CURSOR)
                 .hoverAnimation(isHighlighted ? Theme.current.background_2 : Theme.current.background_1, Theme.current.background_2, false)
                 .onClick(onClick).get();

@@ -83,7 +83,7 @@ public class SettingsPageLanguage extends SettingsPage {
      * @param name The name of the theme
      * @param isHighlighted Is the element highlighted/is it the currently selected language
      */
-    private JPanel createEntry(String name, boolean isHighlighted, Runnable onClick) {
+    public static JPanel createEntry(String name, boolean isHighlighted, Runnable onClick) {
         JPanel panel = new Factory<>(new RoundedPanel(10)).layout(null).size(230, 60).opaque(false).cursor(Cursor.HAND_CURSOR)
                 .hoverAnimation(isHighlighted ? Theme.current.background_2 : Theme.current.background_3, Theme.current.background_2, false)
                 .onClick(onClick)
