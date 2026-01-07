@@ -101,7 +101,6 @@ public class Onboarding extends Window {
 
                 for (String language : Resource.listResources("languages/")) {
                     language = language.replace(".lang", "");
-                    language = language.toUpperCase();
 
                     String finalLanguage = language;
                     dropdown.addItem(Dropdown.createDefaultItem(language, () -> {
@@ -199,6 +198,8 @@ public class Onboarding extends Window {
         this.close();
         System.out.println("[Onboarding]: Onboarding complete!");
         Config.setConfigValue("app.onboarding", true);
-        Main.open();
+        Config.setConfigValue("app.model", "Chatty.mdl");
+        System.out.println("[Onboarding]: Restarting App!");
+        Main.start();
     }
 }

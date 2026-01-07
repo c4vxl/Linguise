@@ -54,24 +54,19 @@ public class Main {
         System.out.println("[STARTUP]: Loading config...");
         loadConfig();
 
+        // Open app
+        System.out.println("[STARTUP]: Opening App...");
+        new App(Theme.current, Language.current).open();
+
         // Run onboarding
         if (Config.getOrSetConfigValue("app.onboarding", false) == Boolean.FALSE) {
+            App.instance.close();
+            App.instance.dispose();
+            App.instance = null;
             System.out.println("[STARTUP]: Opening Onboarding...");
             Onboarding onboarding = new Onboarding(Language.current, Theme.current);
             onboarding.open();
-            return;
         }
-
-        // Open app
-        open();
-    }
-
-    /**
-     * Opens the app
-     */
-    public static void open() {
-        System.out.println("[STARTUP]: Opening App...");
-        new App(Theme.current, Language.current).open();
     }
 
     /**
