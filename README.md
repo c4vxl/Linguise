@@ -148,6 +148,7 @@ To use TTS features, ensure the necessary engine is installed and available.
 # Resources
 - [jNN Library](https://github.com/c4vxl/jNN)
 - [Python library for exporting PyTorch models](https://github.com/c4vxl/jNN-python)
+- [Model training scripts](https://github.com/c4vxl/Linguise-train)
 - [Collection of pretrained models](https://github.com/Linguise/Models)
 
 ---
