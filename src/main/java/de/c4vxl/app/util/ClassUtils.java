@@ -14,6 +14,7 @@ public class ClassUtils {
         put(Float.class, float.class);
         put(Long.class, long.class);
         put(Byte.class, byte.class);
+        put(Boolean.class, boolean.class);
     }};
 
     /**
