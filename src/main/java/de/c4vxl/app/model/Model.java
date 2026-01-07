@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
@@ -29,6 +30,9 @@ public class Model {
     public TextGenerationPipeline pipeline;
     public final Generator generator;
     private boolean isInitialized = false;
+
+    public String separator = "<|sep|>";
+    public Double temperature = 0.8;
 
     public Model(String path, Generator generator) {
         // Set file
@@ -96,7 +100,9 @@ public class Model {
             return new Thread() {};
         }
 
-        return generator.apply(prompt, onUpdate, onDone);
+        this.pipeline.temperature(this.temperature);
+
+        return generator.apply(prompt + this.separator, onUpdate, onDone);
     }
 
     /**
@@ -141,7 +147,9 @@ public class Model {
         progressThread.start();
 
         // Get pipeline
-        TextGenerationPipeline pipeline = pipelineFromState(FileUtils.fromJSON(content, new TypeToken<>() {}));
+        HashMap<String, Object> state = FileUtils.fromJSON(content, new TypeToken<>() {});
+
+        TextGenerationPipeline pipeline = pipelineFromState(state);
         if (pipeline == null) {
             App.notificationFromKey("danger", 300, "app.notifications.models.error.invalid_pipeline", this.file.getName());
             System.out.println("[ERROR]: Invalid pipeline!");
@@ -149,6 +157,9 @@ public class Model {
             progressThread.interrupt();
             return false;
         }
+
+        this.temperature = Double.valueOf(state.getOrDefault("temp", this.temperature).toString());
+        this.separator   = state.getOrDefault("sep", this.separator).toString();
 
         this.pipeline = pipeline;
         progressThread.interrupt();
@@ -222,6 +233,8 @@ public class Model {
             put("modelState", pipeline.model.asJSON());
             put("tokenizerClass", pipeline.tokenizer.getClass().getName());
             put("tokenizerState", pipeline.tokenizer.asJSON());
+            put("temp", temperature);
+            put("sep", separator);
         }};
     }
 
