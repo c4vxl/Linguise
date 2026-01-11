@@ -100,7 +100,8 @@ public class Model {
             return new Thread() {};
         }
 
-        this.pipeline.temperature(this.temperature);
+        if (this.pipeline != null)
+            this.pipeline.temperature(this.temperature);
 
         return generator.apply(prompt + this.separator, onUpdate, onDone);
     }
